@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // <-- Agrega esta línea
+import { useNavigate } from "react-router-dom"; 
 
 interface Imagen {
   url: string;
@@ -10,7 +10,7 @@ interface Game {
   nombre: string;
   precio: number;
   estaOferta: boolean;
-  estado: boolean; // <-- booleano
+  estado: boolean;
   categoriaId: number;
   imagenes: Imagen[];
   videoUrl: string;
@@ -22,12 +22,12 @@ export interface AgregarJuegoProps {
 }
 
 const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
-  const navigate = useNavigate(); // <-- Inicializa navigate
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<Game>({
     nombre: "",
     precio: 0,
     estaOferta: false,
-    estado: true, // <-- booleano, no string
+    estado: true,
     categoriaId: 1,
     imagenes: [],
     videoUrl: "",
@@ -44,7 +44,6 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
   }[]>([]);
 
   useEffect(() => {
-    // Fetch categorias y plataformas
     fetch("http://localhost:3000/api/categorias")
       .then((res) => res.json())
       .then((data) => setCategorias(data));
@@ -53,7 +52,6 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
       .then((data) => setPlataformasDisponibles(data));
   }, []);
 
-  // Actualización de campos del formulario
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target as HTMLInputElement | HTMLSelectElement;
     setFormData((prev) => ({
@@ -68,7 +66,6 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  // Manejo de selección de plataformas
   const handlePlataformaChange = (id: number) => {
     setFormData((prev) => ({
       ...prev,
@@ -78,7 +75,6 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
     }));
   };
 
-  // Manejo de imágenes
   const handleAgregarImagen = () => {
     if (!imagenUrl.trim()) {
       setErrors((prev) => ({ ...prev, imagenUrl: "La URL de la imagen es requerida" }));
@@ -93,7 +89,13 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
     setErrors((prev) => ({ ...prev, imagenUrl: "" }));
   };
 
-  // Validación del formulario
+  const handleRemoveImagen = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      imagenes: prev.imagenes.filter((_, idx) => idx !== index),
+    }));
+  };
+
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
     if (!formData.nombre.trim()) newErrors.nombre = "El nombre es requerido";
@@ -105,7 +107,6 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Enviar los datos del formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
@@ -116,7 +117,7 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
           body: JSON.stringify(formData),
         });
         if (response.ok) {
-          navigate("/adminjuegos"); // <-- Redirige después de agregar
+          navigate("/adminjuegos");
         } else {
           const errorData = await response.json();
           alert("Error al agregar el juego: " + (errorData.message || "Error desconocido"));
@@ -128,52 +129,23 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
   };
 
   return (
-    <div
-      className="modal"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        backgroundColor: "rgba(0,0,0,0.5)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        zIndex: 1000,
-      }}
-    >
-      <div
-        className="modal-content"
-        style={{
-          backgroundColor: "white",
-          padding: "30px",
-          borderRadius: "10px",
-          width: "90%",
-          maxWidth: "600px",
-          maxHeight: "90vh",
-          overflow: "auto",
-        }}
-      >
-        <h3 style={{ marginBottom: "20px", textAlign: "center" }}>➕ Agregar Nuevo Juego</h3>
+    <div className="modal">
+      <div className="modal-content">
+        <h3>Agregar Nuevo Juego</h3>
         <form onSubmit={handleSubmit}>
-          {/* Campo para nombre */}
-          <div style={{ marginBottom: "15px" }}>
+          <div className="form-group">
             <label>Nombre *</label>
             <input
               name="nombre"
               type="text"
               value={formData.nombre}
               onChange={handleChange}
-              style={{ width: "100%" }}
+              placeholder="Ingresa el nombre del juego"
             />
-            {errors.nombre && (
-              <span style={{ color: "#dc3545", fontSize: "12px" }}>{errors.nombre}</span>
-            )}
+            {errors.nombre && <span className="error-message">{errors.nombre}</span>}
           </div>
 
-          {/* Campo para precio */}
-          <div style={{ marginBottom: "15px" }}>
+          <div className="form-group">
             <label>Precio ($) *</label>
             <input
               name="precio"
@@ -182,27 +154,25 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
               step="0.01"
               value={formData.precio}
               onChange={handleChange}
-              style={{ width: "100%" }}
+              placeholder="0.00"
             />
-            {errors.precio && (
-              <span style={{ color: "#dc3545", fontSize: "12px" }}>{errors.precio}</span>
-            )}
+            {errors.precio && <span className="error-message">{errors.precio}</span>}
           </div>
 
-          {/* Checkbox de oferta */}
-          <div style={{ marginBottom: "15px" }}>
-            <label>Oferta</label>
-            <input
-              name="estaOferta"
-              type="checkbox"
-              checked={formData.estaOferta}
-              onChange={handleChange}
-              style={{ marginLeft: "10px" }}
-            />
+          <div className="form-group checkbox-group">
+            <label className="checkbox-label">
+              <input
+                name="estaOferta"
+                type="checkbox"
+                checked={formData.estaOferta}
+                onChange={handleChange}
+              />
+              <span className="checkmark"></span>
+              ¿Está en oferta?
+            </label>
           </div>
 
-          {/* Campo para estado */}
-          <div style={{ marginBottom: "15px" }}>
+          <div className="form-group">
             <label>Estado</label>
             <select
               name="estado"
@@ -213,21 +183,18 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
                   estado: e.target.value === "true",
                 }))
               }
-              style={{ width: "100%" }}
             >
               <option value="true">Activo</option>
               <option value="false">Inactivo</option>
             </select>
           </div>
 
-          {/* Selección de categoría */}
-          <div style={{ marginBottom: "15px" }}>
+          <div className="form-group">
             <label>Categoría *</label>
             <select
               name="categoriaId"
               value={formData.categoriaId}
               onChange={handleChange}
-              style={{ width: "100%" }}
             >
               {categorias.map((cat) => (
                 <option key={cat.id} value={cat.id}>
@@ -235,107 +202,84 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
                 </option>
               ))}
             </select>
-            {errors.categoriaId && (
-              <span style={{ color: "#dc3545", fontSize: "12px" }}>{errors.categoriaId}</span>
-            )}
+            {errors.categoriaId && <span className="error-message">{errors.categoriaId}</span>}
           </div>
 
-          {/* Manejo de imágenes */}
-          <div style={{ marginBottom: "15px" }}>
+          <div className="form-group">
             <label>Imágenes *</label>
-            <div style={{ display: "flex", gap: "10px", marginBottom: "8px" }}>
+            <div className="image-input-group">
               <input
                 type="url"
                 placeholder="URL de la imagen"
                 value={imagenUrl}
                 onChange={(e) => setImagenUrl(e.target.value)}
-                style={{ flex: 2 }}
               />
               <input
                 type="text"
                 placeholder="Descripción"
                 value={imagenDescripcion}
                 onChange={(e) => setImagenDescripcion(e.target.value)}
-                style={{ flex: 2 }}
               />
-              <button type="button" onClick={handleAgregarImagen}>
-                Agregar
+              <button type="button" onClick={handleAgregarImagen} className="add-btn">
+                Agregar Imagen
               </button>
             </div>
+            {errors.imagenUrl && <span className="error-message">{errors.imagenUrl}</span>}
+            
             {formData.imagenes.length > 0 && (
-              <ul>
+              <div className="images-list">
                 {formData.imagenes.map((img, idx) => (
-                  <li key={idx}>
-                    {img.url} - {img.descripcion}
-                  </li>
+                  <div key={idx} className="image-item">
+                    <span>{img.descripcion || 'Sin descripción'}</span>
+                    <button 
+                      type="button" 
+                      onClick={() => handleRemoveImagen(idx)}
+                      className="remove-btn"
+                    >
+                      ×
+                    </button>
+                  </div>
                 ))}
-              </ul>
+              </div>
             )}
-            {errors.imagenes && (
-              <span style={{ color: "#dc3545", fontSize: "12px" }}>{errors.imagenes}</span>
-            )}
+            {errors.imagenes && <span className="error-message">{errors.imagenes}</span>}
           </div>
 
-          {/* Selección de plataformas */}
-          <div style={{ marginBottom: "15px" }}>
+          <div className="form-group">
             <label>Plataformas *</label>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+            <div className="platforms-grid">
               {plataformasDisponibles.map((plat) => (
-                <label key={plat.id} style={{ fontWeight: 400 }}>
+                <label key={plat.id} className="platform-checkbox">
                   <input
                     type="checkbox"
                     checked={formData.plataformas.includes(plat.id)}
                     onChange={() => handlePlataformaChange(plat.id)}
-                  />{" "}
+                  />
+                  <span className="checkmark"></span>
                   {plat.nombre}
                 </label>
               ))}
             </div>
-            {errors.plataformas && (
-              <span style={{ color: "#dc3545", fontSize: "12px" }}>{errors.plataformas}</span>
-            )}
+            {errors.plataformas && <span className="error-message">{errors.plataformas}</span>}
           </div>
 
-          {/* Campo para video URL */}
-          <div style={{ marginBottom: "15px" }}>
+          <div className="form-group">
             <label>URL del Video (YouTube)</label>
             <input
               name="videoUrl"
               type="url"
               value={formData.videoUrl}
               onChange={handleChange}
-              style={{ width: "100%" }}
+              placeholder="https://youtube.com/watch?v=..."
             />
           </div>
 
-          {/* Botones de acción */}
-          <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", paddingTop: "20px", borderTop: "1px solid #eee" }}>
-            <button
-              type="button"
-              onClick={onClose}
-              style={{
-                padding: "10px 20px",
-                backgroundColor: "#6c757d",
-                color: "white",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-            >
-              ❌ Cancelar
+          <div className="modal-buttons">
+            <button type="button" onClick={onClose}>
+              Cancelar
             </button>
-            <button
-              type="submit"
-              style={{
-                padding: "10px 20px",
-                backgroundColor: "#28a745",
-                color: "white",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-            >
-              ✅ Agregar Juego
+            <button type="submit">
+              Agregar Juego
             </button>
           </div>
         </form>

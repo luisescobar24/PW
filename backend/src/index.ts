@@ -21,6 +21,31 @@ app.use(cors({
 // Middleware para parsear el cuerpo de las peticiones como JSON
 app.use(express.json());
 
+interface AuthRequest extends Request {
+  user?: any;
+}
+
+function authenticateToken(req: AuthRequest, res: Response, next: NextFunction) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ message: 'Token requerido' });
+  }
+  jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ message: 'Token inválido' });
+    }
+    req.user = decoded as any;
+    next();
+  });
+}
+
+function authorizeAdmin(req: AuthRequest, res: Response, next: NextFunction) {
+  if (req.user && req.user.rol === 'ADMIN') {
+    return next();
+  }
+  return res.status(403).json({ message: 'Acceso denegado' });
+}
 
 // Ruta para obtener todos los usuarios
 app.get('/api/usuarios', async (req: Request, res: Response) => {
@@ -83,13 +108,13 @@ app.post('/api/auth/login', async (req: Request, res: Response) => {
       return res.status(403).json({ message: 'Cuenta suspendida' });
     }
 
-    // Generar un token JWT (en este caso, asignamos el `userId` como payload)
-    const token = jwt.sign({ userId: user.id, estado: user.estado }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    // Generar un token JWT con el rol del usuario
+    const token = jwt.sign({ userId: user.id, estado: user.estado, rol: user.rol }, process.env.JWT_SECRET!, { expiresIn: '1h' });
 
     return res.status(200).json({
       success: true,
       message: 'Login exitoso',
-      user: { id: user.id, nombre: user.nombre, correo: user.correo },
+      user: { id: user.id, nombre: user.nombre, correo: user.correo, rol: user.rol },
       token,
     });
   } catch (error) {
@@ -98,12 +123,10 @@ app.post('/api/auth/login', async (req: Request, res: Response) => {
   }
 });
 
-
-
 app.post('/api/auth/signup', async (req: Request, res: Response) => {
   console.log('Datos recibidos:', req.body);  // Verifica los datos que llegan del front-end
 
-  const { nombre, password, correo, estado, extraField } = req.body;
+  const { nombre, password, correo, estado, rol = 'USER', extraField } = req.body;
 
   // Validación de los campos obligatorios
   if (!nombre || !password || !correo || typeof estado !== 'boolean') {
@@ -111,7 +134,7 @@ app.post('/api/auth/signup', async (req: Request, res: Response) => {
   }
 
   // Validar el formato del correo
-  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/;
   if (!emailRegex.test(correo)) {
     return res.status(400).json({ message: 'Correo no válido' });
   }
@@ -149,6 +172,7 @@ app.post('/api/auth/signup', async (req: Request, res: Response) => {
         nombre,
         password: hashedPassword,
         correo,
+        rol,
         estado,
         token: "", // El token puede ser vacío por ahora
       },
@@ -164,8 +188,6 @@ app.post('/api/auth/signup', async (req: Request, res: Response) => {
     return res.status(500).json({ message: 'Error al registrar el usuario' });
   }
 });
-
-
 
 // Ruta para solicitar el restablecimiento de la contraseña (Forgot Password)
 app.post('/api/auth/forgot-password', async (req: Request, res: Response) => {
@@ -220,7 +242,7 @@ app.post('/api/auth/forgot-password', async (req: Request, res: Response) => {
   }
 });
 
-// Ruta para obtener un juego específico with sus imágenes
+// Ruta para obtener un juego específico con sus imágenes
 app.get('/api/juegos/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -243,24 +265,6 @@ app.get('/api/juegos/:id', async (req: Request, res: Response) => {
     return res.status(500).json({ message: 'Error al obtener el juego' });
   }
 });
-
-
-// Ruta para obtener todos los juegos con sus imágenes
-app.get('/api/juegos', async (req: Request, res: Response) => {
-  try {
-    const juegos = await prisma.juego.findMany({
-      include: {
-        imagenes: true,  // Incluir las imágenes relacionadas
-      }
-    });
-
-    return res.status(200).json(juegos);  // Devolver la lista de juegos con sus imágenes
-  } catch (error) {
-    console.error('Error al obtener los juegos:', error);
-    return res.status(500).json({ message: 'Error al obtener los juegos' });
-  }
-});
-
 
 // Ruta para restablecer la contraseña (Reset Password)
 app.post('/api/auth/reset-password', async (req: Request, res: Response) => {
@@ -308,9 +312,8 @@ app.post('/api/auth/reset-password', async (req: Request, res: Response) => {
   }
 });
 
-
 // Ruta para registrar ventas
-app.post('/api/ventas', async (req: Request, res: Response) => {
+app.post('/api/ventas', authenticateToken, authorizeAdmin, async (req: Request, res: Response) => {
   const { ventas } = req.body;
 
   if (!ventas || !Array.isArray(ventas) || ventas.length === 0) {
@@ -342,16 +345,17 @@ app.post('/api/ventas', async (req: Request, res: Response) => {
   }
 });
 
-// Ruta para obtener todos los juegos con sus imágenes
+// Ruta para obtener todos los juegos
 app.get('/api/juegos', async (req, res) => {
+  const includePlatforms = req.query.includePlatforms === 'true';
   try {
     const juegos = await prisma.juego.findMany({
       include: {
-        imagenes: true,  // Incluir las imágenes relacionadas
-        plataformas: true, // Incluir las plataformas asociadas
+        imagenes: true,
+        ...(includePlatforms ? { plataformas: true } : {})
       }
     });
-    return res.status(200).json(juegos);  // Devolver la lista de juegos con sus imágenes y plataformas
+    return res.status(200).json(juegos);  // Devolver la lista de juegos
   } catch (error) {
     console.error('Error al obtener los juegos:', error);
     return res.status(500).json({ message: 'Error al obtener los juegos' });
@@ -359,7 +363,7 @@ app.get('/api/juegos', async (req, res) => {
 });
 
 // Ruta para agregar un nuevo juego
-app.post('/api/juegos', async (req: Request, res: Response) => {
+app.post('/api/juegos', authenticateToken, authorizeAdmin, async (req: Request, res: Response) => {
   const { nombre, precio, estaOferta, estado, categoriaId, imagenes, videoUrl, plataformas } = req.body;
 
   interface Imagen {
@@ -397,9 +401,8 @@ app.post('/api/juegos', async (req: Request, res: Response) => {
   }
 });
 
-
 // Ruta para editar un juego
-app.put('/api/juegos/:id', async (req, res) => {
+app.put('/api/juegos/:id', authenticateToken, authorizeAdmin, async (req, res) => {
   const { id } = req.params;
   const { nombre, precio, estaOferta, estado, categoriaId, imagenes, videoUrl, plataformas } = req.body;
 
@@ -457,9 +460,8 @@ app.put('/api/juegos/:id', async (req, res) => {
   }
 });
 
-
 // Ruta para eliminar un juego
-app.delete('/api/juegos/:id', async (req, res) => {
+app.delete('/api/juegos/:id', authenticateToken, authorizeAdmin, async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -512,5 +514,3 @@ const PORT = process.env.PORT || 3000;  // Puedes configurar el puerto en el arc
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
-
-app.use(cors());
