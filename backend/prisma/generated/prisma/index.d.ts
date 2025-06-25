@@ -1690,6 +1690,7 @@ export namespace Prisma {
     correo: string | null
     password: string | null
     nombre: string | null
+    rol: string | null
     token: string | null
     estado: boolean | null
   }
@@ -1699,6 +1700,7 @@ export namespace Prisma {
     correo: string | null
     password: string | null
     nombre: string | null
+    rol: string | null
     token: string | null
     estado: boolean | null
   }
@@ -1708,6 +1710,7 @@ export namespace Prisma {
     correo: number
     password: number
     nombre: number
+    rol: number
     token: number
     estado: number
     _all: number
@@ -1727,6 +1730,7 @@ export namespace Prisma {
     correo?: true
     password?: true
     nombre?: true
+    rol?: true
     token?: true
     estado?: true
   }
@@ -1736,6 +1740,7 @@ export namespace Prisma {
     correo?: true
     password?: true
     nombre?: true
+    rol?: true
     token?: true
     estado?: true
   }
@@ -1745,6 +1750,7 @@ export namespace Prisma {
     correo?: true
     password?: true
     nombre?: true
+    rol?: true
     token?: true
     estado?: true
     _all?: true
@@ -1841,6 +1847,7 @@ export namespace Prisma {
     correo: string
     password: string
     nombre: string
+    rol: string
     token: string | null
     estado: boolean
     _count: UsuarioCountAggregateOutputType | null
@@ -1869,6 +1876,7 @@ export namespace Prisma {
     correo?: boolean
     password?: boolean
     nombre?: boolean
+    rol?: boolean
     token?: boolean
     estado?: boolean
     ventas?: boolean | Usuario$ventasArgs<ExtArgs>
@@ -1881,6 +1889,7 @@ export namespace Prisma {
     correo?: boolean
     password?: boolean
     nombre?: boolean
+    rol?: boolean
     token?: boolean
     estado?: boolean
   }, ExtArgs["result"]["usuario"]>
@@ -1890,6 +1899,7 @@ export namespace Prisma {
     correo?: boolean
     password?: boolean
     nombre?: boolean
+    rol?: boolean
     token?: boolean
     estado?: boolean
   }, ExtArgs["result"]["usuario"]>
@@ -1899,11 +1909,12 @@ export namespace Prisma {
     correo?: boolean
     password?: boolean
     nombre?: boolean
+    rol?: boolean
     token?: boolean
     estado?: boolean
   }
 
-  export type UsuarioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "correo" | "password" | "nombre" | "token" | "estado", ExtArgs["result"]["usuario"]>
+  export type UsuarioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "correo" | "password" | "nombre" | "rol" | "token" | "estado", ExtArgs["result"]["usuario"]>
   export type UsuarioInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ventas?: boolean | Usuario$ventasArgs<ExtArgs>
     calificaciones?: boolean | Usuario$calificacionesArgs<ExtArgs>
@@ -1923,6 +1934,7 @@ export namespace Prisma {
       correo: string
       password: string
       nombre: string
+      rol: string
       token: string | null
       estado: boolean
     }, ExtArgs["result"]["usuario"]>
@@ -2354,6 +2366,7 @@ export namespace Prisma {
     readonly correo: FieldRef<"Usuario", 'String'>
     readonly password: FieldRef<"Usuario", 'String'>
     readonly nombre: FieldRef<"Usuario", 'String'>
+    readonly rol: FieldRef<"Usuario", 'String'>
     readonly token: FieldRef<"Usuario", 'String'>
     readonly estado: FieldRef<"Usuario", 'Boolean'>
   }
@@ -10611,6 +10624,7 @@ export namespace Prisma {
     correo: 'correo',
     password: 'password',
     nombre: 'nombre',
+    rol: 'rol',
     token: 'token',
     estado: 'estado'
   };
@@ -10807,6 +10821,7 @@ export namespace Prisma {
     correo?: StringFilter<"Usuario"> | string
     password?: StringFilter<"Usuario"> | string
     nombre?: StringFilter<"Usuario"> | string
+    rol?: StringFilter<"Usuario"> | string
     token?: StringNullableFilter<"Usuario"> | string | null
     estado?: BoolFilter<"Usuario"> | boolean
     ventas?: VentaListRelationFilter
@@ -10818,6 +10833,7 @@ export namespace Prisma {
     correo?: SortOrder
     password?: SortOrder
     nombre?: SortOrder
+    rol?: SortOrder
     token?: SortOrderInput | SortOrder
     estado?: SortOrder
     ventas?: VentaOrderByRelationAggregateInput
@@ -10832,6 +10848,7 @@ export namespace Prisma {
     NOT?: UsuarioWhereInput | UsuarioWhereInput[]
     password?: StringFilter<"Usuario"> | string
     nombre?: StringFilter<"Usuario"> | string
+    rol?: StringFilter<"Usuario"> | string
     token?: StringNullableFilter<"Usuario"> | string | null
     estado?: BoolFilter<"Usuario"> | boolean
     ventas?: VentaListRelationFilter
@@ -10843,6 +10860,7 @@ export namespace Prisma {
     correo?: SortOrder
     password?: SortOrder
     nombre?: SortOrder
+    rol?: SortOrder
     token?: SortOrderInput | SortOrder
     estado?: SortOrder
     _count?: UsuarioCountOrderByAggregateInput
@@ -10860,6 +10878,7 @@ export namespace Prisma {
     correo?: StringWithAggregatesFilter<"Usuario"> | string
     password?: StringWithAggregatesFilter<"Usuario"> | string
     nombre?: StringWithAggregatesFilter<"Usuario"> | string
+    rol?: StringWithAggregatesFilter<"Usuario"> | string
     token?: StringNullableWithAggregatesFilter<"Usuario"> | string | null
     estado?: BoolWithAggregatesFilter<"Usuario"> | boolean
   }
@@ -11257,6 +11276,7 @@ export namespace Prisma {
     correo: string
     password: string
     nombre: string
+    rol?: string
     token?: string | null
     estado: boolean
     ventas?: VentaCreateNestedManyWithoutUsuarioInput
@@ -11268,6 +11288,7 @@ export namespace Prisma {
     correo: string
     password: string
     nombre: string
+    rol?: string
     token?: string | null
     estado: boolean
     ventas?: VentaUncheckedCreateNestedManyWithoutUsuarioInput
@@ -11278,6 +11299,7 @@ export namespace Prisma {
     correo?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nombre?: StringFieldUpdateOperationsInput | string
+    rol?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: BoolFieldUpdateOperationsInput | boolean
     ventas?: VentaUpdateManyWithoutUsuarioNestedInput
@@ -11289,6 +11311,7 @@ export namespace Prisma {
     correo?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nombre?: StringFieldUpdateOperationsInput | string
+    rol?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: BoolFieldUpdateOperationsInput | boolean
     ventas?: VentaUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -11300,6 +11323,7 @@ export namespace Prisma {
     correo: string
     password: string
     nombre: string
+    rol?: string
     token?: string | null
     estado: boolean
   }
@@ -11308,6 +11332,7 @@ export namespace Prisma {
     correo?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nombre?: StringFieldUpdateOperationsInput | string
+    rol?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -11317,6 +11342,7 @@ export namespace Prisma {
     correo?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nombre?: StringFieldUpdateOperationsInput | string
+    rol?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -11751,6 +11777,7 @@ export namespace Prisma {
     correo?: SortOrder
     password?: SortOrder
     nombre?: SortOrder
+    rol?: SortOrder
     token?: SortOrder
     estado?: SortOrder
   }
@@ -11764,6 +11791,7 @@ export namespace Prisma {
     correo?: SortOrder
     password?: SortOrder
     nombre?: SortOrder
+    rol?: SortOrder
     token?: SortOrder
     estado?: SortOrder
   }
@@ -11773,6 +11801,7 @@ export namespace Prisma {
     correo?: SortOrder
     password?: SortOrder
     nombre?: SortOrder
+    rol?: SortOrder
     token?: SortOrder
     estado?: SortOrder
   }
@@ -13342,6 +13371,7 @@ export namespace Prisma {
     correo: string
     password: string
     nombre: string
+    rol?: string
     token?: string | null
     estado: boolean
     calificaciones?: CalificacionCreateNestedManyWithoutUsuarioInput
@@ -13352,6 +13382,7 @@ export namespace Prisma {
     correo: string
     password: string
     nombre: string
+    rol?: string
     token?: string | null
     estado: boolean
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutUsuarioInput
@@ -13407,6 +13438,7 @@ export namespace Prisma {
     correo?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nombre?: StringFieldUpdateOperationsInput | string
+    rol?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: BoolFieldUpdateOperationsInput | boolean
     calificaciones?: CalificacionUpdateManyWithoutUsuarioNestedInput
@@ -13417,6 +13449,7 @@ export namespace Prisma {
     correo?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nombre?: StringFieldUpdateOperationsInput | string
+    rol?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: BoolFieldUpdateOperationsInput | boolean
     calificaciones?: CalificacionUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -13492,6 +13525,7 @@ export namespace Prisma {
     correo: string
     password: string
     nombre: string
+    rol?: string
     token?: string | null
     estado: boolean
     ventas?: VentaCreateNestedManyWithoutUsuarioInput
@@ -13502,6 +13536,7 @@ export namespace Prisma {
     correo: string
     password: string
     nombre: string
+    rol?: string
     token?: string | null
     estado: boolean
     ventas?: VentaUncheckedCreateNestedManyWithoutUsuarioInput
@@ -13563,6 +13598,7 @@ export namespace Prisma {
     correo?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nombre?: StringFieldUpdateOperationsInput | string
+    rol?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: BoolFieldUpdateOperationsInput | boolean
     ventas?: VentaUpdateManyWithoutUsuarioNestedInput
@@ -13573,6 +13609,7 @@ export namespace Prisma {
     correo?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nombre?: StringFieldUpdateOperationsInput | string
+    rol?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: BoolFieldUpdateOperationsInput | boolean
     ventas?: VentaUncheckedUpdateManyWithoutUsuarioNestedInput

@@ -67,19 +67,6 @@ const SignUp = () => {
     }
   };
 
-  // Realizar la solicitud para obtener el número de usuarios al cargar el componente
-  useEffect(() => {
-    const fetchUserCount = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/api/usuarios/count');
-        setUserCount(response.data.count);  // Establecer el número de usuarios
-      } catch (error) {
-        console.error('Error al obtener el número de usuarios:', error);
-      }
-    };
-
-    fetchUserCount();
-  }, []);  // El array vacío asegura que esta solicitud se haga solo una vez al cargar el componente
 
   return (
     <div className="signup-wrapper">

@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import { PrismaClient } from '../prisma/generated/prisma';  // No cambiar esta importación
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -20,6 +20,7 @@ app.use(cors({
 
 // Middleware para parsear el cuerpo de las peticiones como JSON
 app.use(express.json());
+
 
 // Ruta para obtener todos los usuarios
 app.get('/api/usuarios', async (req: Request, res: Response) => {
