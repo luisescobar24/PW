@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../estilos/PaginaPrincipal.css';  // Importa el archivo de estilos
@@ -10,7 +10,7 @@ interface Juego {
   imagenes: { id: number; juegoId: number; url: string; descripcion?: string }[]; // ✅ Esto es lo correcto
   videoUrl: string;
   precio: number;
-  categoria: string;
+  categoriaId: number;  // Cambié de 'categoria' a 'categoriaId' para usar el ID de la categoría
 }
 
 export interface ItemCarrito extends Juego {
@@ -29,11 +29,11 @@ const PaginaPrincipal: React.FC = () => {
   const [index, setIndex] = useState(0);
   const [menuCategoriasVisible, setMenuCategoriasVisible] = useState(false);
   const [busqueda, setBusqueda] = useState('');
-  const [categoriaFiltro, setCategoriaFiltro] = useState('todas'); // Cambié el valor inicial a 'todas'
+  const [categoriaFiltro, setCategoriaFiltro] = useState<number | null>(null);  // Ahora es un número (ID)
   const [ordenamiento, setOrdenamiento] = useState('nombre');
   const [cargando, setCargando] = useState(false);
   const [mensaje, setMensaje] = useState('');
-  const [categorias, setCategorias] = useState<{ id: number, nombre: string }[]>([]); // Cambié el tipo para usar un arreglo de categorías
+  const [categorias, setCategorias] = useState<{ id: number, nombre: string }[]>([]); // Lista de categorías
 
   // Estado para los valores del carrito
   const [cantidades, setCantidades] = useState<Record<number, number>>({});
@@ -127,53 +127,49 @@ const PaginaPrincipal: React.FC = () => {
     );
   }, [eliminarDelCarrito]);
 
-  // Filtros y búsqueda optimizados con manejo de errores
-const juegosFiltrados = useMemo(() => {
-  if (!Array.isArray(juegos) || juegos.length === 0) return [];
+  // Filtros optimizados
+  const juegosFiltrados = useMemo(() => {
+    if (!Array.isArray(juegos) || juegos.length === 0) return [];
 
-  let resultado = [...juegos];
+    let resultado = [...juegos];
 
-  // Si hay búsqueda, filtra los juegos por nombre, descripción o categoría
-  if (busqueda.trim()) {
-    const busquedaLower = busqueda.toLowerCase();  // Convierte la búsqueda a minúsculas solo una vez
-    resultado = resultado.filter(juego => {
-      const nombre = (juego.nombre ?? '').toLowerCase();
-      const descripcion = (juego.descripcion ?? '').toLowerCase();
-      const categoria = (juego.categoria ?? '').toLowerCase();
+    // Si hay búsqueda, filtra los juegos por nombre, descripción o categoría
+    if (busqueda.trim()) {
+      const busquedaLower = busqueda.toLowerCase();
+      resultado = resultado.filter(juego => {
+        const nombre = (juego.nombre ?? '').toLowerCase();
+        const descripcion = (juego.descripcion ?? '').toLowerCase();
+        const categoria = (categorias.find(cat => cat.id === juego.categoriaId)?.nombre ?? '').toLowerCase();
 
-      return nombre.includes(busquedaLower) || descripcion.includes(busquedaLower) || categoria.includes(busquedaLower);
-    });
-  }
+        return nombre.includes(busquedaLower) || descripcion.includes(busquedaLower) || categoria.includes(busquedaLower);
+      });
+    }
 
-  // Filtrar por categoría seleccionada
-  if (categoriaFiltro !== 'todas') {
-    console.log(`Filtrando por categoría: ${categoriaFiltro}`);  // Registra la categoría seleccionada
-    resultado = resultado.filter(juego => {
-      const categoriaJuego = (juego.categoria ?? '').toLowerCase();
-      console.log(`Juego: ${juego.nombre}, Categoría: ${categoriaJuego}`);  // Registra cada juego y su categoría
-      return categoriaJuego === categoriaFiltro.toLowerCase();
-    });
-  }
+    // Filtrar por categoría seleccionada
+    if (categoriaFiltro && categoriaFiltro !== 0) {
+      resultado = resultado.filter(juego => juego.categoriaId === categoriaFiltro);
+    }
 
-  // Ordenar los juegos
-  if (resultado.length > 0) {
-    resultado.sort((a, b) => {
-      switch (ordenamiento) {
-        case 'precio-asc':
-          return a.precio - b.precio;
-        case 'precio-desc':
-          return b.precio - a.precio;
-        case 'nombre':
-        default:
-          return (a.nombre ?? '').localeCompare(b.nombre ?? '');
-      }
-    });
-  }
+    // Ordenar los juegos
+    if (resultado.length > 0) {
+      resultado.sort((a, b) => {
+        switch (ordenamiento) {
+          case 'precio-asc':
+            return a.precio - b.precio;
+          case 'precio-desc':
+            return b.precio - a.precio;
+          case 'nombre':
+          default:
+            return (a.nombre ?? '').localeCompare(b.nombre ?? '');
+        }
+      });
+    }
 
-  return resultado;
-}, [busqueda, categoriaFiltro, ordenamiento, juegos]);
+    return resultado;
+  }, [busqueda, categoriaFiltro, ordenamiento, juegos]);
 
-
+  // Verifica si no hay juegos filtrados
+  const mostrarMensajeNoJuegos = juegosFiltrados.length === 0 && categoriaFiltro !== 0;
 
   // Calcular totales del carrito
   const totalCarrito = useMemo(() => {
@@ -216,7 +212,7 @@ const juegosFiltrados = useMemo(() => {
                     key={cat.id}
                     style={{ width: '100%', color: '#fff', background: 'none', border: 'none', padding: '10px 16px', textAlign: 'left', cursor: 'pointer' }}
                     onClick={() => {
-                      setCategoriaFiltro(cat.nombre);
+                      setCategoriaFiltro(cat.id);  // Filtra por ID de categoría
                       setMenuCategoriasVisible(false);
                     }}
                   >
@@ -238,9 +234,9 @@ const juegosFiltrados = useMemo(() => {
         {/* Barra de búsqueda y filtros mejorada */}
         <div className="search-filters">
           <input type="text" placeholder="Buscar juegos por nombre, descripción o categoría..." value={busqueda} onChange={(e) => setBusqueda(e.target.value)} className="search-input" />
-          <select value={categoriaFiltro} onChange={e => setCategoriaFiltro(e.target.value)} className="filter-select">
+          <select value={categoriaFiltro ?? 0} onChange={e => setCategoriaFiltro(Number(e.target.value))} className="filter-select">
             {categorias.map((cat) => (
-              <option key={cat.id} value={cat.nombre}>
+              <option key={cat.id} value={cat.id}>
                 {cat.nombre === 'todas' ? 'Todas las Categorías' : cat.nombre}
               </option>
             ))}
@@ -286,28 +282,38 @@ const juegosFiltrados = useMemo(() => {
 
       {/* Lista de juegos filtrados */}
       <div className="games-grid">
-        {juegosFiltrados.map(juego => (
-          <div key={juego.id} className="game-card">
-            <div className="card-image">
-              <img
-                src={juego.imagenes[0]?.url}
-                alt={juego.nombre}
-                loading="lazy"
-              />
-            </div>
-            <div className="card-content">
-              <h3>{juego.nombre}</h3>
-              <p className="categoria">{juego.categoria}</p>
-              <p className="precio">${juego.precio}</p>
-              <button onClick={() => agregarAlCarrito(juego)} className="boton-agregar">
-                🛒 Agregar al carrito
-              </button>
-              <button onClick={() => navigate(`/detalle/${juego.id}`)} className="boton-detalle">
-                🔍 Ver Detalles
-              </button>
-            </div>
+        {mostrarMensajeNoJuegos ? (
+          <div className="no-results">
+            <p>No hay juegos en esta categoría.</p>
           </div>
-        ))}
+        ) : juegosFiltrados.length === 0 ? (
+          <div className="no-results">
+            <p>No se han encontrado juegos que coincidan con los filtros seleccionados.</p>
+          </div>
+        ) : (
+          juegosFiltrados.map(juego => (
+            <div key={juego.id} className="game-card">
+              <div className="card-image">
+                <img
+                  src={juego.imagenes[0]?.url}
+                  alt={juego.nombre}
+                  loading="lazy"
+                />
+              </div>
+              <div className="card-content">
+                <h3>{juego.nombre}</h3>
+                <p className="categoria">{categorias.find(cat => cat.id === juego.categoriaId)?.nombre}</p>
+                <p className="precio">${juego.precio}</p>
+                <button onClick={() => agregarAlCarrito(juego)} className="boton-agregar">
+                  🛒 Agregar al carrito
+                </button>
+                <button onClick={() => navigate(`/detalle/${juego.id}`)} className="boton-detalle">
+                  🔍 Ver Detalles
+                </button>
+              </div>
+            </div>
+          ))
+        )}
       </div>
 
       {/* Carrito de compras */}
