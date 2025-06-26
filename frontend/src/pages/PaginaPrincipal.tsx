@@ -227,7 +227,7 @@ const PaginaPrincipal: React.FC = () => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }} >
           <h1>🎮 Catálogo de Juegos</h1>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }} >
-            <span style={{ fontSize: '14px', color: '#666' }} >
+            <span style={{ fontSize: '14px', color: '#fff' }} >
               📊 {juegos.length} juegos disponibles
             </span>
           </div>
