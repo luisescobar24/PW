@@ -7,10 +7,11 @@ interface Juego {
   id: number;
   nombre: string;
   descripcion: string;
-  imagenes: { id: number; juegoId: number; url: string; descripcion?: string }[]; // ✅ Esto es lo correcto
+  imagenes: { id: number; juegoId: number; url: string; descripcion?: string }[];
   videoUrl: string;
   precio: number;
-  categoriaId: number;  // Cambié de 'categoria' a 'categoriaId' para usar el ID de la categoría
+  categoriaId: number;
+  plataformas: number[];  // Lista de plataformas asociadas al juego
 }
 
 export interface ItemCarrito extends Juego {
@@ -29,11 +30,13 @@ const PaginaPrincipal: React.FC = () => {
   const [index, setIndex] = useState(0);
   const [menuCategoriasVisible, setMenuCategoriasVisible] = useState(false);
   const [busqueda, setBusqueda] = useState('');
-  const [categoriaFiltro, setCategoriaFiltro] = useState<number | null>(null);  // Ahora es un número (ID)
+  const [categoriaFiltro, setCategoriaFiltro] = useState<number>(0);  // 0 = todas
+  const [plataformaFiltro, setPlataformaFiltro] = useState<number>(0); // 0 = todas
   const [ordenamiento, setOrdenamiento] = useState('nombre');
   const [cargando, setCargando] = useState(false);
   const [mensaje, setMensaje] = useState('');
-  const [categorias, setCategorias] = useState<{ id: number, nombre: string }[]>([]); // Lista de categorías
+  const [categorias, setCategorias] = useState<{ id: number, nombre: string }[]>([]);
+  const [plataformas, setPlataformas] = useState<{ id: number, nombre: string }[]>([]);
 
   // Estado para los valores del carrito
   const [cantidades, setCantidades] = useState<Record<number, number>>({});
@@ -44,7 +47,12 @@ const PaginaPrincipal: React.FC = () => {
     const fetchJuegos = async () => {
       try {
         setCargando(true);
-        const response = await axios.get('http://localhost:3000/api/juegos');  // Endpoint que retorna juegos desde el backend
+        const response = await axios.get('http://localhost:3000/api/juegos', {
+          params: {
+            plataformaId: plataformaFiltro, // número o 0
+            categoriaId: categoriaFiltro,   // número o 0
+          }
+        });
         setJuegos(response.data);
       } catch (error) {
         console.error('Error al obtener juegos', error);
@@ -53,7 +61,7 @@ const PaginaPrincipal: React.FC = () => {
       }
     };
     fetchJuegos();
-  }, []);
+  }, [plataformaFiltro, categoriaFiltro]);
 
   // Cargar categorías desde el backend
   useEffect(() => {
@@ -66,6 +74,19 @@ const PaginaPrincipal: React.FC = () => {
       }
     };
     fetchCategorias();
+  }, []);
+
+  // Cargar plataformas desde el backend
+  useEffect(() => {
+    const fetchPlataformas = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/plataformas');
+        setPlataformas([{ id: 0, nombre: 'todas' }, ...response.data]); // Agregar 'todas' como opción
+      } catch (error) {
+        console.error('Error al obtener plataformas', error);
+      }
+    };
+    fetchPlataformas();
   }, []);
 
   // Funciones de carrusel
@@ -150,6 +171,19 @@ const PaginaPrincipal: React.FC = () => {
       resultado = resultado.filter(juego => juego.categoriaId === categoriaFiltro);
     }
 
+    // Filtrar por plataforma seleccionada
+    if (plataformaFiltro && plataformaFiltro !== 0) {
+      resultado = resultado.filter(juego =>
+        Array.isArray(juego.plataformas) &&
+        juego.plataformas.some(
+          plat =>
+            typeof plat === 'number'
+              ? plat === plataformaFiltro
+              : typeof plat === 'object' && plat !== null && 'id' in plat && (plat as { id: number }).id === plataformaFiltro
+        )
+      );
+    }
+
     // Ordenar los juegos
     if (resultado.length > 0) {
       resultado.sort((a, b) => {
@@ -166,7 +200,7 @@ const PaginaPrincipal: React.FC = () => {
     }
 
     return resultado;
-  }, [busqueda, categoriaFiltro, ordenamiento, juegos]);
+  }, [busqueda, categoriaFiltro, plataformaFiltro, ordenamiento, juegos, categorias]);
 
   // Verifica si no hay juegos filtrados
   const mostrarMensajeNoJuegos = juegosFiltrados.length === 0 && categoriaFiltro !== 0;
@@ -190,9 +224,9 @@ const PaginaPrincipal: React.FC = () => {
       {mensaje && <div className={`mensaje-temporal ${mensaje.includes('error') ? 'error' : 'success'}`}>{mensaje}</div>}
 
       <header>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }} >
           <h1>🎮 Catálogo de Juegos</h1>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }} >
             <span style={{ fontSize: '14px', color: '#666' }} >
               📊 {juegos.length} juegos disponibles
             </span>
@@ -201,12 +235,12 @@ const PaginaPrincipal: React.FC = () => {
 
         <nav className="navbar">
           <button>Explorar</button>
-          <div style={{ position: 'relative', display: 'inline-block' }}>
+          <div style={{ position: 'relative', display: 'inline-block' }} >
             <button onClick={() => setMenuCategoriasVisible((v) => !v)} className="dropdown-btn">
               Categorías
             </button>
             {menuCategoriasVisible && (
-              <div style={{ position: 'absolute', top: '100%', left: 0, background: '#222', border: '1px solid #444', zIndex: 10, minWidth: '180px', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
+              <div style={{ position: 'absolute', top: '100%', left: 0, background: '#222', border: '1px solid #444', zIndex: 10, minWidth: '180px', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }} >
                 {categorias.map(cat => (
                   <button
                     key={cat.id}
@@ -226,7 +260,7 @@ const PaginaPrincipal: React.FC = () => {
           <button>Plataformas</button>
           <button>Ofertas Especiales</button>
 
-          <div className="nav-icons" onClick={() => navigate('/adminjuegos')} title="Panel de Administración" role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && navigate('/adminjuegos')}>
+          <div className="nav-icons" onClick={() => navigate('/adminjuegos')} title="Panel de Administración" role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && navigate('/adminjuegos')} >
             <span role="img" aria-label="usuario">👤</span>
           </div>
         </nav>
@@ -238,6 +272,17 @@ const PaginaPrincipal: React.FC = () => {
             {categorias.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.nombre === 'todas' ? 'Todas las Categorías' : cat.nombre}
+              </option>
+            ))}
+          </select>
+          <select
+            value={plataformaFiltro ?? 0}
+            onChange={e => setPlataformaFiltro(Number(e.target.value))}
+            className="filter-select"
+          >
+            {plataformas.map(plat => (
+              <option key={plat.id} value={plat.id}>
+                {plat.nombre === 'todas' ? 'Todas las Plataformas' : plat.nombre}
               </option>
             ))}
           </select>

@@ -347,15 +347,31 @@ app.post('/api/ventas', authenticateToken, authorizeAdmin, async (req: Request, 
 
 // Ruta para obtener todos los juegos
 app.get('/api/juegos', async (req, res) => {
-  const includePlatforms = req.query.includePlatforms === 'true';
+  const { plataformaId, categoriaId } = req.query;  // Recibe los IDs como parámetros
+
   try {
     const juegos = await prisma.juego.findMany({
+      where: {
+        AND: [
+          plataformaId && Number(plataformaId) !== 0
+            ? {
+                plataformas: {
+                  some: { id: Number(plataformaId) },
+                },
+              }
+            : {},
+          categoriaId && Number(categoriaId) !== 0
+            ? { categoriaId: Number(categoriaId) }
+            : {},
+        ],
+      },
       include: {
         imagenes: true,
-        ...(includePlatforms ? { plataformas: true } : {})
-      }
+        plataformas: true,
+      },
     });
-    return res.status(200).json(juegos);  // Devolver la lista de juegos
+
+    return res.status(200).json(juegos);
   } catch (error) {
     console.error('Error al obtener los juegos:', error);
     return res.status(500).json({ message: 'Error al obtener los juegos' });
