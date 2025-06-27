@@ -1,11 +1,10 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { PrismaClient } from '../prisma/generated/prisma';  // No cambiar esta importación
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
+import nodemailer from 'nodemailer';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';  // Para cargar variables de entorno
-import nodemailer from 'nodemailer';
-import crypto from 'crypto';
-import cors from 'cors';
 
 dotenv.config();  // Cargar las variables de entorno desde .env
 
@@ -189,7 +188,7 @@ app.post('/api/auth/signup', async (req: Request, res: Response) => {
   }
 });
 
-// Ruta para solicitar el restablecimiento de la contraseña (Forgot Password)
+// Ruta para solicitar el código de verificación
 app.post('/api/auth/forgot-password', async (req: Request, res: Response) => {
   const { correo } = req.body;
 
@@ -198,51 +197,81 @@ app.post('/api/auth/forgot-password', async (req: Request, res: Response) => {
   }
 
   try {
-    const user = await prisma.usuario.findUnique({
-      where: { correo },
+    // Buscar al usuario por correo o nombre
+    const user = await prisma.usuario.findFirst({
+      where: {
+        OR: [
+          { correo },
+          { nombre: correo }, // Buscar por nombre si es proporcionado
+        ],
+      },
     });
 
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
-    // Crear un token de restablecimiento de contraseña (expira en 1 hora)
-    const resetToken = crypto.randomBytes(32).toString('hex');
-    const resetTokenExpiration = Date.now() + 3600000; // 1 hora
+    // Generar un código de verificación y su fecha de expiración en el payload del JWT
+    const verificationCode = crypto.randomBytes(3).toString('hex');  // Código de 6 caracteres hexadecimales
+    const verificationCodeExpiration = Date.now() + 3600000; // El código expira en 1 hora
 
-    // Configurar el transporte de Nodemailer
+    // Crear el token JWT con el código de verificación y la expiración
+    const token = jwt.sign(
+      { verificationCode, expiration: verificationCodeExpiration },
+      process.env.JWT_SECRET!, // La clave secreta
+      { expiresIn: '1h' } // Expira en 1 hora
+    );
+
+    // Imprimir el token y el código generado para depuración
+    console.log('Token generado:', token);
+    console.log('Código de verificación:', verificationCode);
+    console.log('Expiración del código:', verificationCodeExpiration);
+
+    // Almacenar el token en la base de datos (en el campo `token`)
+    await prisma.usuario.update({
+      where: { id: user.id },
+      data: { token },
+    });
+
+    // Verificar que el token esté en la base de datos (opcional, para depuración)
+    const updatedUser = await prisma.usuario.findUnique({
+      where: { id: user.id },
+      select: { token: true },
+    });
+    console.log('Token guardado en la base de datos:', updatedUser?.token);
+
+    // Configurar el transporte de Nodemailer para enviar el código
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'mail.smtp2go.com',
+      port: 2525,
+      secure: false,
       auth: {
-        user: process.env.EMAIL_USER, // Tu correo electrónico
-        pass: process.env.EMAIL_PASS, // Tu contraseña de correo
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
       },
     });
 
-    // Enviar el correo de restablecimiento
-    const resetUrl = `http://localhost:3000/reset-password?token=${resetToken}`;
-
     const mailOptions = {
-      from: 'no-reply@game-store.com',
-      to: correo,
-      subject: 'Restablecimiento de Contraseña',
-      html: `
-        <h3>Solicitud de restablecimiento de contraseña</h3>
-        <p>Para restablecer tu contraseña, haz clic en el siguiente enlace:</p>
-        <a href="${resetUrl}">Restablecer mi contraseña</a>
-      `,
+      from: '20214774@aloe.ulima.edu.pe', // Cambia a tu correo verificado
+      to: user.correo,
+      subject: 'Código de Verificación',
+      text: `Tu código de verificación es: ${verificationCode}. Este código expira en 1 hora.`,
     };
 
+    // Enviar el correo de verificación
     await transporter.sendMail(mailOptions);
 
-    return res.status(200).json({ message: 'Se ha enviado un enlace de restablecimiento al correo' });
+    return res.status(200).json({ message: 'Se ha enviado el código de verificación al correo' });
   } catch (error) {
-    console.error('Error al enviar el correo:', error);
-    return res.status(500).json({ message: 'Error al procesar la solicitud de restablecimiento' });
+    console.error('Error al enviar el código de verificación:', error);
+    return res.status(500).json({ message: 'Error al enviar el código de verificación' });
   }
 });
 
-// Ruta para obtener un juego específico con sus imágenes
+// Ruta para obtener un juego específico with sus imágenes
 app.get('/api/juegos/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -266,45 +295,67 @@ app.get('/api/juegos/:id', async (req: Request, res: Response) => {
   }
 });
 
-// Ruta para restablecer la contraseña (Reset Password)
+// Ruta para cambiar la contraseña después de verificar el código
 app.post('/api/auth/reset-password', async (req: Request, res: Response) => {
-  const { correo, newPassword, confirmNewPassword } = req.body;
+  const { correo, verificationCode, newPassword, confirmNewPassword } = req.body;
 
-  if (!correo || !newPassword || !confirmNewPassword) {
-    return res.status(400).json({ message: 'Correo y nuevas contraseñas son requeridos' });
+  if (!correo || !newPassword || !confirmNewPassword || !verificationCode) {
+    return res.status(400).json({ message: 'Correo, código y nuevas contraseñas son requeridos' });
   }
 
-  // Verificar si las contraseñas coinciden
   if (newPassword !== confirmNewPassword) {
     return res.status(400).json({ message: 'Las contraseñas no coinciden' });
   }
 
   try {
-    // Buscar el usuario por correo o nombre
+    // Buscar al usuario por correo
     const user = await prisma.usuario.findFirst({
-      where: {
-        OR: [
-          { correo: correo },  // Buscar por correo
-          { nombre: correo },   // Buscar por nombre (usuario)
-        ],
-      },
+      where: { correo },
     });
 
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
+    // Verificar si el token de verificación existe y es válido
+    if (!user.token || typeof user.token !== 'string') {
+      console.log('El usuario no tiene un token válido');
+      return res.status(400).json({ message: 'El código de verificación es inválido o ha expirado' });
+    }
+
+    let decodedToken: any;
+    try {
+      decodedToken = jwt.verify(user.token, process.env.JWT_SECRET!);
+    } catch (err) {
+      console.log('Error al verificar el token:', err);
+      return res.status(400).json({ message: 'El código de verificación es inválido o ha expirado' });
+    }
+
+    // Imprimir el token decodificado para depuración
+    console.log('Token decodificado:', decodedToken);
+
+    // Verificar si el código de verificación es correcto y no ha expirado
+    if (decodedToken.verificationCode !== verificationCode) {
+      console.log('Código de verificación incorrecto:', decodedToken.verificationCode, verificationCode);
+      return res.status(400).json({ message: 'Código de verificación incorrecto' });
+    }
+
+    if (decodedToken.expiration < Date.now()) {
+      console.log('El código de verificación ha expirado. Expiración:', decodedToken.expiration, 'Actual:', Date.now());
+      return res.status(400).json({ message: 'El código de verificación ha expirado' });
+    }
+
     // Encriptar la nueva contraseña
+    console.log('Encriptando la nueva contraseña');
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     // Actualizar la contraseña en la base de datos
     await prisma.usuario.update({
-      where: { id: user.id },  // Actualizamos el usuario por su ID
-      data: {
-        password: hashedPassword,
-      },
+      where: { id: user.id },
+      data: { password: hashedPassword, token: '' }, // Limpiar el campo token después del cambio
     });
 
+    console.log('Contraseña actualizada con éxito para el usuario:', correo);
     return res.status(200).json({ message: 'Contraseña actualizada con éxito' });
   } catch (error) {
     console.error('Error al actualizar la contraseña:', error);
@@ -523,6 +574,103 @@ app.get('/api/plataformas', async (req, res) => {
   res.json(plataformas);
 });
 
+// Ruta para realizar una prueba de envío de correo
+app.post('/api/test-send-email', async (req: Request, res: Response) => {
+  const { correoDestino, asunto, contenido } = req.body;
+
+  if (!correoDestino || !asunto || !contenido) {
+    return res.status(400).json({ message: 'Correo destino, asunto y contenido son requeridos' });
+  }
+
+  try {
+    // Configurar el transporte con SMTP2Go
+    const transporter = nodemailer.createTransport({
+      host: 'mail.smtp2go.com',
+      port: 2525, // Puedes usar 2525, 587 o 8025
+      secure: false,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    // Configurar los detalles del correo
+    const mailOptions = {
+      from: '20214774@aloe.ulima.edu.pe',
+      to: correoDestino,
+      subject: asunto,
+      text: contenido,
+    };
+
+    // Enviar el correo
+    await transporter.sendMail(mailOptions);
+
+    return res.status(200).json({ message: 'Correo enviado con éxito' });
+  } catch (error) {
+    console.error('Error al enviar el correo:', error);
+    return res.status(500).json({ message: 'Error al enviar el correo' });
+  }
+});
+
+// Ruta para verificar el código de verificación
+app.post('/api/auth/verify-code', async (req: Request, res: Response) => {
+  const { correo, verificationCode } = req.body;
+
+  if (!correo || !verificationCode) {
+    return res.status(400).json({ message: 'Correo y código de verificación son requeridos' });
+  }
+
+  console.log('Datos recibidos para validar el código:', { correo, verificationCode });
+
+  try {
+    // Buscar al usuario por correo
+    const user = await prisma.usuario.findFirst({
+      where: { correo },
+    });
+
+    if (!user) {
+      console.log('Usuario no encontrado:', correo);
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    // Verificar si el token existe
+    if (!user.token) {
+      console.log('El usuario no tiene un token');
+      return res.status(400).json({ message: 'El código de verificación es inválido o ha expirado' });
+    }
+
+    let decodedToken: any;
+    try {
+      decodedToken = jwt.verify(user.token, process.env.JWT_SECRET!);
+    } catch (err) {
+      console.log('Error al verificar el token:', err);
+      return res.status(400).json({ message: 'El código de verificación es inválido o ha expirado' });
+    }
+
+    // Imprimir el token decodificado para depuración
+    console.log('Token decodificado:', decodedToken);
+
+    // Verificar si el código de verificación es correcto y no ha expirado
+    if (decodedToken.verificationCode !== verificationCode) {
+      console.log('Código de verificación incorrecto:', decodedToken.verificationCode, verificationCode);
+      return res.status(400).json({ message: 'Código de verificación incorrecto' });
+    }
+
+    if (decodedToken.expiration < Date.now()) {
+      console.log('El código de verificación ha expirado. Expiración:', decodedToken.expiration, 'Actual:', Date.now());
+      return res.status(400).json({ message: 'El código de verificación ha expirado' });
+    }
+
+    return res.status(200).json({ message: 'Código de verificación válido' });
+  } catch (error) {
+    console.error('Error al verificar el código:', error);
+    return res.status(500).json({ message: 'Error al verificar el código de verificación' });
+  }
+});
+
 // Configurar el puerto y escuchar
 const PORT = process.env.PORT || 3000;  // Puedes configurar el puerto en el archivo .env
 
@@ -530,3 +678,23 @@ const PORT = process.env.PORT || 3000;  // Puedes configurar el puerto en el arc
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
+
+// Implementación básica de CORS middleware
+function cors(options: {
+  origin: string;
+  methods: string[];
+  allowedHeaders: string[];
+}): express.RequestHandler {
+  return (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', options.origin);
+    res.header('Access-Control-Allow-Methods', options.methods.join(','));
+    res.header('Access-Control-Allow-Headers', options.allowedHeaders.join(','));
+    // Permitir credenciales si es necesario:
+    // res.header('Access-Control-Allow-Credentials', 'true');
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(204);
+    }
+    next();
+  };
+}
+

@@ -44,7 +44,6 @@ function App() {
               plataformas: [],
               // agrega aquí cualquier otro campo requerido por Game
             }}
-            onClose={() => {}}
             onSave={() => {}}
           />
         }
