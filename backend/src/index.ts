@@ -362,9 +362,9 @@ app.post('/api/auth/reset-password', async (req: Request, res: Response) => {
     return res.status(500).json({ message: 'Error al actualizar la contraseña' });
   }
 });
-
+ 
 // Ruta para registrar ventas
-app.post('/api/ventas', authenticateToken, authorizeAdmin, async (req: Request, res: Response) => {
+app.post('/api/ventas', async (req: Request, res: Response) => {
   const { ventas } = req.body;
 
   if (!ventas || !Array.isArray(ventas) || ventas.length === 0) {
@@ -395,6 +395,7 @@ app.post('/api/ventas', authenticateToken, authorizeAdmin, async (req: Request, 
     return res.status(500).json({ message: 'Error al registrar ventas' });
   }
 });
+
 
 // Ruta para obtener todos los juegos
 app.get('/api/juegos', async (req, res) => {
@@ -429,16 +430,9 @@ app.get('/api/juegos', async (req, res) => {
   }
 });
 
-// Ruta para agregar un nuevo juego
-app.post('/api/juegos', authenticateToken, authorizeAdmin, async (req: Request, res: Response) => {
+// Ruta para agregar un nuevo juego (sin token requerido)
+app.post('/api/juegos', async (req: Request, res: Response) => {
   const { nombre, precio, estaOferta, estado, categoriaId, imagenes, videoUrl, plataformas } = req.body;
-
-  interface Imagen {
-    url: string;
-    descripcion: string;
-  }
-
-  const plataformaIds: number[] = plataformas;
 
   try {
     const nuevoJuego = await prisma.juego.create({
@@ -449,14 +443,14 @@ app.post('/api/juegos', authenticateToken, authorizeAdmin, async (req: Request, 
         estado,
         categoriaId,
         imagenes: {
-          create: imagenes.map((imagen: Imagen) => ({
+          create: imagenes.map((imagen: { url: string, descripcion: string }) => ({
             url: imagen.url,
             descripcion: imagen.descripcion,
           }))
         },
         videoUrl,
         plataformas: {
-          connect: plataformaIds.map((plataformaId: number) => ({ id: plataformaId }))
+          connect: plataformas.map((plataformaId: number) => ({ id: plataformaId }))
         }
       }
     });
@@ -468,35 +462,12 @@ app.post('/api/juegos', authenticateToken, authorizeAdmin, async (req: Request, 
   }
 });
 
-// Ruta para editar un juego
-app.put('/api/juegos/:id', authenticateToken, authorizeAdmin, async (req, res) => {
+// Ruta para editar un juego (sin token requerido)
+app.put('/api/juegos/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { nombre, precio, estaOferta, estado, categoriaId, imagenes, videoUrl, plataformas } = req.body;
 
   try {
-    // Obtener el juego existente
-    const juegoExistente = await prisma.juego.findUnique({
-      where: { id: parseInt(id) },
-      include: { plataformas: true } // Incluir las plataformas actuales asociadas al juego
-    });
-
-    if (!juegoExistente) {
-      return res.status(404).json({ message: 'Juego no encontrado' });
-    }
-
-    // Obtener las plataformas actuales del juego
-    const plataformasExistentes = juegoExistente.plataformas.map(p => p.id);
-
-    // Identificar plataformas que se deben eliminar
-    const plataformasAEliminar = plataformasExistentes.filter(
-      plataformaId => !plataformas.includes(plataformaId)  // Identificar plataformas que no están en la nueva lista
-    );
-
-    // Identificar nuevas plataformas a conectar
-    const plataformasAConectar: number[] = (plataformas as number[]).filter(
-      (plataformaId: number) => !plataformasExistentes.includes(plataformaId)  // Solo conectar las plataformas nuevas
-    );
-
     const juegoEditado = await prisma.juego.update({
       where: { id: parseInt(id) },
       data: {
@@ -514,43 +485,37 @@ app.put('/api/juegos/:id', authenticateToken, authorizeAdmin, async (req, res) =
         },
         videoUrl,
         plataformas: {
-          disconnect: plataformasAEliminar.map(id => ({ id })), // Eliminar las plataformas que ya no deben estar asociadas
-          connect: plataformasAConectar.map(id => ({ id }))  // Conectar las nuevas plataformas
+          disconnect: [],
+          connect: plataformas.map((plataformaId: number) => ({ id: plataformaId }))
         }
       }
     });
 
-    return res.status(200).json(juegoEditado);  // Devuelve el juego editado
+    return res.status(200).json(juegoEditado);
   } catch (error) {
     console.error('Error al editar el juego:', error);
     return res.status(500).json({ message: 'Error al editar el juego' });
   }
 });
 
-// Ruta para eliminar un juego
-app.delete('/api/juegos/:id', authenticateToken, authorizeAdmin, async (req, res) => {
+// Ruta para eliminar un juego (sin token requerido)
+app.delete('/api/juegos/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    // Elimina imágenes relacionadas
     await prisma.imagen.deleteMany({
       where: { juegoId: parseInt(id) }
     });
 
-    // Desconecta plataformas relacionadas
     await prisma.juego.update({
       where: { id: parseInt(id) },
       data: {
         plataformas: {
-          set: [] // Desconecta todas las plataformas
+          set: []
         }
       }
     });
 
-    // Si tienes ventas relacionadas, elimina o maneja aquí
-    // await prisma.venta.deleteMany({ where: { juegoId: parseInt(id) } });
-
-    // Ahora elimina el juego
     await prisma.juego.delete({
       where: { id: parseInt(id) }
     });

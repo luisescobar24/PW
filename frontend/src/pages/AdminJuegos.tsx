@@ -78,9 +78,9 @@ const AdminJuegos = () => {
 
   // Cerrar sesión
   const handleLogout = () => {
-    localStorage.removeItem('userRole');
+    localStorage.removeItem('token'); // Remover el token al hacer logout
     alert('Sesión cerrada.');
-    window.location.href = '/';
+    window.location.href = '/'; // Redirigir al inicio
   };
 
   return (
