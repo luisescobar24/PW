@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Usuario" ADD COLUMN     "rol" VARCHAR(20) NOT NULL DEFAULT 'USER';

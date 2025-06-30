@@ -6,6 +6,7 @@ CREATE TABLE "Usuario" (
     "nombre" VARCHAR(100) NOT NULL,
     "token" VARCHAR(255),
     "estado" BOOLEAN NOT NULL,
+    "rol" VARCHAR(20) NOT NULL DEFAULT 'USER',
 
     CONSTRAINT "Usuario_pkey" PRIMARY KEY ("id")
 );
@@ -33,9 +34,20 @@ CREATE TABLE "Juego" (
     "precio" DECIMAL(10,2) NOT NULL,
     "estaOferta" BOOLEAN NOT NULL,
     "estado" BOOLEAN NOT NULL,
-    "categoriaId" INTEGER,
+    "categoriaId" INTEGER NOT NULL,
+    "videoUrl" VARCHAR(255),
 
     CONSTRAINT "Juego_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Imagen" (
+    "id" SERIAL NOT NULL,
+    "juegoId" INTEGER NOT NULL,
+    "url" TEXT NOT NULL,
+    "descripcion" TEXT NOT NULL,
+
+    CONSTRAINT "Imagen_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -71,20 +83,40 @@ CREATE TABLE "Calificacion" (
     CONSTRAINT "Calificacion_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "_JuegoPlataforma" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL,
+
+    CONSTRAINT "_JuegoPlataforma_AB_pkey" PRIMARY KEY ("A","B")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Usuario_correo_key" ON "Usuario"("correo");
 
--- AddForeignKey
-ALTER TABLE "Juego" ADD CONSTRAINT "Juego_categoriaId_fkey" FOREIGN KEY ("categoriaId") REFERENCES "Categoria"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+-- CreateIndex
+CREATE INDEX "_JuegoPlataforma_B_index" ON "_JuegoPlataforma"("B");
 
 -- AddForeignKey
-ALTER TABLE "Venta" ADD CONSTRAINT "Venta_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Juego" ADD CONSTRAINT "Juego_categoriaId_fkey" FOREIGN KEY ("categoriaId") REFERENCES "Categoria"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Imagen" ADD CONSTRAINT "Imagen_juegoId_fkey" FOREIGN KEY ("juegoId") REFERENCES "Juego"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Venta" ADD CONSTRAINT "Venta_juegoId_fkey" FOREIGN KEY ("juegoId") REFERENCES "Juego"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Venta" ADD CONSTRAINT "Venta_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Calificacion" ADD CONSTRAINT "Calificacion_juegoId_fkey" FOREIGN KEY ("juegoId") REFERENCES "Juego"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Calificacion" ADD CONSTRAINT "Calificacion_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_JuegoPlataforma" ADD CONSTRAINT "_JuegoPlataforma_A_fkey" FOREIGN KEY ("A") REFERENCES "Juego"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_JuegoPlataforma" ADD CONSTRAINT "_JuegoPlataforma_B_fkey" FOREIGN KEY ("B") REFERENCES "Plataforma"("id") ON DELETE CASCADE ON UPDATE CASCADE;

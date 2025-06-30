@@ -74,6 +74,7 @@ app.get('/api/usuarios', async (req: Request, res: Response) => {
 
 // Ruta para iniciar sesión (Login)
 app.post('/api/auth/login', async (req: Request, res: Response) => {
+  console.log('Datos recibidos:', req.body);
   const { correo, password } = req.body;
 
   if (!correo || !password) {
@@ -123,19 +124,13 @@ app.post('/api/auth/login', async (req: Request, res: Response) => {
 });
 
 app.post('/api/auth/signup', async (req: Request, res: Response) => {
-  console.log('Datos recibidos:', req.body);  // Verifica los datos que llegan del front-end
+  console.log('Datos recibidos:', req.body); // Verifica los datos que llegan del front-end
 
   const { nombre, password, correo, estado, rol = 'USER', extraField } = req.body;
 
   // Validación de los campos obligatorios
   if (!nombre || !password || !correo || typeof estado !== 'boolean') {
     return res.status(400).json({ message: 'Todos los campos son requeridos y estado debe ser un booleano' });
-  }
-
-  // Validar el formato del correo
-  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/;
-  if (!emailRegex.test(correo)) {
-    return res.status(400).json({ message: 'Correo no válido' });
   }
 
   // Validar que la contraseña tenga al menos 6 caracteres
@@ -146,7 +141,7 @@ app.post('/api/auth/signup', async (req: Request, res: Response) => {
   try {
     // Verificar si el correo ya está registrado
     const existingUserByEmail = await prisma.usuario.findUnique({
-      where: { correo },  // Usamos correo como campo único
+      where: { correo }, // Usamos correo como campo único
     });
 
     if (existingUserByEmail) {
@@ -155,7 +150,7 @@ app.post('/api/auth/signup', async (req: Request, res: Response) => {
 
     // Verificar si el nombre (usuario) ya está registrado usando findFirst
     const existingUserByName = await prisma.usuario.findFirst({
-      where: { nombre },  // Usamos findFirst para buscar por nombre
+      where: { nombre }, // Usamos findFirst para buscar por nombre
     });
 
     if (existingUserByName) {
@@ -165,23 +160,30 @@ app.post('/api/auth/signup', async (req: Request, res: Response) => {
     // Encriptar la contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Crear el nuevo usuario
-    const newUser = await prisma.usuario.create({
-      data: {
-        nombre,
-        password: hashedPassword,
-        correo,
-        rol,
-        estado,
-        token: "", // El token puede ser vacío por ahora
-      },
-    });
-
-    return res.status(201).json({
-      success: true,
-      message: 'Usuario registrado exitosamente',
-      user: newUser,
-    });
+    try {
+      const newUser = await prisma.usuario.create({
+        data: {
+          nombre,
+          password: hashedPassword,
+          correo,
+          rol,
+          estado,
+          token: "",
+        },
+      });
+      console.log('Usuario creado:', newUser);
+      return res.status(201).json({
+        success: true,
+        message: 'Usuario registrado exitosamente',
+        user: newUser,
+      });
+    } catch (error) {
+      console.error('Error al registrar el usuario:', error);
+      if ((error as any).code === 'P2002') {
+        return res.status(400).json({ message: 'El correo ya está registrado' });
+      }
+      return res.status(500).json({ message: 'Error al registrar el usuario' });
+    }
   } catch (error) {
     console.error('Error al registrar el usuario:', error);
     return res.status(500).json({ message: 'Error al registrar el usuario' });

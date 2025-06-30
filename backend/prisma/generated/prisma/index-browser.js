@@ -125,9 +125,9 @@ exports.Prisma.UsuarioScalarFieldEnum = {
   correo: 'correo',
   password: 'password',
   nombre: 'nombre',
-  rol: 'rol',
   token: 'token',
-  estado: 'estado'
+  estado: 'estado',
+  rol: 'rol'
 };
 
 exports.Prisma.PlataformaScalarFieldEnum = {
