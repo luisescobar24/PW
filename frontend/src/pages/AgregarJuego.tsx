@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
+import axios from "axios";
 
 interface Imagen {
   url: string;
@@ -42,6 +43,8 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
     id: number;
     nombre: string;
   }[]>([]);
+  const [imagenFile, setImagenFile] = useState<File | null>(null);
+  const [subiendoImagen, setSubiendoImagen] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:3000/api/categorias")
@@ -209,10 +212,9 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
             <label>Imágenes *</label>
             <div className="image-input-group">
               <input
-                type="url"
-                placeholder="URL de la imagen"
-                value={imagenUrl}
-                onChange={(e) => setImagenUrl(e.target.value)}
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImagenFile(e.target.files?.[0] || null)}
               />
               <input
                 type="text"
@@ -220,8 +222,38 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
                 value={imagenDescripcion}
                 onChange={(e) => setImagenDescripcion(e.target.value)}
               />
-              <button type="button" onClick={handleAgregarImagen} className="add-btn">
-                Agregar Imagen
+              <button
+                type="button"
+                onClick={async () => {
+                  if (!imagenFile) {
+                    setErrors((prev) => ({ ...prev, imagenUrl: "Selecciona una imagen" }));
+                    return;
+                  }
+                  setSubiendoImagen(true);
+                  try {
+                    const formData = new FormData();
+                    formData.append("image", imagenFile);
+                    const res = await axios.post("http://localhost:3000/api/upload-image", formData, {
+                      headers: { "Content-Type": "multipart/form-data" },
+                    });
+                    const url = res.data.imageUrl;
+                    setFormData((prev) => ({
+                      ...prev,
+                      imagenes: [...prev.imagenes, { url, descripcion: imagenDescripcion }],
+                    }));
+                    setImagenDescripcion("");
+                    setImagenFile(null);
+                    setErrors((prev) => ({ ...prev, imagenUrl: "" }));
+                  } catch (err) {
+                    setErrors((prev) => ({ ...prev, imagenUrl: "Error al subir la imagen" }));
+                  } finally {
+                    setSubiendoImagen(false);
+                  }
+                }}
+                className="add-btn"
+                disabled={subiendoImagen}
+              >
+                {subiendoImagen ? "Subiendo..." : "Agregar Imagen"}
               </button>
             </div>
             {errors.imagenUrl && <span className="error-message">{errors.imagenUrl}</span>}

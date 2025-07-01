@@ -1,88 +1,61 @@
-import React, { useState } from 'react';
-import axios from 'axios'; // Importa Axios para hacer solicitudes HTTP
+import { useState } from 'react';
+import axios from 'axios';
 
-const Prueba = () => {
-  // Estados para los inputs
-  const [emailDestino, setEmailDestino] = useState(''); // Correo de destino
-  const [asunto, setAsunto] = useState(''); // Asunto del correo
-  const [contenido, setContenido] = useState(''); // Contenido del correo
+const ImageUpload = () => {
+  const [image, setImage] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
 
-  // Función para manejar el submit del formulario
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault(); // Prevenir la recarga de la página en el submit
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+    }
+  };
 
-    // Crear el objeto con los datos del formulario
-    const formData = {
-      correoDestino: emailDestino,  // Correo destino
-      asunto,
-      contenido,
-    };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!image) {
+      setError('Please select an image to upload');
+      return;
+    }
 
-    console.log('Datos a enviar:', formData);  // Verifica los datos que se están enviando
+    const formData = new FormData();
+    formData.append('image', image);
 
+    setLoading(true);
     try {
-      // Enviar datos al backend utilizando Axios
-      const response = await axios.post('http://localhost:3000/api/test-send-email', formData);
+      const response = await axios.post('http://localhost:3000/api/upload-image', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-      // Si la respuesta es exitosa, puedes hacer algo con los datos recibidos
-      if (response.data.message) {
-        alert(response.data.message);  // Mostrar el mensaje de éxito
-      }
-    } catch (error) {
-      console.error('Error al enviar los datos al backend:', error);
-      alert('Ocurrió un error al enviar el correo');
+      setImageUrl(response.data.imageUrl);
+      setError('');
+      console.log('Imagen subida exitosamente a Cloudinary:', response.data.imageUrl); // <-- Agregado
+    } catch (err) {
+      setError('Error uploading image');
+      console.error('Error al subir la imagen:', err); // <-- Opcional: muestra el error en consola
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="prueba-container">
-      <h2>Prueba de Envío de Correo</h2>
+    <div>
       <form onSubmit={handleSubmit}>
-        {/* Campo de Correo de destino */}
-        <div>
-          <label htmlFor="emailDestino">Correo de Destino</label>
-          <input
-            id="emailDestino"
-            type="email"
-            value={emailDestino}
-            onChange={(e) => setEmailDestino(e.target.value)}
-            placeholder="Ingresa el correo de destino"
-            required
-          />
-        </div>
-
-        {/* Campo de Asunto */}
-        <div>
-          <label htmlFor="asunto">Asunto</label>
-          <input
-            id="asunto"
-            type="text"
-            value={asunto}
-            onChange={(e) => setAsunto(e.target.value)}
-            placeholder="Ingresa el asunto del correo"
-            required
-          />
-        </div>
-
-        {/* Campo de Contenido */}
-        <div>
-          <label htmlFor="contenido">Contenido</label>
-          <textarea
-            id="contenido"
-            value={contenido}
-            onChange={(e) => setContenido(e.target.value)}
-            placeholder="Ingresa el contenido del correo"
-            required
-          />
-        </div>
-
-        {/* Botón para enviar el formulario */}
-        <div>
-          <button type="submit">Enviar Correo</button>
-        </div>
+        <input type="file" onChange={handleImageChange} />
+        <button type="submit" disabled={loading}>
+          {loading ? 'Uploading...' : 'Upload Image'}
+        </button>
       </form>
+
+      {imageUrl && <img src={imageUrl} alt="Uploaded" />}
+      {error && <p>{error}</p>}
     </div>
   );
 };
 
-export default Prueba;
+export default ImageUpload;

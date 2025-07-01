@@ -5,6 +5,9 @@ import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';  // Para cargar variables de entorno
+import cloudinary from 'cloudinary';
+import multer from 'multer';
+import fs from 'fs';
 
 dotenv.config();  // Cargar las variables de entorno desde .env
 
@@ -676,3 +679,45 @@ function cors(options: {
     next();
   };
 }
+
+// Configuración de Cloudinary
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
+  api_key: process.env.CLOUDINARY_API_KEY!,
+  api_secret: process.env.CLOUDINARY_API_SECRET!,
+});
+
+
+
+// Configuración de Multer para manejar la carga de imágenes
+const upload = multer({ dest: 'uploads/' });
+
+// Función para subir imágenes a Cloudinary
+const uploadImageToCloudinary = async (filePath: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    cloudinary.v2.uploader.upload(filePath, (error, result) => {
+      // Elimina el archivo local después de subirlo
+      fs.unlink(filePath, () => {});
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result?.secure_url || '');
+      }
+    });
+  });
+};
+
+// Ruta para subir imágenes a Cloudinary
+app.post('/api/upload-image', upload.single('image'), async (req: Request, res: Response) => {
+  if (!req.file) {
+    return res.status(400).json({ message: 'No image uploaded' });
+  }
+
+  try {
+    const imageUrl = await uploadImageToCloudinary(req.file.path);  // Subir imagen a Cloudinary
+    return res.status(200).json({ imageUrl });
+  } catch (error) {
+    console.error('Error al subir la imagen a Cloudinary:', error);
+    return res.status(500).json({ message: 'Error al subir la imagen' });
+  }
+});
