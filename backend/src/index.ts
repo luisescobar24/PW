@@ -74,6 +74,7 @@ app.get('/api/usuarios', async (req: Request, res: Response) => {
 
 // Ruta para iniciar sesión (Login)
 app.post('/api/auth/login', async (req: Request, res: Response) => {
+  console.log('Datos recibidos:', req.body);
   const { correo, password } = req.body;
 
   if (!correo || !password) {
@@ -123,41 +124,25 @@ app.post('/api/auth/login', async (req: Request, res: Response) => {
 });
 
 app.post('/api/auth/signup', async (req: Request, res: Response) => {
-  console.log('Datos recibidos:', req.body);  // Verifica los datos que llegan del front-end
+  const { nombre, password, correo, estado, rol = 'USER' } = req.body;
 
-  const { nombre, password, correo, estado, rol = 'USER', extraField } = req.body;
-
-  // Validación de los campos obligatorios
   if (!nombre || !password || !correo || typeof estado !== 'boolean') {
     return res.status(400).json({ message: 'Todos los campos son requeridos y estado debe ser un booleano' });
   }
 
-  // Validar el formato del correo
-  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/;
-  if (!emailRegex.test(correo)) {
-    return res.status(400).json({ message: 'Correo no válido' });
-  }
-
-  // Validar que la contraseña tenga al menos 6 caracteres
   if (password.length < 6) {
     return res.status(400).json({ message: 'La contraseña debe tener al menos 6 caracteres' });
   }
 
   try {
     // Verificar si el correo ya está registrado
-    const existingUserByEmail = await prisma.usuario.findUnique({
-      where: { correo },  // Usamos correo como campo único
-    });
-
+    const existingUserByEmail = await prisma.usuario.findUnique({ where: { correo } });
     if (existingUserByEmail) {
       return res.status(400).json({ message: 'El correo electrónico ya está registrado' });
     }
 
-    // Verificar si el nombre (usuario) ya está registrado usando findFirst
-    const existingUserByName = await prisma.usuario.findFirst({
-      where: { nombre },  // Usamos findFirst para buscar por nombre
-    });
-
+    // Verificar si el nombre ya está registrado
+    const existingUserByName = await prisma.usuario.findFirst({ where: { nombre } });
     if (existingUserByName) {
       return res.status(400).json({ message: 'El nombre de usuario ya está registrado' });
     }
@@ -165,7 +150,7 @@ app.post('/api/auth/signup', async (req: Request, res: Response) => {
     // Encriptar la contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Crear el nuevo usuario
+    // Crear usuario
     const newUser = await prisma.usuario.create({
       data: {
         nombre,
@@ -173,13 +158,51 @@ app.post('/api/auth/signup', async (req: Request, res: Response) => {
         correo,
         rol,
         estado,
-        token: "", // El token puede ser vacío por ahora
+        token: "",
       },
     });
 
+    // Generar código y token de verificación
+    const verificationCode = crypto.randomBytes(3).toString('hex');
+    const verificationToken = jwt.sign(
+      { verificationCode, expiration: Date.now() + 3600000 },
+      process.env.JWT_SECRET!,
+      { expiresIn: '1h' }
+    );
+
+    // Guardar token en la base de datos
+    await prisma.usuario.update({
+      where: { id: newUser.id },
+      data: { token: verificationToken },
+    });
+
+    // Configurar el transporte de correo (usa tu configuración real)
+    const transporter = nodemailer.createTransport({
+      host: 'mail.smtp2go.com',
+      port: 2525,
+      secure: false,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    const mailOptions = {
+      from: '20214774@aloe.ulima.edu.pe',
+      to: correo,
+      subject: 'Código de Verificación',
+      text: `Tu código de verificación es: ${verificationCode}. Este código expira en 1 hora.`,
+    };
+
+    // Enviar el correo de verificación
+    await transporter.sendMail(mailOptions);
+
     return res.status(201).json({
       success: true,
-      message: 'Usuario registrado exitosamente',
+      message: 'Usuario registrado exitosamente. Se ha enviado un código de verificación a tu correo.',
       user: newUser,
     });
   } catch (error) {
@@ -580,7 +603,7 @@ app.post('/api/test-send-email', async (req: Request, res: Response) => {
   }
 });
 
-// Ruta para verificar el código de verificación
+// Ruta para verificar el código de verificación y activar la cuenta
 app.post('/api/auth/verify-code', async (req: Request, res: Response) => {
   const { correo, verificationCode } = req.body;
 
@@ -588,51 +611,42 @@ app.post('/api/auth/verify-code', async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Correo y código de verificación son requeridos' });
   }
 
-  console.log('Datos recibidos para validar el código:', { correo, verificationCode });
-
   try {
     // Buscar al usuario por correo
-    const user = await prisma.usuario.findFirst({
-      where: { correo },
-    });
+    const user = await prisma.usuario.findFirst({ where: { correo } });
 
-    if (!user) {
-      console.log('Usuario no encontrado:', correo);
-      return res.status(404).json({ message: 'Usuario no encontrado' });
+    if (!user || !user.token) {
+      return res.status(400).json({ message: 'Código de verificación no válido o expirado' });
     }
 
-    // Verificar si el token existe
-    if (!user.token) {
-      console.log('El usuario no tiene un token');
-      return res.status(400).json({ message: 'El código de verificación es inválido o ha expirado' });
-    }
-
+    // Verificar el token JWT que contiene el código de verificación
     let decodedToken: any;
     try {
       decodedToken = jwt.verify(user.token, process.env.JWT_SECRET!);
     } catch (err) {
-      console.log('Error al verificar el token:', err);
-      return res.status(400).json({ message: 'El código de verificación es inválido o ha expirado' });
+      return res.status(400).json({ message: 'Código de verificación no válido o expirado' });
     }
 
-    // Imprimir el token decodificado para depuración
-    console.log('Token decodificado:', decodedToken);
-
-    // Verificar si el código de verificación es correcto y no ha expirado
+    // Comparar el código de verificación con el código generado
     if (decodedToken.verificationCode !== verificationCode) {
-      console.log('Código de verificación incorrecto:', decodedToken.verificationCode, verificationCode);
       return res.status(400).json({ message: 'Código de verificación incorrecto' });
     }
 
+    // Verificar si el código ha expirado
     if (decodedToken.expiration < Date.now()) {
-      console.log('El código de verificación ha expirado. Expiración:', decodedToken.expiration, 'Actual:', Date.now());
       return res.status(400).json({ message: 'El código de verificación ha expirado' });
     }
 
-    return res.status(200).json({ message: 'Código de verificación válido' });
+    // Si todo es correcto, actualizar el estado del usuario a true y limpiar el token
+    await prisma.usuario.update({
+      where: { correo },
+      data: { estado: true, token: "" },
+    });
+
+    return res.status(200).json({ message: 'Código de verificación válido, cuenta activada' });
   } catch (error) {
     console.error('Error al verificar el código:', error);
-    return res.status(500).json({ message: 'Error al verificar el código de verificación' });
+    return res.status(500).json({ message: 'Error al verificar el código' });
   }
 });
 
@@ -662,4 +676,3 @@ function cors(options: {
     next();
   };
 }
-
