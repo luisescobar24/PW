@@ -124,25 +124,48 @@ app.post('/api/auth/login', async (req: Request, res: Response) => {
 });
 
 app.post('/api/auth/signup', async (req: Request, res: Response) => {
+<<<<<<< HEAD
   const { nombre, password, correo, estado, rol = 'USER' } = req.body;
+=======
+  console.log('Datos recibidos:', req.body); // Verifica los datos que llegan del front-end
+>>>>>>> 61e97bd9d351168a9bb76d81982de728e503901e
 
   if (!nombre || !password || !correo || typeof estado !== 'boolean') {
     return res.status(400).json({ message: 'Todos los campos son requeridos y estado debe ser un booleano' });
   }
 
+<<<<<<< HEAD
+=======
+  // Validar que la contraseña tenga al menos 6 caracteres
+>>>>>>> 61e97bd9d351168a9bb76d81982de728e503901e
   if (password.length < 6) {
     return res.status(400).json({ message: 'La contraseña debe tener al menos 6 caracteres' });
   }
 
   try {
     // Verificar si el correo ya está registrado
+<<<<<<< HEAD
     const existingUserByEmail = await prisma.usuario.findUnique({ where: { correo } });
+=======
+    const existingUserByEmail = await prisma.usuario.findUnique({
+      where: { correo }, // Usamos correo como campo único
+    });
+
+>>>>>>> 61e97bd9d351168a9bb76d81982de728e503901e
     if (existingUserByEmail) {
       return res.status(400).json({ message: 'El correo electrónico ya está registrado' });
     }
 
+<<<<<<< HEAD
     // Verificar si el nombre ya está registrado
     const existingUserByName = await prisma.usuario.findFirst({ where: { nombre } });
+=======
+    // Verificar si el nombre (usuario) ya está registrado usando findFirst
+    const existingUserByName = await prisma.usuario.findFirst({
+      where: { nombre }, // Usamos findFirst para buscar por nombre
+    });
+
+>>>>>>> 61e97bd9d351168a9bb76d81982de728e503901e
     if (existingUserByName) {
       return res.status(400).json({ message: 'El nombre de usuario ya está registrado' });
     }
@@ -150,6 +173,7 @@ app.post('/api/auth/signup', async (req: Request, res: Response) => {
     // Encriptar la contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
+<<<<<<< HEAD
     // Crear usuario
     const newUser = await prisma.usuario.create({
       data: {
@@ -205,6 +229,32 @@ app.post('/api/auth/signup', async (req: Request, res: Response) => {
       message: 'Usuario registrado exitosamente. Se ha enviado un código de verificación a tu correo.',
       user: newUser,
     });
+=======
+    try {
+      const newUser = await prisma.usuario.create({
+        data: {
+          nombre,
+          password: hashedPassword,
+          correo,
+          rol,
+          estado,
+          token: "",
+        },
+      });
+      console.log('Usuario creado:', newUser);
+      return res.status(201).json({
+        success: true,
+        message: 'Usuario registrado exitosamente',
+        user: newUser,
+      });
+    } catch (error) {
+      console.error('Error al registrar el usuario:', error);
+      if ((error as any).code === 'P2002') {
+        return res.status(400).json({ message: 'El correo ya está registrado' });
+      }
+      return res.status(500).json({ message: 'Error al registrar el usuario' });
+    }
+>>>>>>> 61e97bd9d351168a9bb76d81982de728e503901e
   } catch (error) {
     console.error('Error al registrar el usuario:', error);
     return res.status(500).json({ message: 'Error al registrar el usuario' });

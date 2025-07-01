@@ -1506,13 +1506,13 @@ export namespace Prisma {
    */
 
   export type UsuarioCountOutputType = {
-    ventas: number
     calificaciones: number
+    ventas: number
   }
 
   export type UsuarioCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    ventas?: boolean | UsuarioCountOutputTypeCountVentasArgs
     calificaciones?: boolean | UsuarioCountOutputTypeCountCalificacionesArgs
+    ventas?: boolean | UsuarioCountOutputTypeCountVentasArgs
   }
 
   // Custom InputTypes
@@ -1529,15 +1529,15 @@ export namespace Prisma {
   /**
    * UsuarioCountOutputType without action
    */
-  export type UsuarioCountOutputTypeCountVentasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: VentaWhereInput
+  export type UsuarioCountOutputTypeCountCalificacionesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CalificacionWhereInput
   }
 
   /**
    * UsuarioCountOutputType without action
    */
-  export type UsuarioCountOutputTypeCountCalificacionesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CalificacionWhereInput
+  export type UsuarioCountOutputTypeCountVentasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VentaWhereInput
   }
 
 
@@ -1608,16 +1608,16 @@ export namespace Prisma {
    */
 
   export type JuegoCountOutputType = {
+    calificaciones: number
     imagenes: number
     ventas: number
-    calificaciones: number
     plataformas: number
   }
 
   export type JuegoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    calificaciones?: boolean | JuegoCountOutputTypeCountCalificacionesArgs
     imagenes?: boolean | JuegoCountOutputTypeCountImagenesArgs
     ventas?: boolean | JuegoCountOutputTypeCountVentasArgs
-    calificaciones?: boolean | JuegoCountOutputTypeCountCalificacionesArgs
     plataformas?: boolean | JuegoCountOutputTypeCountPlataformasArgs
   }
 
@@ -1635,6 +1635,13 @@ export namespace Prisma {
   /**
    * JuegoCountOutputType without action
    */
+  export type JuegoCountOutputTypeCountCalificacionesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CalificacionWhereInput
+  }
+
+  /**
+   * JuegoCountOutputType without action
+   */
   export type JuegoCountOutputTypeCountImagenesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ImagenWhereInput
   }
@@ -1644,13 +1651,6 @@ export namespace Prisma {
    */
   export type JuegoCountOutputTypeCountVentasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: VentaWhereInput
-  }
-
-  /**
-   * JuegoCountOutputType without action
-   */
-  export type JuegoCountOutputTypeCountCalificacionesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CalificacionWhereInput
   }
 
   /**
@@ -1690,9 +1690,9 @@ export namespace Prisma {
     correo: string | null
     password: string | null
     nombre: string | null
-    rol: string | null
     token: string | null
     estado: boolean | null
+    rol: string | null
   }
 
   export type UsuarioMaxAggregateOutputType = {
@@ -1700,9 +1700,9 @@ export namespace Prisma {
     correo: string | null
     password: string | null
     nombre: string | null
-    rol: string | null
     token: string | null
     estado: boolean | null
+    rol: string | null
   }
 
   export type UsuarioCountAggregateOutputType = {
@@ -1710,9 +1710,9 @@ export namespace Prisma {
     correo: number
     password: number
     nombre: number
-    rol: number
     token: number
     estado: number
+    rol: number
     _all: number
   }
 
@@ -1730,9 +1730,9 @@ export namespace Prisma {
     correo?: true
     password?: true
     nombre?: true
-    rol?: true
     token?: true
     estado?: true
+    rol?: true
   }
 
   export type UsuarioMaxAggregateInputType = {
@@ -1740,9 +1740,9 @@ export namespace Prisma {
     correo?: true
     password?: true
     nombre?: true
-    rol?: true
     token?: true
     estado?: true
+    rol?: true
   }
 
   export type UsuarioCountAggregateInputType = {
@@ -1750,9 +1750,9 @@ export namespace Prisma {
     correo?: true
     password?: true
     nombre?: true
-    rol?: true
     token?: true
     estado?: true
+    rol?: true
     _all?: true
   }
 
@@ -1847,9 +1847,9 @@ export namespace Prisma {
     correo: string
     password: string
     nombre: string
-    rol: string
     token: string | null
     estado: boolean
+    rol: string
     _count: UsuarioCountAggregateOutputType | null
     _avg: UsuarioAvgAggregateOutputType | null
     _sum: UsuarioSumAggregateOutputType | null
@@ -1876,11 +1876,11 @@ export namespace Prisma {
     correo?: boolean
     password?: boolean
     nombre?: boolean
-    rol?: boolean
     token?: boolean
     estado?: boolean
-    ventas?: boolean | Usuario$ventasArgs<ExtArgs>
+    rol?: boolean
     calificaciones?: boolean | Usuario$calificacionesArgs<ExtArgs>
+    ventas?: boolean | Usuario$ventasArgs<ExtArgs>
     _count?: boolean | UsuarioCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["usuario"]>
 
@@ -1889,9 +1889,9 @@ export namespace Prisma {
     correo?: boolean
     password?: boolean
     nombre?: boolean
-    rol?: boolean
     token?: boolean
     estado?: boolean
+    rol?: boolean
   }, ExtArgs["result"]["usuario"]>
 
   export type UsuarioSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1899,9 +1899,9 @@ export namespace Prisma {
     correo?: boolean
     password?: boolean
     nombre?: boolean
-    rol?: boolean
     token?: boolean
     estado?: boolean
+    rol?: boolean
   }, ExtArgs["result"]["usuario"]>
 
   export type UsuarioSelectScalar = {
@@ -1909,15 +1909,15 @@ export namespace Prisma {
     correo?: boolean
     password?: boolean
     nombre?: boolean
-    rol?: boolean
     token?: boolean
     estado?: boolean
+    rol?: boolean
   }
 
-  export type UsuarioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "correo" | "password" | "nombre" | "rol" | "token" | "estado", ExtArgs["result"]["usuario"]>
+  export type UsuarioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "correo" | "password" | "nombre" | "token" | "estado" | "rol", ExtArgs["result"]["usuario"]>
   export type UsuarioInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    ventas?: boolean | Usuario$ventasArgs<ExtArgs>
     calificaciones?: boolean | Usuario$calificacionesArgs<ExtArgs>
+    ventas?: boolean | Usuario$ventasArgs<ExtArgs>
     _count?: boolean | UsuarioCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UsuarioIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1926,17 +1926,17 @@ export namespace Prisma {
   export type $UsuarioPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Usuario"
     objects: {
-      ventas: Prisma.$VentaPayload<ExtArgs>[]
       calificaciones: Prisma.$CalificacionPayload<ExtArgs>[]
+      ventas: Prisma.$VentaPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       correo: string
       password: string
       nombre: string
-      rol: string
       token: string | null
       estado: boolean
+      rol: string
     }, ExtArgs["result"]["usuario"]>
     composites: {}
   }
@@ -2331,8 +2331,8 @@ export namespace Prisma {
    */
   export interface Prisma__UsuarioClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    ventas<T extends Usuario$ventasArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$ventasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     calificaciones<T extends Usuario$calificacionesArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$calificacionesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CalificacionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ventas<T extends Usuario$ventasArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$ventasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2366,9 +2366,9 @@ export namespace Prisma {
     readonly correo: FieldRef<"Usuario", 'String'>
     readonly password: FieldRef<"Usuario", 'String'>
     readonly nombre: FieldRef<"Usuario", 'String'>
-    readonly rol: FieldRef<"Usuario", 'String'>
     readonly token: FieldRef<"Usuario", 'String'>
     readonly estado: FieldRef<"Usuario", 'Boolean'>
+    readonly rol: FieldRef<"Usuario", 'String'>
   }
     
 
@@ -2757,30 +2757,6 @@ export namespace Prisma {
   }
 
   /**
-   * Usuario.ventas
-   */
-  export type Usuario$ventasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Venta
-     */
-    select?: VentaSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Venta
-     */
-    omit?: VentaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: VentaInclude<ExtArgs> | null
-    where?: VentaWhereInput
-    orderBy?: VentaOrderByWithRelationInput | VentaOrderByWithRelationInput[]
-    cursor?: VentaWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: VentaScalarFieldEnum | VentaScalarFieldEnum[]
-  }
-
-  /**
    * Usuario.calificaciones
    */
   export type Usuario$calificacionesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2802,6 +2778,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CalificacionScalarFieldEnum | CalificacionScalarFieldEnum[]
+  }
+
+  /**
+   * Usuario.ventas
+   */
+  export type Usuario$ventasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venta
+     */
+    select?: VentaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Venta
+     */
+    omit?: VentaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VentaInclude<ExtArgs> | null
+    where?: VentaWhereInput
+    orderBy?: VentaOrderByWithRelationInput | VentaOrderByWithRelationInput[]
+    cursor?: VentaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VentaScalarFieldEnum | VentaScalarFieldEnum[]
   }
 
   /**
@@ -5175,10 +5175,10 @@ export namespace Prisma {
     estado?: boolean
     categoriaId?: boolean
     videoUrl?: boolean
-    categoria?: boolean | CategoriaDefaultArgs<ExtArgs>
-    imagenes?: boolean | Juego$imagenesArgs<ExtArgs>
-    ventas?: boolean | Juego$ventasArgs<ExtArgs>
     calificaciones?: boolean | Juego$calificacionesArgs<ExtArgs>
+    imagenes?: boolean | Juego$imagenesArgs<ExtArgs>
+    categoria?: boolean | CategoriaDefaultArgs<ExtArgs>
+    ventas?: boolean | Juego$ventasArgs<ExtArgs>
     plataformas?: boolean | Juego$plataformasArgs<ExtArgs>
     _count?: boolean | JuegoCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["juego"]>
@@ -5217,10 +5217,10 @@ export namespace Prisma {
 
   export type JuegoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nombre" | "precio" | "estaOferta" | "estado" | "categoriaId" | "videoUrl", ExtArgs["result"]["juego"]>
   export type JuegoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    categoria?: boolean | CategoriaDefaultArgs<ExtArgs>
-    imagenes?: boolean | Juego$imagenesArgs<ExtArgs>
-    ventas?: boolean | Juego$ventasArgs<ExtArgs>
     calificaciones?: boolean | Juego$calificacionesArgs<ExtArgs>
+    imagenes?: boolean | Juego$imagenesArgs<ExtArgs>
+    categoria?: boolean | CategoriaDefaultArgs<ExtArgs>
+    ventas?: boolean | Juego$ventasArgs<ExtArgs>
     plataformas?: boolean | Juego$plataformasArgs<ExtArgs>
     _count?: boolean | JuegoCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -5234,10 +5234,10 @@ export namespace Prisma {
   export type $JuegoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Juego"
     objects: {
-      categoria: Prisma.$CategoriaPayload<ExtArgs>
-      imagenes: Prisma.$ImagenPayload<ExtArgs>[]
-      ventas: Prisma.$VentaPayload<ExtArgs>[]
       calificaciones: Prisma.$CalificacionPayload<ExtArgs>[]
+      imagenes: Prisma.$ImagenPayload<ExtArgs>[]
+      categoria: Prisma.$CategoriaPayload<ExtArgs>
+      ventas: Prisma.$VentaPayload<ExtArgs>[]
       plataformas: Prisma.$PlataformaPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -5642,10 +5642,10 @@ export namespace Prisma {
    */
   export interface Prisma__JuegoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    categoria<T extends CategoriaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CategoriaDefaultArgs<ExtArgs>>): Prisma__CategoriaClient<$Result.GetResult<Prisma.$CategoriaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    imagenes<T extends Juego$imagenesArgs<ExtArgs> = {}>(args?: Subset<T, Juego$imagenesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImagenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    ventas<T extends Juego$ventasArgs<ExtArgs> = {}>(args?: Subset<T, Juego$ventasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     calificaciones<T extends Juego$calificacionesArgs<ExtArgs> = {}>(args?: Subset<T, Juego$calificacionesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CalificacionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    imagenes<T extends Juego$imagenesArgs<ExtArgs> = {}>(args?: Subset<T, Juego$imagenesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImagenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    categoria<T extends CategoriaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CategoriaDefaultArgs<ExtArgs>>): Prisma__CategoriaClient<$Result.GetResult<Prisma.$CategoriaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    ventas<T extends Juego$ventasArgs<ExtArgs> = {}>(args?: Subset<T, Juego$ventasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     plataformas<T extends Juego$plataformasArgs<ExtArgs> = {}>(args?: Subset<T, Juego$plataformasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlataformaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -6079,6 +6079,30 @@ export namespace Prisma {
   }
 
   /**
+   * Juego.calificaciones
+   */
+  export type Juego$calificacionesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Calificacion
+     */
+    select?: CalificacionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Calificacion
+     */
+    omit?: CalificacionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CalificacionInclude<ExtArgs> | null
+    where?: CalificacionWhereInput
+    orderBy?: CalificacionOrderByWithRelationInput | CalificacionOrderByWithRelationInput[]
+    cursor?: CalificacionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CalificacionScalarFieldEnum | CalificacionScalarFieldEnum[]
+  }
+
+  /**
    * Juego.imagenes
    */
   export type Juego$imagenesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6124,30 +6148,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: VentaScalarFieldEnum | VentaScalarFieldEnum[]
-  }
-
-  /**
-   * Juego.calificaciones
-   */
-  export type Juego$calificacionesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Calificacion
-     */
-    select?: CalificacionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Calificacion
-     */
-    omit?: CalificacionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CalificacionInclude<ExtArgs> | null
-    where?: CalificacionWhereInput
-    orderBy?: CalificacionOrderByWithRelationInput | CalificacionOrderByWithRelationInput[]
-    cursor?: CalificacionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CalificacionScalarFieldEnum | CalificacionScalarFieldEnum[]
   }
 
   /**
@@ -8510,8 +8510,8 @@ export namespace Prisma {
     juegoId?: boolean
     codigo?: boolean
     montoPagado?: boolean
-    usuario?: boolean | Venta$usuarioArgs<ExtArgs>
     juego?: boolean | Venta$juegoArgs<ExtArgs>
+    usuario?: boolean | Venta$usuarioArgs<ExtArgs>
   }, ExtArgs["result"]["venta"]>
 
   export type VentaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8521,8 +8521,8 @@ export namespace Prisma {
     juegoId?: boolean
     codigo?: boolean
     montoPagado?: boolean
-    usuario?: boolean | Venta$usuarioArgs<ExtArgs>
     juego?: boolean | Venta$juegoArgs<ExtArgs>
+    usuario?: boolean | Venta$usuarioArgs<ExtArgs>
   }, ExtArgs["result"]["venta"]>
 
   export type VentaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8532,8 +8532,8 @@ export namespace Prisma {
     juegoId?: boolean
     codigo?: boolean
     montoPagado?: boolean
-    usuario?: boolean | Venta$usuarioArgs<ExtArgs>
     juego?: boolean | Venta$juegoArgs<ExtArgs>
+    usuario?: boolean | Venta$usuarioArgs<ExtArgs>
   }, ExtArgs["result"]["venta"]>
 
   export type VentaSelectScalar = {
@@ -8547,23 +8547,23 @@ export namespace Prisma {
 
   export type VentaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fecha" | "usuarioId" | "juegoId" | "codigo" | "montoPagado", ExtArgs["result"]["venta"]>
   export type VentaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    usuario?: boolean | Venta$usuarioArgs<ExtArgs>
     juego?: boolean | Venta$juegoArgs<ExtArgs>
+    usuario?: boolean | Venta$usuarioArgs<ExtArgs>
   }
   export type VentaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    usuario?: boolean | Venta$usuarioArgs<ExtArgs>
     juego?: boolean | Venta$juegoArgs<ExtArgs>
+    usuario?: boolean | Venta$usuarioArgs<ExtArgs>
   }
   export type VentaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    usuario?: boolean | Venta$usuarioArgs<ExtArgs>
     juego?: boolean | Venta$juegoArgs<ExtArgs>
+    usuario?: boolean | Venta$usuarioArgs<ExtArgs>
   }
 
   export type $VentaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Venta"
     objects: {
-      usuario: Prisma.$UsuarioPayload<ExtArgs> | null
       juego: Prisma.$JuegoPayload<ExtArgs> | null
+      usuario: Prisma.$UsuarioPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -8966,8 +8966,8 @@ export namespace Prisma {
    */
   export interface Prisma__VentaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    usuario<T extends Venta$usuarioArgs<ExtArgs> = {}>(args?: Subset<T, Venta$usuarioArgs<ExtArgs>>): Prisma__UsuarioClient<$Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     juego<T extends Venta$juegoArgs<ExtArgs> = {}>(args?: Subset<T, Venta$juegoArgs<ExtArgs>>): Prisma__JuegoClient<$Result.GetResult<Prisma.$JuegoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    usuario<T extends Venta$usuarioArgs<ExtArgs> = {}>(args?: Subset<T, Venta$usuarioArgs<ExtArgs>>): Prisma__UsuarioClient<$Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9399,25 +9399,6 @@ export namespace Prisma {
   }
 
   /**
-   * Venta.usuario
-   */
-  export type Venta$usuarioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Usuario
-     */
-    select?: UsuarioSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Usuario
-     */
-    omit?: UsuarioOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UsuarioInclude<ExtArgs> | null
-    where?: UsuarioWhereInput
-  }
-
-  /**
    * Venta.juego
    */
   export type Venta$juegoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9434,6 +9415,25 @@ export namespace Prisma {
      */
     include?: JuegoInclude<ExtArgs> | null
     where?: JuegoWhereInput
+  }
+
+  /**
+   * Venta.usuario
+   */
+  export type Venta$usuarioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Usuario
+     */
+    select?: UsuarioSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Usuario
+     */
+    omit?: UsuarioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioInclude<ExtArgs> | null
+    where?: UsuarioWhereInput
   }
 
   /**
@@ -10624,9 +10624,9 @@ export namespace Prisma {
     correo: 'correo',
     password: 'password',
     nombre: 'nombre',
-    rol: 'rol',
     token: 'token',
-    estado: 'estado'
+    estado: 'estado',
+    rol: 'rol'
   };
 
   export type UsuarioScalarFieldEnum = (typeof UsuarioScalarFieldEnum)[keyof typeof UsuarioScalarFieldEnum]
@@ -10821,11 +10821,11 @@ export namespace Prisma {
     correo?: StringFilter<"Usuario"> | string
     password?: StringFilter<"Usuario"> | string
     nombre?: StringFilter<"Usuario"> | string
-    rol?: StringFilter<"Usuario"> | string
     token?: StringNullableFilter<"Usuario"> | string | null
     estado?: BoolFilter<"Usuario"> | boolean
-    ventas?: VentaListRelationFilter
+    rol?: StringFilter<"Usuario"> | string
     calificaciones?: CalificacionListRelationFilter
+    ventas?: VentaListRelationFilter
   }
 
   export type UsuarioOrderByWithRelationInput = {
@@ -10833,11 +10833,11 @@ export namespace Prisma {
     correo?: SortOrder
     password?: SortOrder
     nombre?: SortOrder
-    rol?: SortOrder
     token?: SortOrderInput | SortOrder
     estado?: SortOrder
-    ventas?: VentaOrderByRelationAggregateInput
+    rol?: SortOrder
     calificaciones?: CalificacionOrderByRelationAggregateInput
+    ventas?: VentaOrderByRelationAggregateInput
   }
 
   export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
@@ -10848,11 +10848,11 @@ export namespace Prisma {
     NOT?: UsuarioWhereInput | UsuarioWhereInput[]
     password?: StringFilter<"Usuario"> | string
     nombre?: StringFilter<"Usuario"> | string
-    rol?: StringFilter<"Usuario"> | string
     token?: StringNullableFilter<"Usuario"> | string | null
     estado?: BoolFilter<"Usuario"> | boolean
-    ventas?: VentaListRelationFilter
+    rol?: StringFilter<"Usuario"> | string
     calificaciones?: CalificacionListRelationFilter
+    ventas?: VentaListRelationFilter
   }, "id" | "correo">
 
   export type UsuarioOrderByWithAggregationInput = {
@@ -10860,9 +10860,9 @@ export namespace Prisma {
     correo?: SortOrder
     password?: SortOrder
     nombre?: SortOrder
-    rol?: SortOrder
     token?: SortOrderInput | SortOrder
     estado?: SortOrder
+    rol?: SortOrder
     _count?: UsuarioCountOrderByAggregateInput
     _avg?: UsuarioAvgOrderByAggregateInput
     _max?: UsuarioMaxOrderByAggregateInput
@@ -10878,9 +10878,9 @@ export namespace Prisma {
     correo?: StringWithAggregatesFilter<"Usuario"> | string
     password?: StringWithAggregatesFilter<"Usuario"> | string
     nombre?: StringWithAggregatesFilter<"Usuario"> | string
-    rol?: StringWithAggregatesFilter<"Usuario"> | string
     token?: StringNullableWithAggregatesFilter<"Usuario"> | string | null
     estado?: BoolWithAggregatesFilter<"Usuario"> | boolean
+    rol?: StringWithAggregatesFilter<"Usuario"> | string
   }
 
   export type PlataformaWhereInput = {
@@ -10978,10 +10978,10 @@ export namespace Prisma {
     estado?: BoolFilter<"Juego"> | boolean
     categoriaId?: IntFilter<"Juego"> | number
     videoUrl?: StringNullableFilter<"Juego"> | string | null
-    categoria?: XOR<CategoriaScalarRelationFilter, CategoriaWhereInput>
-    imagenes?: ImagenListRelationFilter
-    ventas?: VentaListRelationFilter
     calificaciones?: CalificacionListRelationFilter
+    imagenes?: ImagenListRelationFilter
+    categoria?: XOR<CategoriaScalarRelationFilter, CategoriaWhereInput>
+    ventas?: VentaListRelationFilter
     plataformas?: PlataformaListRelationFilter
   }
 
@@ -10993,10 +10993,10 @@ export namespace Prisma {
     estado?: SortOrder
     categoriaId?: SortOrder
     videoUrl?: SortOrderInput | SortOrder
-    categoria?: CategoriaOrderByWithRelationInput
-    imagenes?: ImagenOrderByRelationAggregateInput
-    ventas?: VentaOrderByRelationAggregateInput
     calificaciones?: CalificacionOrderByRelationAggregateInput
+    imagenes?: ImagenOrderByRelationAggregateInput
+    categoria?: CategoriaOrderByWithRelationInput
+    ventas?: VentaOrderByRelationAggregateInput
     plataformas?: PlataformaOrderByRelationAggregateInput
   }
 
@@ -11011,10 +11011,10 @@ export namespace Prisma {
     estado?: BoolFilter<"Juego"> | boolean
     categoriaId?: IntFilter<"Juego"> | number
     videoUrl?: StringNullableFilter<"Juego"> | string | null
-    categoria?: XOR<CategoriaScalarRelationFilter, CategoriaWhereInput>
-    imagenes?: ImagenListRelationFilter
-    ventas?: VentaListRelationFilter
     calificaciones?: CalificacionListRelationFilter
+    imagenes?: ImagenListRelationFilter
+    categoria?: XOR<CategoriaScalarRelationFilter, CategoriaWhereInput>
+    ventas?: VentaListRelationFilter
     plataformas?: PlataformaListRelationFilter
   }, "id">
 
@@ -11157,8 +11157,8 @@ export namespace Prisma {
     juegoId?: IntNullableFilter<"Venta"> | number | null
     codigo?: StringFilter<"Venta"> | string
     montoPagado?: DecimalFilter<"Venta"> | Decimal | DecimalJsLike | number | string
-    usuario?: XOR<UsuarioNullableScalarRelationFilter, UsuarioWhereInput> | null
     juego?: XOR<JuegoNullableScalarRelationFilter, JuegoWhereInput> | null
+    usuario?: XOR<UsuarioNullableScalarRelationFilter, UsuarioWhereInput> | null
   }
 
   export type VentaOrderByWithRelationInput = {
@@ -11168,8 +11168,8 @@ export namespace Prisma {
     juegoId?: SortOrderInput | SortOrder
     codigo?: SortOrder
     montoPagado?: SortOrder
-    usuario?: UsuarioOrderByWithRelationInput
     juego?: JuegoOrderByWithRelationInput
+    usuario?: UsuarioOrderByWithRelationInput
   }
 
   export type VentaWhereUniqueInput = Prisma.AtLeast<{
@@ -11182,8 +11182,8 @@ export namespace Prisma {
     juegoId?: IntNullableFilter<"Venta"> | number | null
     codigo?: StringFilter<"Venta"> | string
     montoPagado?: DecimalFilter<"Venta"> | Decimal | DecimalJsLike | number | string
-    usuario?: XOR<UsuarioNullableScalarRelationFilter, UsuarioWhereInput> | null
     juego?: XOR<JuegoNullableScalarRelationFilter, JuegoWhereInput> | null
+    usuario?: XOR<UsuarioNullableScalarRelationFilter, UsuarioWhereInput> | null
   }, "id">
 
   export type VentaOrderByWithAggregationInput = {
@@ -11276,11 +11276,11 @@ export namespace Prisma {
     correo: string
     password: string
     nombre: string
-    rol?: string
     token?: string | null
     estado: boolean
-    ventas?: VentaCreateNestedManyWithoutUsuarioInput
+    rol?: string
     calificaciones?: CalificacionCreateNestedManyWithoutUsuarioInput
+    ventas?: VentaCreateNestedManyWithoutUsuarioInput
   }
 
   export type UsuarioUncheckedCreateInput = {
@@ -11288,22 +11288,22 @@ export namespace Prisma {
     correo: string
     password: string
     nombre: string
-    rol?: string
     token?: string | null
     estado: boolean
-    ventas?: VentaUncheckedCreateNestedManyWithoutUsuarioInput
+    rol?: string
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutUsuarioInput
+    ventas?: VentaUncheckedCreateNestedManyWithoutUsuarioInput
   }
 
   export type UsuarioUpdateInput = {
     correo?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nombre?: StringFieldUpdateOperationsInput | string
-    rol?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: BoolFieldUpdateOperationsInput | boolean
-    ventas?: VentaUpdateManyWithoutUsuarioNestedInput
+    rol?: StringFieldUpdateOperationsInput | string
     calificaciones?: CalificacionUpdateManyWithoutUsuarioNestedInput
+    ventas?: VentaUpdateManyWithoutUsuarioNestedInput
   }
 
   export type UsuarioUncheckedUpdateInput = {
@@ -11311,11 +11311,11 @@ export namespace Prisma {
     correo?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nombre?: StringFieldUpdateOperationsInput | string
-    rol?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: BoolFieldUpdateOperationsInput | boolean
-    ventas?: VentaUncheckedUpdateManyWithoutUsuarioNestedInput
+    rol?: StringFieldUpdateOperationsInput | string
     calificaciones?: CalificacionUncheckedUpdateManyWithoutUsuarioNestedInput
+    ventas?: VentaUncheckedUpdateManyWithoutUsuarioNestedInput
   }
 
   export type UsuarioCreateManyInput = {
@@ -11323,18 +11323,18 @@ export namespace Prisma {
     correo: string
     password: string
     nombre: string
-    rol?: string
     token?: string | null
     estado: boolean
+    rol?: string
   }
 
   export type UsuarioUpdateManyMutationInput = {
     correo?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nombre?: StringFieldUpdateOperationsInput | string
-    rol?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: BoolFieldUpdateOperationsInput | boolean
+    rol?: StringFieldUpdateOperationsInput | string
   }
 
   export type UsuarioUncheckedUpdateManyInput = {
@@ -11342,9 +11342,9 @@ export namespace Prisma {
     correo?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nombre?: StringFieldUpdateOperationsInput | string
-    rol?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: BoolFieldUpdateOperationsInput | boolean
+    rol?: StringFieldUpdateOperationsInput | string
   }
 
   export type PlataformaCreateInput = {
@@ -11425,10 +11425,10 @@ export namespace Prisma {
     estaOferta: boolean
     estado: boolean
     videoUrl?: string | null
-    categoria: CategoriaCreateNestedOneWithoutJuegosInput
-    imagenes?: ImagenCreateNestedManyWithoutJuegoInput
-    ventas?: VentaCreateNestedManyWithoutJuegoInput
     calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
+    imagenes?: ImagenCreateNestedManyWithoutJuegoInput
+    categoria: CategoriaCreateNestedOneWithoutJuegosInput
+    ventas?: VentaCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaCreateNestedManyWithoutJuegosInput
   }
 
@@ -11440,9 +11440,9 @@ export namespace Prisma {
     estado: boolean
     categoriaId: number
     videoUrl?: string | null
+    calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
     imagenes?: ImagenUncheckedCreateNestedManyWithoutJuegoInput
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
-    calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaUncheckedCreateNestedManyWithoutJuegosInput
   }
 
@@ -11452,10 +11452,10 @@ export namespace Prisma {
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
-    imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
-    ventas?: VentaUpdateManyWithoutJuegoNestedInput
     calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
+    imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
+    categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
+    ventas?: VentaUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUpdateManyWithoutJuegosNestedInput
   }
 
@@ -11467,9 +11467,9 @@ export namespace Prisma {
     estado?: BoolFieldUpdateOperationsInput | boolean
     categoriaId?: IntFieldUpdateOperationsInput | number
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
     imagenes?: ImagenUncheckedUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
-    calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUncheckedUpdateManyWithoutJuegosNestedInput
   }
 
@@ -11596,8 +11596,8 @@ export namespace Prisma {
     fecha: Date | string
     codigo: string
     montoPagado: Decimal | DecimalJsLike | number | string
-    usuario?: UsuarioCreateNestedOneWithoutVentasInput
     juego?: JuegoCreateNestedOneWithoutVentasInput
+    usuario?: UsuarioCreateNestedOneWithoutVentasInput
   }
 
   export type VentaUncheckedCreateInput = {
@@ -11613,8 +11613,8 @@ export namespace Prisma {
     fecha?: DateTimeFieldUpdateOperationsInput | Date | string
     codigo?: StringFieldUpdateOperationsInput | string
     montoPagado?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    usuario?: UsuarioUpdateOneWithoutVentasNestedInput
     juego?: JuegoUpdateOneWithoutVentasNestedInput
+    usuario?: UsuarioUpdateOneWithoutVentasNestedInput
   }
 
   export type VentaUncheckedUpdateInput = {
@@ -11747,16 +11747,16 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type VentaListRelationFilter = {
-    every?: VentaWhereInput
-    some?: VentaWhereInput
-    none?: VentaWhereInput
-  }
-
   export type CalificacionListRelationFilter = {
     every?: CalificacionWhereInput
     some?: CalificacionWhereInput
     none?: CalificacionWhereInput
+  }
+
+  export type VentaListRelationFilter = {
+    every?: VentaWhereInput
+    some?: VentaWhereInput
+    none?: VentaWhereInput
   }
 
   export type SortOrderInput = {
@@ -11764,11 +11764,11 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type VentaOrderByRelationAggregateInput = {
+  export type CalificacionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type CalificacionOrderByRelationAggregateInput = {
+  export type VentaOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -11777,9 +11777,9 @@ export namespace Prisma {
     correo?: SortOrder
     password?: SortOrder
     nombre?: SortOrder
-    rol?: SortOrder
     token?: SortOrder
     estado?: SortOrder
+    rol?: SortOrder
   }
 
   export type UsuarioAvgOrderByAggregateInput = {
@@ -11791,9 +11791,9 @@ export namespace Prisma {
     correo?: SortOrder
     password?: SortOrder
     nombre?: SortOrder
-    rol?: SortOrder
     token?: SortOrder
     estado?: SortOrder
+    rol?: SortOrder
   }
 
   export type UsuarioMinOrderByAggregateInput = {
@@ -11801,9 +11801,9 @@ export namespace Prisma {
     correo?: SortOrder
     password?: SortOrder
     nombre?: SortOrder
-    rol?: SortOrder
     token?: SortOrder
     estado?: SortOrder
+    rol?: SortOrder
   }
 
   export type UsuarioSumOrderByAggregateInput = {
@@ -11937,15 +11937,15 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
-  export type CategoriaScalarRelationFilter = {
-    is?: CategoriaWhereInput
-    isNot?: CategoriaWhereInput
-  }
-
   export type ImagenListRelationFilter = {
     every?: ImagenWhereInput
     some?: ImagenWhereInput
     none?: ImagenWhereInput
+  }
+
+  export type CategoriaScalarRelationFilter = {
+    is?: CategoriaWhereInput
+    isNot?: CategoriaWhereInput
   }
 
   export type PlataformaListRelationFilter = {
@@ -12107,14 +12107,14 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type UsuarioNullableScalarRelationFilter = {
-    is?: UsuarioWhereInput | null
-    isNot?: UsuarioWhereInput | null
-  }
-
   export type JuegoNullableScalarRelationFilter = {
     is?: JuegoWhereInput | null
     isNot?: JuegoWhereInput | null
+  }
+
+  export type UsuarioNullableScalarRelationFilter = {
+    is?: UsuarioWhereInput | null
+    isNot?: UsuarioWhereInput | null
   }
 
   export type VentaCountOrderByAggregateInput = {
@@ -12226,13 +12226,6 @@ export namespace Prisma {
     usuarioId?: SortOrder
   }
 
-  export type VentaCreateNestedManyWithoutUsuarioInput = {
-    create?: XOR<VentaCreateWithoutUsuarioInput, VentaUncheckedCreateWithoutUsuarioInput> | VentaCreateWithoutUsuarioInput[] | VentaUncheckedCreateWithoutUsuarioInput[]
-    connectOrCreate?: VentaCreateOrConnectWithoutUsuarioInput | VentaCreateOrConnectWithoutUsuarioInput[]
-    createMany?: VentaCreateManyUsuarioInputEnvelope
-    connect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
-  }
-
   export type CalificacionCreateNestedManyWithoutUsuarioInput = {
     create?: XOR<CalificacionCreateWithoutUsuarioInput, CalificacionUncheckedCreateWithoutUsuarioInput> | CalificacionCreateWithoutUsuarioInput[] | CalificacionUncheckedCreateWithoutUsuarioInput[]
     connectOrCreate?: CalificacionCreateOrConnectWithoutUsuarioInput | CalificacionCreateOrConnectWithoutUsuarioInput[]
@@ -12240,7 +12233,7 @@ export namespace Prisma {
     connect?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
   }
 
-  export type VentaUncheckedCreateNestedManyWithoutUsuarioInput = {
+  export type VentaCreateNestedManyWithoutUsuarioInput = {
     create?: XOR<VentaCreateWithoutUsuarioInput, VentaUncheckedCreateWithoutUsuarioInput> | VentaCreateWithoutUsuarioInput[] | VentaUncheckedCreateWithoutUsuarioInput[]
     connectOrCreate?: VentaCreateOrConnectWithoutUsuarioInput | VentaCreateOrConnectWithoutUsuarioInput[]
     createMany?: VentaCreateManyUsuarioInputEnvelope
@@ -12254,6 +12247,13 @@ export namespace Prisma {
     connect?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
   }
 
+  export type VentaUncheckedCreateNestedManyWithoutUsuarioInput = {
+    create?: XOR<VentaCreateWithoutUsuarioInput, VentaUncheckedCreateWithoutUsuarioInput> | VentaCreateWithoutUsuarioInput[] | VentaUncheckedCreateWithoutUsuarioInput[]
+    connectOrCreate?: VentaCreateOrConnectWithoutUsuarioInput | VentaCreateOrConnectWithoutUsuarioInput[]
+    createMany?: VentaCreateManyUsuarioInputEnvelope
+    connect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -12264,20 +12264,6 @@ export namespace Prisma {
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
-  }
-
-  export type VentaUpdateManyWithoutUsuarioNestedInput = {
-    create?: XOR<VentaCreateWithoutUsuarioInput, VentaUncheckedCreateWithoutUsuarioInput> | VentaCreateWithoutUsuarioInput[] | VentaUncheckedCreateWithoutUsuarioInput[]
-    connectOrCreate?: VentaCreateOrConnectWithoutUsuarioInput | VentaCreateOrConnectWithoutUsuarioInput[]
-    upsert?: VentaUpsertWithWhereUniqueWithoutUsuarioInput | VentaUpsertWithWhereUniqueWithoutUsuarioInput[]
-    createMany?: VentaCreateManyUsuarioInputEnvelope
-    set?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
-    disconnect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
-    delete?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
-    connect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
-    update?: VentaUpdateWithWhereUniqueWithoutUsuarioInput | VentaUpdateWithWhereUniqueWithoutUsuarioInput[]
-    updateMany?: VentaUpdateManyWithWhereWithoutUsuarioInput | VentaUpdateManyWithWhereWithoutUsuarioInput[]
-    deleteMany?: VentaScalarWhereInput | VentaScalarWhereInput[]
   }
 
   export type CalificacionUpdateManyWithoutUsuarioNestedInput = {
@@ -12294,15 +12280,7 @@ export namespace Prisma {
     deleteMany?: CalificacionScalarWhereInput | CalificacionScalarWhereInput[]
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type VentaUncheckedUpdateManyWithoutUsuarioNestedInput = {
+  export type VentaUpdateManyWithoutUsuarioNestedInput = {
     create?: XOR<VentaCreateWithoutUsuarioInput, VentaUncheckedCreateWithoutUsuarioInput> | VentaCreateWithoutUsuarioInput[] | VentaUncheckedCreateWithoutUsuarioInput[]
     connectOrCreate?: VentaCreateOrConnectWithoutUsuarioInput | VentaCreateOrConnectWithoutUsuarioInput[]
     upsert?: VentaUpsertWithWhereUniqueWithoutUsuarioInput | VentaUpsertWithWhereUniqueWithoutUsuarioInput[]
@@ -12314,6 +12292,14 @@ export namespace Prisma {
     update?: VentaUpdateWithWhereUniqueWithoutUsuarioInput | VentaUpdateWithWhereUniqueWithoutUsuarioInput[]
     updateMany?: VentaUpdateManyWithWhereWithoutUsuarioInput | VentaUpdateManyWithWhereWithoutUsuarioInput[]
     deleteMany?: VentaScalarWhereInput | VentaScalarWhereInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type CalificacionUncheckedUpdateManyWithoutUsuarioNestedInput = {
@@ -12328,6 +12314,20 @@ export namespace Prisma {
     update?: CalificacionUpdateWithWhereUniqueWithoutUsuarioInput | CalificacionUpdateWithWhereUniqueWithoutUsuarioInput[]
     updateMany?: CalificacionUpdateManyWithWhereWithoutUsuarioInput | CalificacionUpdateManyWithWhereWithoutUsuarioInput[]
     deleteMany?: CalificacionScalarWhereInput | CalificacionScalarWhereInput[]
+  }
+
+  export type VentaUncheckedUpdateManyWithoutUsuarioNestedInput = {
+    create?: XOR<VentaCreateWithoutUsuarioInput, VentaUncheckedCreateWithoutUsuarioInput> | VentaCreateWithoutUsuarioInput[] | VentaUncheckedCreateWithoutUsuarioInput[]
+    connectOrCreate?: VentaCreateOrConnectWithoutUsuarioInput | VentaCreateOrConnectWithoutUsuarioInput[]
+    upsert?: VentaUpsertWithWhereUniqueWithoutUsuarioInput | VentaUpsertWithWhereUniqueWithoutUsuarioInput[]
+    createMany?: VentaCreateManyUsuarioInputEnvelope
+    set?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+    disconnect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+    delete?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+    connect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+    update?: VentaUpdateWithWhereUniqueWithoutUsuarioInput | VentaUpdateWithWhereUniqueWithoutUsuarioInput[]
+    updateMany?: VentaUpdateManyWithWhereWithoutUsuarioInput | VentaUpdateManyWithWhereWithoutUsuarioInput[]
+    deleteMany?: VentaScalarWhereInput | VentaScalarWhereInput[]
   }
 
   export type JuegoCreateNestedManyWithoutPlataformasInput = {
@@ -12410,10 +12410,11 @@ export namespace Prisma {
     deleteMany?: JuegoScalarWhereInput | JuegoScalarWhereInput[]
   }
 
-  export type CategoriaCreateNestedOneWithoutJuegosInput = {
-    create?: XOR<CategoriaCreateWithoutJuegosInput, CategoriaUncheckedCreateWithoutJuegosInput>
-    connectOrCreate?: CategoriaCreateOrConnectWithoutJuegosInput
-    connect?: CategoriaWhereUniqueInput
+  export type CalificacionCreateNestedManyWithoutJuegoInput = {
+    create?: XOR<CalificacionCreateWithoutJuegoInput, CalificacionUncheckedCreateWithoutJuegoInput> | CalificacionCreateWithoutJuegoInput[] | CalificacionUncheckedCreateWithoutJuegoInput[]
+    connectOrCreate?: CalificacionCreateOrConnectWithoutJuegoInput | CalificacionCreateOrConnectWithoutJuegoInput[]
+    createMany?: CalificacionCreateManyJuegoInputEnvelope
+    connect?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
   }
 
   export type ImagenCreateNestedManyWithoutJuegoInput = {
@@ -12423,6 +12424,12 @@ export namespace Prisma {
     connect?: ImagenWhereUniqueInput | ImagenWhereUniqueInput[]
   }
 
+  export type CategoriaCreateNestedOneWithoutJuegosInput = {
+    create?: XOR<CategoriaCreateWithoutJuegosInput, CategoriaUncheckedCreateWithoutJuegosInput>
+    connectOrCreate?: CategoriaCreateOrConnectWithoutJuegosInput
+    connect?: CategoriaWhereUniqueInput
+  }
+
   export type VentaCreateNestedManyWithoutJuegoInput = {
     create?: XOR<VentaCreateWithoutJuegoInput, VentaUncheckedCreateWithoutJuegoInput> | VentaCreateWithoutJuegoInput[] | VentaUncheckedCreateWithoutJuegoInput[]
     connectOrCreate?: VentaCreateOrConnectWithoutJuegoInput | VentaCreateOrConnectWithoutJuegoInput[]
@@ -12430,17 +12437,17 @@ export namespace Prisma {
     connect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
   }
 
-  export type CalificacionCreateNestedManyWithoutJuegoInput = {
-    create?: XOR<CalificacionCreateWithoutJuegoInput, CalificacionUncheckedCreateWithoutJuegoInput> | CalificacionCreateWithoutJuegoInput[] | CalificacionUncheckedCreateWithoutJuegoInput[]
-    connectOrCreate?: CalificacionCreateOrConnectWithoutJuegoInput | CalificacionCreateOrConnectWithoutJuegoInput[]
-    createMany?: CalificacionCreateManyJuegoInputEnvelope
-    connect?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
-  }
-
   export type PlataformaCreateNestedManyWithoutJuegosInput = {
     create?: XOR<PlataformaCreateWithoutJuegosInput, PlataformaUncheckedCreateWithoutJuegosInput> | PlataformaCreateWithoutJuegosInput[] | PlataformaUncheckedCreateWithoutJuegosInput[]
     connectOrCreate?: PlataformaCreateOrConnectWithoutJuegosInput | PlataformaCreateOrConnectWithoutJuegosInput[]
     connect?: PlataformaWhereUniqueInput | PlataformaWhereUniqueInput[]
+  }
+
+  export type CalificacionUncheckedCreateNestedManyWithoutJuegoInput = {
+    create?: XOR<CalificacionCreateWithoutJuegoInput, CalificacionUncheckedCreateWithoutJuegoInput> | CalificacionCreateWithoutJuegoInput[] | CalificacionUncheckedCreateWithoutJuegoInput[]
+    connectOrCreate?: CalificacionCreateOrConnectWithoutJuegoInput | CalificacionCreateOrConnectWithoutJuegoInput[]
+    createMany?: CalificacionCreateManyJuegoInputEnvelope
+    connect?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
   }
 
   export type ImagenUncheckedCreateNestedManyWithoutJuegoInput = {
@@ -12457,13 +12464,6 @@ export namespace Prisma {
     connect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
   }
 
-  export type CalificacionUncheckedCreateNestedManyWithoutJuegoInput = {
-    create?: XOR<CalificacionCreateWithoutJuegoInput, CalificacionUncheckedCreateWithoutJuegoInput> | CalificacionCreateWithoutJuegoInput[] | CalificacionUncheckedCreateWithoutJuegoInput[]
-    connectOrCreate?: CalificacionCreateOrConnectWithoutJuegoInput | CalificacionCreateOrConnectWithoutJuegoInput[]
-    createMany?: CalificacionCreateManyJuegoInputEnvelope
-    connect?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
-  }
-
   export type PlataformaUncheckedCreateNestedManyWithoutJuegosInput = {
     create?: XOR<PlataformaCreateWithoutJuegosInput, PlataformaUncheckedCreateWithoutJuegosInput> | PlataformaCreateWithoutJuegosInput[] | PlataformaUncheckedCreateWithoutJuegosInput[]
     connectOrCreate?: PlataformaCreateOrConnectWithoutJuegosInput | PlataformaCreateOrConnectWithoutJuegosInput[]
@@ -12476,42 +12476,6 @@ export namespace Prisma {
     decrement?: Decimal | DecimalJsLike | number | string
     multiply?: Decimal | DecimalJsLike | number | string
     divide?: Decimal | DecimalJsLike | number | string
-  }
-
-  export type CategoriaUpdateOneRequiredWithoutJuegosNestedInput = {
-    create?: XOR<CategoriaCreateWithoutJuegosInput, CategoriaUncheckedCreateWithoutJuegosInput>
-    connectOrCreate?: CategoriaCreateOrConnectWithoutJuegosInput
-    upsert?: CategoriaUpsertWithoutJuegosInput
-    connect?: CategoriaWhereUniqueInput
-    update?: XOR<XOR<CategoriaUpdateToOneWithWhereWithoutJuegosInput, CategoriaUpdateWithoutJuegosInput>, CategoriaUncheckedUpdateWithoutJuegosInput>
-  }
-
-  export type ImagenUpdateManyWithoutJuegoNestedInput = {
-    create?: XOR<ImagenCreateWithoutJuegoInput, ImagenUncheckedCreateWithoutJuegoInput> | ImagenCreateWithoutJuegoInput[] | ImagenUncheckedCreateWithoutJuegoInput[]
-    connectOrCreate?: ImagenCreateOrConnectWithoutJuegoInput | ImagenCreateOrConnectWithoutJuegoInput[]
-    upsert?: ImagenUpsertWithWhereUniqueWithoutJuegoInput | ImagenUpsertWithWhereUniqueWithoutJuegoInput[]
-    createMany?: ImagenCreateManyJuegoInputEnvelope
-    set?: ImagenWhereUniqueInput | ImagenWhereUniqueInput[]
-    disconnect?: ImagenWhereUniqueInput | ImagenWhereUniqueInput[]
-    delete?: ImagenWhereUniqueInput | ImagenWhereUniqueInput[]
-    connect?: ImagenWhereUniqueInput | ImagenWhereUniqueInput[]
-    update?: ImagenUpdateWithWhereUniqueWithoutJuegoInput | ImagenUpdateWithWhereUniqueWithoutJuegoInput[]
-    updateMany?: ImagenUpdateManyWithWhereWithoutJuegoInput | ImagenUpdateManyWithWhereWithoutJuegoInput[]
-    deleteMany?: ImagenScalarWhereInput | ImagenScalarWhereInput[]
-  }
-
-  export type VentaUpdateManyWithoutJuegoNestedInput = {
-    create?: XOR<VentaCreateWithoutJuegoInput, VentaUncheckedCreateWithoutJuegoInput> | VentaCreateWithoutJuegoInput[] | VentaUncheckedCreateWithoutJuegoInput[]
-    connectOrCreate?: VentaCreateOrConnectWithoutJuegoInput | VentaCreateOrConnectWithoutJuegoInput[]
-    upsert?: VentaUpsertWithWhereUniqueWithoutJuegoInput | VentaUpsertWithWhereUniqueWithoutJuegoInput[]
-    createMany?: VentaCreateManyJuegoInputEnvelope
-    set?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
-    disconnect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
-    delete?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
-    connect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
-    update?: VentaUpdateWithWhereUniqueWithoutJuegoInput | VentaUpdateWithWhereUniqueWithoutJuegoInput[]
-    updateMany?: VentaUpdateManyWithWhereWithoutJuegoInput | VentaUpdateManyWithWhereWithoutJuegoInput[]
-    deleteMany?: VentaScalarWhereInput | VentaScalarWhereInput[]
   }
 
   export type CalificacionUpdateManyWithoutJuegoNestedInput = {
@@ -12528,6 +12492,42 @@ export namespace Prisma {
     deleteMany?: CalificacionScalarWhereInput | CalificacionScalarWhereInput[]
   }
 
+  export type ImagenUpdateManyWithoutJuegoNestedInput = {
+    create?: XOR<ImagenCreateWithoutJuegoInput, ImagenUncheckedCreateWithoutJuegoInput> | ImagenCreateWithoutJuegoInput[] | ImagenUncheckedCreateWithoutJuegoInput[]
+    connectOrCreate?: ImagenCreateOrConnectWithoutJuegoInput | ImagenCreateOrConnectWithoutJuegoInput[]
+    upsert?: ImagenUpsertWithWhereUniqueWithoutJuegoInput | ImagenUpsertWithWhereUniqueWithoutJuegoInput[]
+    createMany?: ImagenCreateManyJuegoInputEnvelope
+    set?: ImagenWhereUniqueInput | ImagenWhereUniqueInput[]
+    disconnect?: ImagenWhereUniqueInput | ImagenWhereUniqueInput[]
+    delete?: ImagenWhereUniqueInput | ImagenWhereUniqueInput[]
+    connect?: ImagenWhereUniqueInput | ImagenWhereUniqueInput[]
+    update?: ImagenUpdateWithWhereUniqueWithoutJuegoInput | ImagenUpdateWithWhereUniqueWithoutJuegoInput[]
+    updateMany?: ImagenUpdateManyWithWhereWithoutJuegoInput | ImagenUpdateManyWithWhereWithoutJuegoInput[]
+    deleteMany?: ImagenScalarWhereInput | ImagenScalarWhereInput[]
+  }
+
+  export type CategoriaUpdateOneRequiredWithoutJuegosNestedInput = {
+    create?: XOR<CategoriaCreateWithoutJuegosInput, CategoriaUncheckedCreateWithoutJuegosInput>
+    connectOrCreate?: CategoriaCreateOrConnectWithoutJuegosInput
+    upsert?: CategoriaUpsertWithoutJuegosInput
+    connect?: CategoriaWhereUniqueInput
+    update?: XOR<XOR<CategoriaUpdateToOneWithWhereWithoutJuegosInput, CategoriaUpdateWithoutJuegosInput>, CategoriaUncheckedUpdateWithoutJuegosInput>
+  }
+
+  export type VentaUpdateManyWithoutJuegoNestedInput = {
+    create?: XOR<VentaCreateWithoutJuegoInput, VentaUncheckedCreateWithoutJuegoInput> | VentaCreateWithoutJuegoInput[] | VentaUncheckedCreateWithoutJuegoInput[]
+    connectOrCreate?: VentaCreateOrConnectWithoutJuegoInput | VentaCreateOrConnectWithoutJuegoInput[]
+    upsert?: VentaUpsertWithWhereUniqueWithoutJuegoInput | VentaUpsertWithWhereUniqueWithoutJuegoInput[]
+    createMany?: VentaCreateManyJuegoInputEnvelope
+    set?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+    disconnect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+    delete?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+    connect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+    update?: VentaUpdateWithWhereUniqueWithoutJuegoInput | VentaUpdateWithWhereUniqueWithoutJuegoInput[]
+    updateMany?: VentaUpdateManyWithWhereWithoutJuegoInput | VentaUpdateManyWithWhereWithoutJuegoInput[]
+    deleteMany?: VentaScalarWhereInput | VentaScalarWhereInput[]
+  }
+
   export type PlataformaUpdateManyWithoutJuegosNestedInput = {
     create?: XOR<PlataformaCreateWithoutJuegosInput, PlataformaUncheckedCreateWithoutJuegosInput> | PlataformaCreateWithoutJuegosInput[] | PlataformaUncheckedCreateWithoutJuegosInput[]
     connectOrCreate?: PlataformaCreateOrConnectWithoutJuegosInput | PlataformaCreateOrConnectWithoutJuegosInput[]
@@ -12539,6 +12539,20 @@ export namespace Prisma {
     update?: PlataformaUpdateWithWhereUniqueWithoutJuegosInput | PlataformaUpdateWithWhereUniqueWithoutJuegosInput[]
     updateMany?: PlataformaUpdateManyWithWhereWithoutJuegosInput | PlataformaUpdateManyWithWhereWithoutJuegosInput[]
     deleteMany?: PlataformaScalarWhereInput | PlataformaScalarWhereInput[]
+  }
+
+  export type CalificacionUncheckedUpdateManyWithoutJuegoNestedInput = {
+    create?: XOR<CalificacionCreateWithoutJuegoInput, CalificacionUncheckedCreateWithoutJuegoInput> | CalificacionCreateWithoutJuegoInput[] | CalificacionUncheckedCreateWithoutJuegoInput[]
+    connectOrCreate?: CalificacionCreateOrConnectWithoutJuegoInput | CalificacionCreateOrConnectWithoutJuegoInput[]
+    upsert?: CalificacionUpsertWithWhereUniqueWithoutJuegoInput | CalificacionUpsertWithWhereUniqueWithoutJuegoInput[]
+    createMany?: CalificacionCreateManyJuegoInputEnvelope
+    set?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
+    disconnect?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
+    delete?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
+    connect?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
+    update?: CalificacionUpdateWithWhereUniqueWithoutJuegoInput | CalificacionUpdateWithWhereUniqueWithoutJuegoInput[]
+    updateMany?: CalificacionUpdateManyWithWhereWithoutJuegoInput | CalificacionUpdateManyWithWhereWithoutJuegoInput[]
+    deleteMany?: CalificacionScalarWhereInput | CalificacionScalarWhereInput[]
   }
 
   export type ImagenUncheckedUpdateManyWithoutJuegoNestedInput = {
@@ -12569,20 +12583,6 @@ export namespace Prisma {
     deleteMany?: VentaScalarWhereInput | VentaScalarWhereInput[]
   }
 
-  export type CalificacionUncheckedUpdateManyWithoutJuegoNestedInput = {
-    create?: XOR<CalificacionCreateWithoutJuegoInput, CalificacionUncheckedCreateWithoutJuegoInput> | CalificacionCreateWithoutJuegoInput[] | CalificacionUncheckedCreateWithoutJuegoInput[]
-    connectOrCreate?: CalificacionCreateOrConnectWithoutJuegoInput | CalificacionCreateOrConnectWithoutJuegoInput[]
-    upsert?: CalificacionUpsertWithWhereUniqueWithoutJuegoInput | CalificacionUpsertWithWhereUniqueWithoutJuegoInput[]
-    createMany?: CalificacionCreateManyJuegoInputEnvelope
-    set?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
-    disconnect?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
-    delete?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
-    connect?: CalificacionWhereUniqueInput | CalificacionWhereUniqueInput[]
-    update?: CalificacionUpdateWithWhereUniqueWithoutJuegoInput | CalificacionUpdateWithWhereUniqueWithoutJuegoInput[]
-    updateMany?: CalificacionUpdateManyWithWhereWithoutJuegoInput | CalificacionUpdateManyWithWhereWithoutJuegoInput[]
-    deleteMany?: CalificacionScalarWhereInput | CalificacionScalarWhereInput[]
-  }
-
   export type PlataformaUncheckedUpdateManyWithoutJuegosNestedInput = {
     create?: XOR<PlataformaCreateWithoutJuegosInput, PlataformaUncheckedCreateWithoutJuegosInput> | PlataformaCreateWithoutJuegosInput[] | PlataformaUncheckedCreateWithoutJuegosInput[]
     connectOrCreate?: PlataformaCreateOrConnectWithoutJuegosInput | PlataformaCreateOrConnectWithoutJuegosInput[]
@@ -12610,30 +12610,20 @@ export namespace Prisma {
     update?: XOR<XOR<JuegoUpdateToOneWithWhereWithoutImagenesInput, JuegoUpdateWithoutImagenesInput>, JuegoUncheckedUpdateWithoutImagenesInput>
   }
 
-  export type UsuarioCreateNestedOneWithoutVentasInput = {
-    create?: XOR<UsuarioCreateWithoutVentasInput, UsuarioUncheckedCreateWithoutVentasInput>
-    connectOrCreate?: UsuarioCreateOrConnectWithoutVentasInput
-    connect?: UsuarioWhereUniqueInput
-  }
-
   export type JuegoCreateNestedOneWithoutVentasInput = {
     create?: XOR<JuegoCreateWithoutVentasInput, JuegoUncheckedCreateWithoutVentasInput>
     connectOrCreate?: JuegoCreateOrConnectWithoutVentasInput
     connect?: JuegoWhereUniqueInput
   }
 
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
-  }
-
-  export type UsuarioUpdateOneWithoutVentasNestedInput = {
+  export type UsuarioCreateNestedOneWithoutVentasInput = {
     create?: XOR<UsuarioCreateWithoutVentasInput, UsuarioUncheckedCreateWithoutVentasInput>
     connectOrCreate?: UsuarioCreateOrConnectWithoutVentasInput
-    upsert?: UsuarioUpsertWithoutVentasInput
-    disconnect?: UsuarioWhereInput | boolean
-    delete?: UsuarioWhereInput | boolean
     connect?: UsuarioWhereUniqueInput
-    update?: XOR<XOR<UsuarioUpdateToOneWithWhereWithoutVentasInput, UsuarioUpdateWithoutVentasInput>, UsuarioUncheckedUpdateWithoutVentasInput>
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
   }
 
   export type JuegoUpdateOneWithoutVentasNestedInput = {
@@ -12644,6 +12634,16 @@ export namespace Prisma {
     delete?: JuegoWhereInput | boolean
     connect?: JuegoWhereUniqueInput
     update?: XOR<XOR<JuegoUpdateToOneWithWhereWithoutVentasInput, JuegoUpdateWithoutVentasInput>, JuegoUncheckedUpdateWithoutVentasInput>
+  }
+
+  export type UsuarioUpdateOneWithoutVentasNestedInput = {
+    create?: XOR<UsuarioCreateWithoutVentasInput, UsuarioUncheckedCreateWithoutVentasInput>
+    connectOrCreate?: UsuarioCreateOrConnectWithoutVentasInput
+    upsert?: UsuarioUpsertWithoutVentasInput
+    disconnect?: UsuarioWhereInput | boolean
+    delete?: UsuarioWhereInput | boolean
+    connect?: UsuarioWhereUniqueInput
+    update?: XOR<XOR<UsuarioUpdateToOneWithWhereWithoutVentasInput, UsuarioUpdateWithoutVentasInput>, UsuarioUncheckedUpdateWithoutVentasInput>
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -12889,6 +12889,29 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type CalificacionCreateWithoutUsuarioInput = {
+    valoracion: number
+    comentario?: string | null
+    juego?: JuegoCreateNestedOneWithoutCalificacionesInput
+  }
+
+  export type CalificacionUncheckedCreateWithoutUsuarioInput = {
+    id?: number
+    valoracion: number
+    comentario?: string | null
+    juegoId?: number | null
+  }
+
+  export type CalificacionCreateOrConnectWithoutUsuarioInput = {
+    where: CalificacionWhereUniqueInput
+    create: XOR<CalificacionCreateWithoutUsuarioInput, CalificacionUncheckedCreateWithoutUsuarioInput>
+  }
+
+  export type CalificacionCreateManyUsuarioInputEnvelope = {
+    data: CalificacionCreateManyUsuarioInput | CalificacionCreateManyUsuarioInput[]
+    skipDuplicates?: boolean
+  }
+
   export type VentaCreateWithoutUsuarioInput = {
     fecha: Date | string
     codigo: string
@@ -12914,27 +12937,31 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type CalificacionCreateWithoutUsuarioInput = {
-    valoracion: number
-    comentario?: string | null
-    juego?: JuegoCreateNestedOneWithoutCalificacionesInput
-  }
-
-  export type CalificacionUncheckedCreateWithoutUsuarioInput = {
-    id?: number
-    valoracion: number
-    comentario?: string | null
-    juegoId?: number | null
-  }
-
-  export type CalificacionCreateOrConnectWithoutUsuarioInput = {
+  export type CalificacionUpsertWithWhereUniqueWithoutUsuarioInput = {
     where: CalificacionWhereUniqueInput
+    update: XOR<CalificacionUpdateWithoutUsuarioInput, CalificacionUncheckedUpdateWithoutUsuarioInput>
     create: XOR<CalificacionCreateWithoutUsuarioInput, CalificacionUncheckedCreateWithoutUsuarioInput>
   }
 
-  export type CalificacionCreateManyUsuarioInputEnvelope = {
-    data: CalificacionCreateManyUsuarioInput | CalificacionCreateManyUsuarioInput[]
-    skipDuplicates?: boolean
+  export type CalificacionUpdateWithWhereUniqueWithoutUsuarioInput = {
+    where: CalificacionWhereUniqueInput
+    data: XOR<CalificacionUpdateWithoutUsuarioInput, CalificacionUncheckedUpdateWithoutUsuarioInput>
+  }
+
+  export type CalificacionUpdateManyWithWhereWithoutUsuarioInput = {
+    where: CalificacionScalarWhereInput
+    data: XOR<CalificacionUpdateManyMutationInput, CalificacionUncheckedUpdateManyWithoutUsuarioInput>
+  }
+
+  export type CalificacionScalarWhereInput = {
+    AND?: CalificacionScalarWhereInput | CalificacionScalarWhereInput[]
+    OR?: CalificacionScalarWhereInput[]
+    NOT?: CalificacionScalarWhereInput | CalificacionScalarWhereInput[]
+    id?: IntFilter<"Calificacion"> | number
+    valoracion?: IntFilter<"Calificacion"> | number
+    comentario?: StringNullableFilter<"Calificacion"> | string | null
+    juegoId?: IntNullableFilter<"Calificacion"> | number | null
+    usuarioId?: IntNullableFilter<"Calificacion"> | number | null
   }
 
   export type VentaUpsertWithWhereUniqueWithoutUsuarioInput = {
@@ -12965,43 +12992,16 @@ export namespace Prisma {
     montoPagado?: DecimalFilter<"Venta"> | Decimal | DecimalJsLike | number | string
   }
 
-  export type CalificacionUpsertWithWhereUniqueWithoutUsuarioInput = {
-    where: CalificacionWhereUniqueInput
-    update: XOR<CalificacionUpdateWithoutUsuarioInput, CalificacionUncheckedUpdateWithoutUsuarioInput>
-    create: XOR<CalificacionCreateWithoutUsuarioInput, CalificacionUncheckedCreateWithoutUsuarioInput>
-  }
-
-  export type CalificacionUpdateWithWhereUniqueWithoutUsuarioInput = {
-    where: CalificacionWhereUniqueInput
-    data: XOR<CalificacionUpdateWithoutUsuarioInput, CalificacionUncheckedUpdateWithoutUsuarioInput>
-  }
-
-  export type CalificacionUpdateManyWithWhereWithoutUsuarioInput = {
-    where: CalificacionScalarWhereInput
-    data: XOR<CalificacionUpdateManyMutationInput, CalificacionUncheckedUpdateManyWithoutUsuarioInput>
-  }
-
-  export type CalificacionScalarWhereInput = {
-    AND?: CalificacionScalarWhereInput | CalificacionScalarWhereInput[]
-    OR?: CalificacionScalarWhereInput[]
-    NOT?: CalificacionScalarWhereInput | CalificacionScalarWhereInput[]
-    id?: IntFilter<"Calificacion"> | number
-    valoracion?: IntFilter<"Calificacion"> | number
-    comentario?: StringNullableFilter<"Calificacion"> | string | null
-    juegoId?: IntNullableFilter<"Calificacion"> | number | null
-    usuarioId?: IntNullableFilter<"Calificacion"> | number | null
-  }
-
   export type JuegoCreateWithoutPlataformasInput = {
     nombre: string
     precio: Decimal | DecimalJsLike | number | string
     estaOferta: boolean
     estado: boolean
     videoUrl?: string | null
-    categoria: CategoriaCreateNestedOneWithoutJuegosInput
-    imagenes?: ImagenCreateNestedManyWithoutJuegoInput
-    ventas?: VentaCreateNestedManyWithoutJuegoInput
     calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
+    imagenes?: ImagenCreateNestedManyWithoutJuegoInput
+    categoria: CategoriaCreateNestedOneWithoutJuegosInput
+    ventas?: VentaCreateNestedManyWithoutJuegoInput
   }
 
   export type JuegoUncheckedCreateWithoutPlataformasInput = {
@@ -13012,9 +13012,9 @@ export namespace Prisma {
     estado: boolean
     categoriaId: number
     videoUrl?: string | null
+    calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
     imagenes?: ImagenUncheckedCreateNestedManyWithoutJuegoInput
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
-    calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
   }
 
   export type JuegoCreateOrConnectWithoutPlataformasInput = {
@@ -13057,9 +13057,9 @@ export namespace Prisma {
     estaOferta: boolean
     estado: boolean
     videoUrl?: string | null
+    calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
     imagenes?: ImagenCreateNestedManyWithoutJuegoInput
     ventas?: VentaCreateNestedManyWithoutJuegoInput
-    calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaCreateNestedManyWithoutJuegosInput
   }
 
@@ -13070,9 +13070,9 @@ export namespace Prisma {
     estaOferta: boolean
     estado: boolean
     videoUrl?: string | null
+    calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
     imagenes?: ImagenUncheckedCreateNestedManyWithoutJuegoInput
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
-    calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaUncheckedCreateNestedManyWithoutJuegosInput
   }
 
@@ -13102,18 +13102,27 @@ export namespace Prisma {
     data: XOR<JuegoUpdateManyMutationInput, JuegoUncheckedUpdateManyWithoutCategoriaInput>
   }
 
-  export type CategoriaCreateWithoutJuegosInput = {
-    nombre: string
+  export type CalificacionCreateWithoutJuegoInput = {
+    valoracion: number
+    comentario?: string | null
+    usuario?: UsuarioCreateNestedOneWithoutCalificacionesInput
   }
 
-  export type CategoriaUncheckedCreateWithoutJuegosInput = {
+  export type CalificacionUncheckedCreateWithoutJuegoInput = {
     id?: number
-    nombre: string
+    valoracion: number
+    comentario?: string | null
+    usuarioId?: number | null
   }
 
-  export type CategoriaCreateOrConnectWithoutJuegosInput = {
-    where: CategoriaWhereUniqueInput
-    create: XOR<CategoriaCreateWithoutJuegosInput, CategoriaUncheckedCreateWithoutJuegosInput>
+  export type CalificacionCreateOrConnectWithoutJuegoInput = {
+    where: CalificacionWhereUniqueInput
+    create: XOR<CalificacionCreateWithoutJuegoInput, CalificacionUncheckedCreateWithoutJuegoInput>
+  }
+
+  export type CalificacionCreateManyJuegoInputEnvelope = {
+    data: CalificacionCreateManyJuegoInput | CalificacionCreateManyJuegoInput[]
+    skipDuplicates?: boolean
   }
 
   export type ImagenCreateWithoutJuegoInput = {
@@ -13135,6 +13144,20 @@ export namespace Prisma {
   export type ImagenCreateManyJuegoInputEnvelope = {
     data: ImagenCreateManyJuegoInput | ImagenCreateManyJuegoInput[]
     skipDuplicates?: boolean
+  }
+
+  export type CategoriaCreateWithoutJuegosInput = {
+    nombre: string
+  }
+
+  export type CategoriaUncheckedCreateWithoutJuegosInput = {
+    id?: number
+    nombre: string
+  }
+
+  export type CategoriaCreateOrConnectWithoutJuegosInput = {
+    where: CategoriaWhereUniqueInput
+    create: XOR<CategoriaCreateWithoutJuegosInput, CategoriaUncheckedCreateWithoutJuegosInput>
   }
 
   export type VentaCreateWithoutJuegoInput = {
@@ -13162,29 +13185,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type CalificacionCreateWithoutJuegoInput = {
-    valoracion: number
-    comentario?: string | null
-    usuario?: UsuarioCreateNestedOneWithoutCalificacionesInput
-  }
-
-  export type CalificacionUncheckedCreateWithoutJuegoInput = {
-    id?: number
-    valoracion: number
-    comentario?: string | null
-    usuarioId?: number | null
-  }
-
-  export type CalificacionCreateOrConnectWithoutJuegoInput = {
-    where: CalificacionWhereUniqueInput
-    create: XOR<CalificacionCreateWithoutJuegoInput, CalificacionUncheckedCreateWithoutJuegoInput>
-  }
-
-  export type CalificacionCreateManyJuegoInputEnvelope = {
-    data: CalificacionCreateManyJuegoInput | CalificacionCreateManyJuegoInput[]
-    skipDuplicates?: boolean
-  }
-
   export type PlataformaCreateWithoutJuegosInput = {
     nombre: string
   }
@@ -13199,24 +13199,20 @@ export namespace Prisma {
     create: XOR<PlataformaCreateWithoutJuegosInput, PlataformaUncheckedCreateWithoutJuegosInput>
   }
 
-  export type CategoriaUpsertWithoutJuegosInput = {
-    update: XOR<CategoriaUpdateWithoutJuegosInput, CategoriaUncheckedUpdateWithoutJuegosInput>
-    create: XOR<CategoriaCreateWithoutJuegosInput, CategoriaUncheckedCreateWithoutJuegosInput>
-    where?: CategoriaWhereInput
+  export type CalificacionUpsertWithWhereUniqueWithoutJuegoInput = {
+    where: CalificacionWhereUniqueInput
+    update: XOR<CalificacionUpdateWithoutJuegoInput, CalificacionUncheckedUpdateWithoutJuegoInput>
+    create: XOR<CalificacionCreateWithoutJuegoInput, CalificacionUncheckedCreateWithoutJuegoInput>
   }
 
-  export type CategoriaUpdateToOneWithWhereWithoutJuegosInput = {
-    where?: CategoriaWhereInput
-    data: XOR<CategoriaUpdateWithoutJuegosInput, CategoriaUncheckedUpdateWithoutJuegosInput>
+  export type CalificacionUpdateWithWhereUniqueWithoutJuegoInput = {
+    where: CalificacionWhereUniqueInput
+    data: XOR<CalificacionUpdateWithoutJuegoInput, CalificacionUncheckedUpdateWithoutJuegoInput>
   }
 
-  export type CategoriaUpdateWithoutJuegosInput = {
-    nombre?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type CategoriaUncheckedUpdateWithoutJuegosInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    nombre?: StringFieldUpdateOperationsInput | string
+  export type CalificacionUpdateManyWithWhereWithoutJuegoInput = {
+    where: CalificacionScalarWhereInput
+    data: XOR<CalificacionUpdateManyMutationInput, CalificacionUncheckedUpdateManyWithoutJuegoInput>
   }
 
   export type ImagenUpsertWithWhereUniqueWithoutJuegoInput = {
@@ -13245,6 +13241,26 @@ export namespace Prisma {
     descripcion?: StringFilter<"Imagen"> | string
   }
 
+  export type CategoriaUpsertWithoutJuegosInput = {
+    update: XOR<CategoriaUpdateWithoutJuegosInput, CategoriaUncheckedUpdateWithoutJuegosInput>
+    create: XOR<CategoriaCreateWithoutJuegosInput, CategoriaUncheckedCreateWithoutJuegosInput>
+    where?: CategoriaWhereInput
+  }
+
+  export type CategoriaUpdateToOneWithWhereWithoutJuegosInput = {
+    where?: CategoriaWhereInput
+    data: XOR<CategoriaUpdateWithoutJuegosInput, CategoriaUncheckedUpdateWithoutJuegosInput>
+  }
+
+  export type CategoriaUpdateWithoutJuegosInput = {
+    nombre?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type CategoriaUncheckedUpdateWithoutJuegosInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+  }
+
   export type VentaUpsertWithWhereUniqueWithoutJuegoInput = {
     where: VentaWhereUniqueInput
     update: XOR<VentaUpdateWithoutJuegoInput, VentaUncheckedUpdateWithoutJuegoInput>
@@ -13259,22 +13275,6 @@ export namespace Prisma {
   export type VentaUpdateManyWithWhereWithoutJuegoInput = {
     where: VentaScalarWhereInput
     data: XOR<VentaUpdateManyMutationInput, VentaUncheckedUpdateManyWithoutJuegoInput>
-  }
-
-  export type CalificacionUpsertWithWhereUniqueWithoutJuegoInput = {
-    where: CalificacionWhereUniqueInput
-    update: XOR<CalificacionUpdateWithoutJuegoInput, CalificacionUncheckedUpdateWithoutJuegoInput>
-    create: XOR<CalificacionCreateWithoutJuegoInput, CalificacionUncheckedCreateWithoutJuegoInput>
-  }
-
-  export type CalificacionUpdateWithWhereUniqueWithoutJuegoInput = {
-    where: CalificacionWhereUniqueInput
-    data: XOR<CalificacionUpdateWithoutJuegoInput, CalificacionUncheckedUpdateWithoutJuegoInput>
-  }
-
-  export type CalificacionUpdateManyWithWhereWithoutJuegoInput = {
-    where: CalificacionScalarWhereInput
-    data: XOR<CalificacionUpdateManyMutationInput, CalificacionUncheckedUpdateManyWithoutJuegoInput>
   }
 
   export type PlataformaUpsertWithWhereUniqueWithoutJuegosInput = {
@@ -13307,9 +13307,9 @@ export namespace Prisma {
     estaOferta: boolean
     estado: boolean
     videoUrl?: string | null
+    calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
     categoria: CategoriaCreateNestedOneWithoutJuegosInput
     ventas?: VentaCreateNestedManyWithoutJuegoInput
-    calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaCreateNestedManyWithoutJuegosInput
   }
 
@@ -13321,8 +13321,8 @@ export namespace Prisma {
     estado: boolean
     categoriaId: number
     videoUrl?: string | null
-    ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
+    ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaUncheckedCreateNestedManyWithoutJuegosInput
   }
 
@@ -13348,9 +13348,9 @@ export namespace Prisma {
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
     categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
     ventas?: VentaUpdateManyWithoutJuegoNestedInput
-    calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUpdateManyWithoutJuegosNestedInput
   }
 
@@ -13362,35 +13362,9 @@ export namespace Prisma {
     estado?: BoolFieldUpdateOperationsInput | boolean
     categoriaId?: IntFieldUpdateOperationsInput | number
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
     calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
+    ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUncheckedUpdateManyWithoutJuegosNestedInput
-  }
-
-  export type UsuarioCreateWithoutVentasInput = {
-    correo: string
-    password: string
-    nombre: string
-    rol?: string
-    token?: string | null
-    estado: boolean
-    calificaciones?: CalificacionCreateNestedManyWithoutUsuarioInput
-  }
-
-  export type UsuarioUncheckedCreateWithoutVentasInput = {
-    id?: number
-    correo: string
-    password: string
-    nombre: string
-    rol?: string
-    token?: string | null
-    estado: boolean
-    calificaciones?: CalificacionUncheckedCreateNestedManyWithoutUsuarioInput
-  }
-
-  export type UsuarioCreateOrConnectWithoutVentasInput = {
-    where: UsuarioWhereUniqueInput
-    create: XOR<UsuarioCreateWithoutVentasInput, UsuarioUncheckedCreateWithoutVentasInput>
   }
 
   export type JuegoCreateWithoutVentasInput = {
@@ -13399,9 +13373,9 @@ export namespace Prisma {
     estaOferta: boolean
     estado: boolean
     videoUrl?: string | null
-    categoria: CategoriaCreateNestedOneWithoutJuegosInput
-    imagenes?: ImagenCreateNestedManyWithoutJuegoInput
     calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
+    imagenes?: ImagenCreateNestedManyWithoutJuegoInput
+    categoria: CategoriaCreateNestedOneWithoutJuegosInput
     plataformas?: PlataformaCreateNestedManyWithoutJuegosInput
   }
 
@@ -13413,8 +13387,8 @@ export namespace Prisma {
     estado: boolean
     categoriaId: number
     videoUrl?: string | null
-    imagenes?: ImagenUncheckedCreateNestedManyWithoutJuegoInput
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
+    imagenes?: ImagenUncheckedCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaUncheckedCreateNestedManyWithoutJuegosInput
   }
 
@@ -13423,36 +13397,30 @@ export namespace Prisma {
     create: XOR<JuegoCreateWithoutVentasInput, JuegoUncheckedCreateWithoutVentasInput>
   }
 
-  export type UsuarioUpsertWithoutVentasInput = {
-    update: XOR<UsuarioUpdateWithoutVentasInput, UsuarioUncheckedUpdateWithoutVentasInput>
+  export type UsuarioCreateWithoutVentasInput = {
+    correo: string
+    password: string
+    nombre: string
+    token?: string | null
+    estado: boolean
+    rol?: string
+    calificaciones?: CalificacionCreateNestedManyWithoutUsuarioInput
+  }
+
+  export type UsuarioUncheckedCreateWithoutVentasInput = {
+    id?: number
+    correo: string
+    password: string
+    nombre: string
+    token?: string | null
+    estado: boolean
+    rol?: string
+    calificaciones?: CalificacionUncheckedCreateNestedManyWithoutUsuarioInput
+  }
+
+  export type UsuarioCreateOrConnectWithoutVentasInput = {
+    where: UsuarioWhereUniqueInput
     create: XOR<UsuarioCreateWithoutVentasInput, UsuarioUncheckedCreateWithoutVentasInput>
-    where?: UsuarioWhereInput
-  }
-
-  export type UsuarioUpdateToOneWithWhereWithoutVentasInput = {
-    where?: UsuarioWhereInput
-    data: XOR<UsuarioUpdateWithoutVentasInput, UsuarioUncheckedUpdateWithoutVentasInput>
-  }
-
-  export type UsuarioUpdateWithoutVentasInput = {
-    correo?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    nombre?: StringFieldUpdateOperationsInput | string
-    rol?: StringFieldUpdateOperationsInput | string
-    token?: NullableStringFieldUpdateOperationsInput | string | null
-    estado?: BoolFieldUpdateOperationsInput | boolean
-    calificaciones?: CalificacionUpdateManyWithoutUsuarioNestedInput
-  }
-
-  export type UsuarioUncheckedUpdateWithoutVentasInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    correo?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    nombre?: StringFieldUpdateOperationsInput | string
-    rol?: StringFieldUpdateOperationsInput | string
-    token?: NullableStringFieldUpdateOperationsInput | string | null
-    estado?: BoolFieldUpdateOperationsInput | boolean
-    calificaciones?: CalificacionUncheckedUpdateManyWithoutUsuarioNestedInput
   }
 
   export type JuegoUpsertWithoutVentasInput = {
@@ -13472,9 +13440,9 @@ export namespace Prisma {
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
-    imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
     calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
+    imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
+    categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
     plataformas?: PlataformaUpdateManyWithoutJuegosNestedInput
   }
 
@@ -13486,9 +13454,41 @@ export namespace Prisma {
     estado?: BoolFieldUpdateOperationsInput | boolean
     categoriaId?: IntFieldUpdateOperationsInput | number
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    imagenes?: ImagenUncheckedUpdateManyWithoutJuegoNestedInput
     calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
+    imagenes?: ImagenUncheckedUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUncheckedUpdateManyWithoutJuegosNestedInput
+  }
+
+  export type UsuarioUpsertWithoutVentasInput = {
+    update: XOR<UsuarioUpdateWithoutVentasInput, UsuarioUncheckedUpdateWithoutVentasInput>
+    create: XOR<UsuarioCreateWithoutVentasInput, UsuarioUncheckedCreateWithoutVentasInput>
+    where?: UsuarioWhereInput
+  }
+
+  export type UsuarioUpdateToOneWithWhereWithoutVentasInput = {
+    where?: UsuarioWhereInput
+    data: XOR<UsuarioUpdateWithoutVentasInput, UsuarioUncheckedUpdateWithoutVentasInput>
+  }
+
+  export type UsuarioUpdateWithoutVentasInput = {
+    correo?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    token?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: BoolFieldUpdateOperationsInput | boolean
+    rol?: StringFieldUpdateOperationsInput | string
+    calificaciones?: CalificacionUpdateManyWithoutUsuarioNestedInput
+  }
+
+  export type UsuarioUncheckedUpdateWithoutVentasInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    correo?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    token?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: BoolFieldUpdateOperationsInput | boolean
+    rol?: StringFieldUpdateOperationsInput | string
+    calificaciones?: CalificacionUncheckedUpdateManyWithoutUsuarioNestedInput
   }
 
   export type JuegoCreateWithoutCalificacionesInput = {
@@ -13497,8 +13497,8 @@ export namespace Prisma {
     estaOferta: boolean
     estado: boolean
     videoUrl?: string | null
-    categoria: CategoriaCreateNestedOneWithoutJuegosInput
     imagenes?: ImagenCreateNestedManyWithoutJuegoInput
+    categoria: CategoriaCreateNestedOneWithoutJuegosInput
     ventas?: VentaCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaCreateNestedManyWithoutJuegosInput
   }
@@ -13525,9 +13525,9 @@ export namespace Prisma {
     correo: string
     password: string
     nombre: string
-    rol?: string
     token?: string | null
     estado: boolean
+    rol?: string
     ventas?: VentaCreateNestedManyWithoutUsuarioInput
   }
 
@@ -13536,9 +13536,9 @@ export namespace Prisma {
     correo: string
     password: string
     nombre: string
-    rol?: string
     token?: string | null
     estado: boolean
+    rol?: string
     ventas?: VentaUncheckedCreateNestedManyWithoutUsuarioInput
   }
 
@@ -13564,8 +13564,8 @@ export namespace Prisma {
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
     imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
+    categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
     ventas?: VentaUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUpdateManyWithoutJuegosNestedInput
   }
@@ -13598,9 +13598,9 @@ export namespace Prisma {
     correo?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nombre?: StringFieldUpdateOperationsInput | string
-    rol?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: BoolFieldUpdateOperationsInput | boolean
+    rol?: StringFieldUpdateOperationsInput | string
     ventas?: VentaUpdateManyWithoutUsuarioNestedInput
   }
 
@@ -13609,10 +13609,17 @@ export namespace Prisma {
     correo?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     nombre?: StringFieldUpdateOperationsInput | string
-    rol?: StringFieldUpdateOperationsInput | string
     token?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: BoolFieldUpdateOperationsInput | boolean
+    rol?: StringFieldUpdateOperationsInput | string
     ventas?: VentaUncheckedUpdateManyWithoutUsuarioNestedInput
+  }
+
+  export type CalificacionCreateManyUsuarioInput = {
+    id?: number
+    valoracion: number
+    comentario?: string | null
+    juegoId?: number | null
   }
 
   export type VentaCreateManyUsuarioInput = {
@@ -13623,11 +13630,24 @@ export namespace Prisma {
     montoPagado: Decimal | DecimalJsLike | number | string
   }
 
-  export type CalificacionCreateManyUsuarioInput = {
-    id?: number
-    valoracion: number
-    comentario?: string | null
-    juegoId?: number | null
+  export type CalificacionUpdateWithoutUsuarioInput = {
+    valoracion?: IntFieldUpdateOperationsInput | number
+    comentario?: NullableStringFieldUpdateOperationsInput | string | null
+    juego?: JuegoUpdateOneWithoutCalificacionesNestedInput
+  }
+
+  export type CalificacionUncheckedUpdateWithoutUsuarioInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    valoracion?: IntFieldUpdateOperationsInput | number
+    comentario?: NullableStringFieldUpdateOperationsInput | string | null
+    juegoId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type CalificacionUncheckedUpdateManyWithoutUsuarioInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    valoracion?: IntFieldUpdateOperationsInput | number
+    comentario?: NullableStringFieldUpdateOperationsInput | string | null
+    juegoId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type VentaUpdateWithoutUsuarioInput = {
@@ -13653,36 +13673,16 @@ export namespace Prisma {
     montoPagado?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
-  export type CalificacionUpdateWithoutUsuarioInput = {
-    valoracion?: IntFieldUpdateOperationsInput | number
-    comentario?: NullableStringFieldUpdateOperationsInput | string | null
-    juego?: JuegoUpdateOneWithoutCalificacionesNestedInput
-  }
-
-  export type CalificacionUncheckedUpdateWithoutUsuarioInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    valoracion?: IntFieldUpdateOperationsInput | number
-    comentario?: NullableStringFieldUpdateOperationsInput | string | null
-    juegoId?: NullableIntFieldUpdateOperationsInput | number | null
-  }
-
-  export type CalificacionUncheckedUpdateManyWithoutUsuarioInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    valoracion?: IntFieldUpdateOperationsInput | number
-    comentario?: NullableStringFieldUpdateOperationsInput | string | null
-    juegoId?: NullableIntFieldUpdateOperationsInput | number | null
-  }
-
   export type JuegoUpdateWithoutPlataformasInput = {
     nombre?: StringFieldUpdateOperationsInput | string
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
-    imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
-    ventas?: VentaUpdateManyWithoutJuegoNestedInput
     calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
+    imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
+    categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
+    ventas?: VentaUpdateManyWithoutJuegoNestedInput
   }
 
   export type JuegoUncheckedUpdateWithoutPlataformasInput = {
@@ -13693,9 +13693,9 @@ export namespace Prisma {
     estado?: BoolFieldUpdateOperationsInput | boolean
     categoriaId?: IntFieldUpdateOperationsInput | number
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
     imagenes?: ImagenUncheckedUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
-    calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
   }
 
   export type JuegoUncheckedUpdateManyWithoutPlataformasInput = {
@@ -13723,9 +13723,9 @@ export namespace Prisma {
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
     imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUpdateManyWithoutJuegoNestedInput
-    calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUpdateManyWithoutJuegosNestedInput
   }
 
@@ -13736,9 +13736,9 @@ export namespace Prisma {
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
     imagenes?: ImagenUncheckedUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
-    calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUncheckedUpdateManyWithoutJuegosNestedInput
   }
 
@@ -13749,6 +13749,13 @@ export namespace Prisma {
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CalificacionCreateManyJuegoInput = {
+    id?: number
+    valoracion: number
+    comentario?: string | null
+    usuarioId?: number | null
   }
 
   export type ImagenCreateManyJuegoInput = {
@@ -13765,11 +13772,24 @@ export namespace Prisma {
     montoPagado: Decimal | DecimalJsLike | number | string
   }
 
-  export type CalificacionCreateManyJuegoInput = {
-    id?: number
-    valoracion: number
-    comentario?: string | null
-    usuarioId?: number | null
+  export type CalificacionUpdateWithoutJuegoInput = {
+    valoracion?: IntFieldUpdateOperationsInput | number
+    comentario?: NullableStringFieldUpdateOperationsInput | string | null
+    usuario?: UsuarioUpdateOneWithoutCalificacionesNestedInput
+  }
+
+  export type CalificacionUncheckedUpdateWithoutJuegoInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    valoracion?: IntFieldUpdateOperationsInput | number
+    comentario?: NullableStringFieldUpdateOperationsInput | string | null
+    usuarioId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type CalificacionUncheckedUpdateManyWithoutJuegoInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    valoracion?: IntFieldUpdateOperationsInput | number
+    comentario?: NullableStringFieldUpdateOperationsInput | string | null
+    usuarioId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ImagenUpdateWithoutJuegoInput = {
@@ -13810,26 +13830,6 @@ export namespace Prisma {
     usuarioId?: NullableIntFieldUpdateOperationsInput | number | null
     codigo?: StringFieldUpdateOperationsInput | string
     montoPagado?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-  }
-
-  export type CalificacionUpdateWithoutJuegoInput = {
-    valoracion?: IntFieldUpdateOperationsInput | number
-    comentario?: NullableStringFieldUpdateOperationsInput | string | null
-    usuario?: UsuarioUpdateOneWithoutCalificacionesNestedInput
-  }
-
-  export type CalificacionUncheckedUpdateWithoutJuegoInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    valoracion?: IntFieldUpdateOperationsInput | number
-    comentario?: NullableStringFieldUpdateOperationsInput | string | null
-    usuarioId?: NullableIntFieldUpdateOperationsInput | number | null
-  }
-
-  export type CalificacionUncheckedUpdateManyWithoutJuegoInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    valoracion?: IntFieldUpdateOperationsInput | number
-    comentario?: NullableStringFieldUpdateOperationsInput | string | null
-    usuarioId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type PlataformaUpdateWithoutJuegosInput = {
