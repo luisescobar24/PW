@@ -45,6 +45,7 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
   const [loading, setLoading] = useState(false);
   const [imagenesFiles, setImagenesFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  const [imagenesAConservar, setImagenesAConservar] = useState<number[]>([]);
 
   useEffect(() => {
     if (id) {
@@ -82,6 +83,18 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
       .catch(() => setTodasCategorias([]));
   }, []);
 
+  // Cuando se carga el juego, inicializa imagenesAConservar con los IDs actuales
+  useEffect(() => {
+    if (formData && Array.isArray(formData.imagenes)) {
+      // Si las imágenes tienen ID, guárdalos
+      setImagenesAConservar(
+        formData.imagenes
+          .map((img: any) => img.id)
+          .filter((id: any) => typeof id === 'number')
+      );
+    }
+  }, [formData]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     if (!formData) return;
     const { name, value, type } = e.target;
@@ -111,18 +124,37 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
     }));
   };
 
-  // Manejar selección de archivos
+  // Manejar selección de archivos (acumula, no reemplaza)
   const handleImagenesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setImagenesFiles(Array.from(e.target.files));
-      setPreviewUrls([]); // Limpiar previews hasta confirmar
+      // Acumula los archivos seleccionados, pero solo los nuevos hasta confirmar
+      setImagenesFiles(prev => [...prev, ...Array.from(e.target.files as FileList)]);
     }
   };
 
-  // Botón para confirmar imágenes seleccionadas y mostrar previews
+  // Confirmar imágenes seleccionadas y mostrar previews (acumula)
   const handleConfirmarImagenes = () => {
-    const urls = imagenesFiles.map(file => URL.createObjectURL(file));
-    setPreviewUrls(urls);
+    // Solo agregar previews de los archivos que aún no se han mostrado
+    const newFiles = imagenesFiles.slice(previewUrls.length);
+    const newUrls = newFiles.map(file => URL.createObjectURL(file));
+    setPreviewUrls(prev => [...prev, ...newUrls]);
+    // Limpia el input de archivos para permitir volver a seleccionar los mismos si se desea
+    (document.querySelector('input[name="imagenes"]') as HTMLInputElement).value = '';
+  };
+
+  // Eliminar imagen existente (antes de guardar)
+  const handleEliminarImagenExistente = (id: number) => {
+    setImagenesAConservar(prev => prev.filter(imgId => imgId !== id));
+    setFormData(prev => ({
+      ...prev,
+      imagenes: prev.imagenes.filter((img: any) => img.id !== id),
+    }));
+  };
+
+  // Eliminar imagen nueva seleccionada (antes de guardar)
+  const handleEliminarImagenNueva = (idx: number) => {
+    setPreviewUrls(prev => prev.filter((_, i) => i !== idx));
+    setImagenesFiles(prev => prev.filter((_, i) => i !== idx));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -132,6 +164,7 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
     setSuccess('');
     setLoading(true);
     try {
+      // Asegúrate de enviar solo los IDs de plataformas seleccionadas
       const plataformasIds = formData.plataformas.map(p => p.id);
 
       const form = new FormData();
@@ -141,9 +174,9 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
       form.append('estado', String(formData.estado));
       form.append('categoriaId', String(formData.categoriaId));
       form.append('videoUrl', formData.videoUrl || '');
-      form.append('plataformas', JSON.stringify(plataformasIds));
-      // Adjuntar archivos de imagen
+      form.append('plataformas', JSON.stringify(plataformasIds)); // <-- solo IDs
       imagenesFiles.forEach(file => form.append('imagenes', file));
+      form.append('imagenesAConservar', JSON.stringify(imagenesAConservar));
 
       await fetch(`http://localhost:3000/api/juegos/${formData.id}`, {
         method: 'PUT',
@@ -256,26 +289,35 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
               accept="image/*"
               onChange={handleImagenesChange}
             />
-            <button type="button" onClick={handleConfirmarImagenes} disabled={imagenesFiles.length === 0}>
+            <button
+              type="button"
+              onClick={handleConfirmarImagenes}
+              disabled={imagenesFiles.length === previewUrls.length}
+            >
               Confirmar imágenes
             </button>
             <div>
-              {/* Previsualización de nuevas imágenes seleccionadas */}
-              {previewUrls.length > 0 ? (
-                previewUrls.map((url, idx) => (
-                  <div key={idx}>
-                    <img src={url} alt={`preview-${idx}`} style={{ maxWidth: 100 }} />
-                  </div>
-                ))
-              ) : (
-                // Si no hay nuevas, muestra las actuales
-                formData.imagenes.map((img, idx) => (
-                  <div key={idx}>
+              {/* Imágenes existentes (con opción de eliminar) */}
+              {formData.imagenes.map((img: any) =>
+                imagenesAConservar.includes(img.id) ? (
+                  <div key={img.id} style={{ display: 'inline-block', margin: 4 }}>
                     <img src={img.url} alt={img.descripcion} style={{ maxWidth: 100 }} />
                     <span>{img.descripcion}</span>
+                    <button type="button" onClick={() => handleEliminarImagenExistente(img.id)}>
+                      Quitar
+                    </button>
                   </div>
-                ))
+                ) : null
               )}
+              {/* Nuevas imágenes seleccionadas (con opción de eliminar) */}
+              {previewUrls.map((url, idx) => (
+                <div key={url} style={{ display: 'inline-block', margin: 4 }}>
+                  <img src={url} alt={`preview-${idx}`} style={{ maxWidth: 100 }} />
+                  <button type="button" onClick={() => handleEliminarImagenNueva(idx)}>
+                    Quitar
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
           <div>

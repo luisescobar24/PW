@@ -11,6 +11,13 @@ import fs from 'fs';
 
 dotenv.config();  // Cargar las variables de entorno desde .env
 
+// Configuración global de Cloudinary (asegúrate de tener las variables en tu .env)
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 // Configuración de Multer para manejar la carga de imágenes
 const upload = multer({ dest: 'uploads/' });
 
@@ -497,7 +504,7 @@ app.post('/api/juegos', async (req: Request, res: Response) => {
 // Ruta para editar un juego (sin token requerido)
 app.put('/api/juegos/:id', upload.array('imagenes', 10), async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { nombre, precio, estaOferta, estado, categoriaId, videoUrl, plataformas } = req.body;
+  const { nombre, precio, estaOferta, estado, categoriaId, videoUrl, plataformas, imagenesAConservar } = req.body;
 
   try {
     // Convertir 'estado' y 'estaOferta' a booleanos
@@ -510,14 +517,51 @@ app.put('/api/juegos/:id', upload.array('imagenes', 10), async (req: Request, re
       return res.status(400).json({ message: 'Invalid categoriaId provided, it should be a number' });
     }
 
-    // Obtener el juego actual con sus imágenes
+    // Obtener el juego actual con sus imágenes y plataformas
     const game = await prisma.juego.findUnique({
       where: { id: parseInt(id) },
-      include: { imagenes: true },
+      include: { imagenes: true, plataformas: true },
     });
 
     if (!game) {
       return res.status(404).json({ message: 'Juego no encontrado' });
+    }
+
+    // Parsear imagenesAConservar (puede venir como string si es form-data)
+    let imagenesAConservarArray: number[] = [];
+    if (imagenesAConservar) {
+      if (typeof imagenesAConservar === 'string') {
+        try {
+          imagenesAConservarArray = JSON.parse(imagenesAConservar);
+        } catch {
+          imagenesAConservarArray = [Number(imagenesAConservar)];
+        }
+      } else if (Array.isArray(imagenesAConservar)) {
+        imagenesAConservarArray = imagenesAConservar.map(Number);
+      }
+    }
+
+    // Identificar imágenes a eliminar (las que NO están en imagenesAConservar)
+    const imagenesAEliminar = game.imagenes.filter(
+      (img: any) => !imagenesAConservarArray.includes(img.id)
+    );
+
+    // Eliminar imágenes de Cloudinary y de la base de datos
+    if (imagenesAEliminar.length > 0) {
+      const deletePromises = imagenesAEliminar.map((image: any) => {
+        const parts = image.url.split('/');
+        const fileName = parts[parts.length - 1];
+        const publicId = fileName.split('.')[0];
+        return cloudinary.v2.uploader.destroy(`juegos/${publicId}`);
+      });
+      await Promise.all(deletePromises);
+
+      // Eliminar de la base de datos
+      await prisma.imagen.deleteMany({
+        where: {
+          id: { in: imagenesAEliminar.map((img: any) => img.id) }
+        }
+      });
     }
 
     // Subir nuevas imágenes a Cloudinary
@@ -528,17 +572,7 @@ app.put('/api/juegos/:id', upload.array('imagenes', 10), async (req: Request, re
       }) || []
     );
 
-    // Eliminar imágenes antiguas de Cloudinary
-    if (game.imagenes && game.imagenes.length > 0) {
-      const deletePromises = game.imagenes.map((image: any) => {
-        const parts = image.url.split('/');
-        const fileName = parts[parts.length - 1];
-        const publicId = fileName.split('.')[0];
-        return cloudinary.v2.uploader.destroy(publicId);
-      });
-      await Promise.all(deletePromises);
-    }
-
+    // --- PLATAFORMAS ---
     // Asegurarse de que plataformas es un array de números
     let plataformasArray: number[] = [];
     if (Array.isArray(plataformas)) {
@@ -551,6 +585,19 @@ app.put('/api/juegos/:id', upload.array('imagenes', 10), async (req: Request, re
       }
     }
 
+    // Obtener IDs de plataformas actuales
+    const plataformasActuales = game.plataformas.map((p: any) => p.id);
+
+    // Calcular plataformas a desconectar (las que ya no están seleccionadas)
+    const plataformasADesconectar = plataformasActuales.filter(
+      (id: number) => !plataformasArray.includes(id)
+    );
+
+    // Calcular plataformas a conectar (las nuevas seleccionadas)
+    const plataformasAConectar = plataformasArray.filter(
+      (id: number) => !plataformasActuales.includes(id)
+    );
+
     // Actualizar el juego en la base de datos
     const juegoEditado = await prisma.juego.update({
       where: { id: parseInt(id) },
@@ -561,13 +608,12 @@ app.put('/api/juegos/:id', upload.array('imagenes', 10), async (req: Request, re
         estado: isEstado,
         categoriaId: categoriaIdNumber,
         imagenes: {
-          deleteMany: {},
           create: uploadedImages,
         },
         videoUrl,
         plataformas: {
-          disconnect: [],
-          connect: plataformasArray.map((plataformaId: number) => ({ id: plataformaId })),
+          disconnect: plataformasADesconectar.map((id: number) => ({ id })),
+          connect: plataformasAConectar.map((id: number) => ({ id })),
         }
       }
     });
@@ -737,13 +783,7 @@ function cors(options: {
 
 // Implementación real para subir imágenes a Cloudinary
 async function uploadImageToCloudinary(path: string): Promise<string> {
-  // Configuración de Cloudinary (asegúrate de tener las variables en tu .env)
-  cloudinary.v2.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-  });
-
+  // Ya no necesitas configurar aquí
   try {
     const result = await cloudinary.v2.uploader.upload(path, {
       folder: 'juegos', // Puedes cambiar el folder si lo deseas
