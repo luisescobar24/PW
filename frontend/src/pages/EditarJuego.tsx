@@ -43,6 +43,8 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [imagenesFiles, setImagenesFiles] = useState<File[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   useEffect(() => {
     if (id) {
@@ -109,6 +111,20 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
     }));
   };
 
+  // Manejar selección de archivos
+  const handleImagenesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setImagenesFiles(Array.from(e.target.files));
+      setPreviewUrls([]); // Limpiar previews hasta confirmar
+    }
+  };
+
+  // Botón para confirmar imágenes seleccionadas y mostrar previews
+  const handleConfirmarImagenes = () => {
+    const urls = imagenesFiles.map(file => URL.createObjectURL(file));
+    setPreviewUrls(urls);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData) return;
@@ -118,14 +134,22 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
     try {
       const plataformasIds = formData.plataformas.map(p => p.id);
 
+      const form = new FormData();
+      form.append('nombre', formData.nombre);
+      form.append('precio', String(formData.precio));
+      form.append('estaOferta', String(formData.estaOferta));
+      form.append('estado', String(formData.estado));
+      form.append('categoriaId', String(formData.categoriaId));
+      form.append('videoUrl', formData.videoUrl || '');
+      form.append('plataformas', JSON.stringify(plataformasIds));
+      // Adjuntar archivos de imagen
+      imagenesFiles.forEach(file => form.append('imagenes', file));
+
       await fetch(`http://localhost:3000/api/juegos/${formData.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          plataformas: plataformasIds
-        }),
+        body: form,
       });
+
       setSuccess('Juego actualizado correctamente');
       onSave(formData);
       setTimeout(() => {
@@ -223,53 +247,37 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
               ))}
             </select>
           </div>
-          {formData.imagenes.map((img, idx) => (
-            <div className="img-block" key={idx}>
-              <label>URL de la imagen #{idx + 1}</label>
-              <input
-                type="url"
-                required
-                value={img.url || ''}
-                onChange={e => {
-                  const newImgs = [...formData.imagenes];
-                  newImgs[idx].url = e.target.value;
-                  setFormData(prev => prev && ({ ...prev, imagenes: newImgs }));
-                }}
-              />
-              <label>Descripción de la imagen #{idx + 1}</label>
-              <input
-                type="text"
-                value={img.descripcion || ''}
-                onChange={e => {
-                  const newImgs = [...formData.imagenes];
-                  newImgs[idx].descripcion = e.target.value;
-                  setFormData(prev => prev && ({ ...prev, imagenes: newImgs }));
-                }}
-              />
-              <button
-                type="button"
-                onClick={() => {
-                  const newImgs = formData.imagenes.filter((_, i) => i !== idx);
-                  setFormData(prev => prev && ({ ...prev, imagenes: newImgs }));
-                }}
-                disabled={formData.imagenes.length === 1}
-              >
-                Eliminar imagen
-              </button>
+          <div>
+            <label>Imágenes</label>
+            <input
+              type="file"
+              name="imagenes"
+              multiple
+              accept="image/*"
+              onChange={handleImagenesChange}
+            />
+            <button type="button" onClick={handleConfirmarImagenes} disabled={imagenesFiles.length === 0}>
+              Confirmar imágenes
+            </button>
+            <div>
+              {/* Previsualización de nuevas imágenes seleccionadas */}
+              {previewUrls.length > 0 ? (
+                previewUrls.map((url, idx) => (
+                  <div key={idx}>
+                    <img src={url} alt={`preview-${idx}`} style={{ maxWidth: 100 }} />
+                  </div>
+                ))
+              ) : (
+                // Si no hay nuevas, muestra las actuales
+                formData.imagenes.map((img, idx) => (
+                  <div key={idx}>
+                    <img src={img.url} alt={img.descripcion} style={{ maxWidth: 100 }} />
+                    <span>{img.descripcion}</span>
+                  </div>
+                ))
+              )}
             </div>
-          ))}
-          <button
-            type="button"
-            className="add-img-btn"
-            onClick={() =>
-              setFormData(prev => prev && ({
-                ...prev,
-                imagenes: [...prev.imagenes, { url: '', descripcion: '' }]
-              }))
-            }
-          >
-            + Agregar otra imagen
-          </button>
+          </div>
           <div>
             <label>Video URL</label>
             <input

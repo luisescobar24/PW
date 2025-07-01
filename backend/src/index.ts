@@ -11,6 +11,9 @@ import fs from 'fs';
 
 dotenv.config();  // Cargar las variables de entorno desde .env
 
+// Configuración de Multer para manejar la carga de imágenes
+const upload = multer({ dest: 'uploads/' });
+
 const app = express();
 const prisma = new PrismaClient();  // Inicializando el cliente de Prisma
 
@@ -488,31 +491,83 @@ app.post('/api/juegos', async (req: Request, res: Response) => {
   }
 });
 
+// Configuración de Multer para manejar la carga de imágenes
+// (Declaración de Multer movida arriba, antes de su primer uso)
+
 // Ruta para editar un juego (sin token requerido)
-app.put('/api/juegos/:id', async (req: Request, res: Response) => {
+app.put('/api/juegos/:id', upload.array('imagenes', 10), async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { nombre, precio, estaOferta, estado, categoriaId, imagenes, videoUrl, plataformas } = req.body;
+  const { nombre, precio, estaOferta, estado, categoriaId, videoUrl, plataformas } = req.body;
 
   try {
+    // Convertir 'estado' y 'estaOferta' a booleanos
+    const isEstado = (estado === 'true' || estado === true);
+    const isOferta = (estaOferta === 'true' || estaOferta === true);
+
+    // Convertir 'categoriaId' a número
+    const categoriaIdNumber = Number(categoriaId);
+    if (isNaN(categoriaIdNumber)) {
+      return res.status(400).json({ message: 'Invalid categoriaId provided, it should be a number' });
+    }
+
+    // Obtener el juego actual con sus imágenes
+    const game = await prisma.juego.findUnique({
+      where: { id: parseInt(id) },
+      include: { imagenes: true },
+    });
+
+    if (!game) {
+      return res.status(404).json({ message: 'Juego no encontrado' });
+    }
+
+    // Subir nuevas imágenes a Cloudinary
+    const uploadedImages = await Promise.all(
+      (req.files as Express.Multer.File[] | undefined)?.map(async (file) => {
+        const imageUrl = await uploadImageToCloudinary(file.path);
+        return { url: imageUrl, descripcion: file.originalname };
+      }) || []
+    );
+
+    // Eliminar imágenes antiguas de Cloudinary
+    if (game.imagenes && game.imagenes.length > 0) {
+      const deletePromises = game.imagenes.map((image: any) => {
+        const parts = image.url.split('/');
+        const fileName = parts[parts.length - 1];
+        const publicId = fileName.split('.')[0];
+        return cloudinary.v2.uploader.destroy(publicId);
+      });
+      await Promise.all(deletePromises);
+    }
+
+    // Asegurarse de que plataformas es un array de números
+    let plataformasArray: number[] = [];
+    if (Array.isArray(plataformas)) {
+      plataformasArray = plataformas.map(Number);
+    } else if (typeof plataformas === 'string' && plataformas.trim() !== '') {
+      try {
+        plataformasArray = JSON.parse(plataformas);
+      } catch {
+        plataformasArray = [];
+      }
+    }
+
+    // Actualizar el juego en la base de datos
     const juegoEditado = await prisma.juego.update({
       where: { id: parseInt(id) },
       data: {
         nombre,
         precio,
-        estaOferta,
-        estado,
-        categoriaId,
+        estaOferta: isOferta,
+        estado: isEstado,
+        categoriaId: categoriaIdNumber,
         imagenes: {
-          deleteMany: {}, // Eliminar las imágenes anteriores
-          create: imagenes.map((imagen: { url: string, descripcion: string }) => ({
-            url: imagen.url,
-            descripcion: imagen.descripcion
-          }))
+          deleteMany: {},
+          create: uploadedImages,
         },
         videoUrl,
         plataformas: {
           disconnect: [],
-          connect: plataformas.map((plataformaId: number) => ({ id: plataformaId }))
+          connect: plataformasArray.map((plataformaId: number) => ({ id: plataformaId })),
         }
       }
     });
@@ -680,44 +735,28 @@ function cors(options: {
   };
 }
 
-// Configuración de Cloudinary
-cloudinary.v2.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
-  api_key: process.env.CLOUDINARY_API_KEY!,
-  api_secret: process.env.CLOUDINARY_API_SECRET!,
-});
-
-
-
-// Configuración de Multer para manejar la carga de imágenes
-const upload = multer({ dest: 'uploads/' });
-
-// Función para subir imágenes a Cloudinary
-const uploadImageToCloudinary = async (filePath: string): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    cloudinary.v2.uploader.upload(filePath, (error, result) => {
-      // Elimina el archivo local después de subirlo
-      fs.unlink(filePath, () => {});
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result?.secure_url || '');
-      }
-    });
+// Implementación real para subir imágenes a Cloudinary
+async function uploadImageToCloudinary(path: string): Promise<string> {
+  // Configuración de Cloudinary (asegúrate de tener las variables en tu .env)
+  cloudinary.v2.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
   });
-};
-
-// Ruta para subir imágenes a Cloudinary
-app.post('/api/upload-image', upload.single('image'), async (req: Request, res: Response) => {
-  if (!req.file) {
-    return res.status(400).json({ message: 'No image uploaded' });
-  }
 
   try {
-    const imageUrl = await uploadImageToCloudinary(req.file.path);  // Subir imagen a Cloudinary
-    return res.status(200).json({ imageUrl });
+    const result = await cloudinary.v2.uploader.upload(path, {
+      folder: 'juegos', // Puedes cambiar el folder si lo deseas
+    });
+    // Elimina el archivo local después de subirlo
+    fs.unlinkSync(path);
+    return result.secure_url;
   } catch (error) {
-    console.error('Error al subir la imagen a Cloudinary:', error);
-    return res.status(500).json({ message: 'Error al subir la imagen' });
+    // Elimina el archivo local si ocurre un error
+    if (fs.existsSync(path)) {
+      fs.unlinkSync(path);
+    }
+    throw error;
   }
-});
+}
+
