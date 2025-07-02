@@ -40,6 +40,7 @@ model Juego {
   estado         Boolean
   categoriaId    Int
   videoUrl       String?        @db.VarChar(255)
+  descripcion    String?        @db.VarChar(255) // New description field
   calificaciones Calificacion[]
   imagenes       Imagen[]       @relation("JuegoImagenes")
   categoria      Categoria      @relation(fields: [categoriaId], references: [id])

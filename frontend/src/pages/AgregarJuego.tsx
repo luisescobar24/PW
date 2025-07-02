@@ -9,6 +9,7 @@ interface Imagen {
 
 interface Game {
   nombre: string;
+  descripcion: string; // Nuevo campo
   precio: number;
   estaOferta: boolean;
   estado: boolean;
@@ -26,6 +27,7 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<Game>({
     nombre: "",
+    descripcion: "", // Nuevo campo
     precio: 0,
     estaOferta: false,
     estado: true,
@@ -55,8 +57,10 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
       .then((data) => setPlataformasDisponibles(data));
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target as HTMLInputElement | HTMLSelectElement;
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]:
@@ -109,6 +113,7 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
     if (!formData.nombre.trim()) newErrors.nombre = "El nombre es requerido";
+    if (!formData.descripcion.trim()) newErrors.descripcion = "La descripción es requerida";
     if (formData.precio <= 0) newErrors.precio = "El precio debe ser mayor a 0";
     if (!formData.categoriaId) newErrors.categoriaId = "La categoría es requerida";
     if (formData.imagenes.length === 0) newErrors.imagenes = "Agrega al menos una imagen";
@@ -124,7 +129,7 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
         const response = await fetch("http://localhost:3000/api/juegos", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(formData), // Incluye descripcion
         });
         if (response.ok) {
           navigate("/adminjuegos");
@@ -203,7 +208,18 @@ const handleImageUpload = async () => {
               />
               {errors.nombre && <span className="error-message">{errors.nombre}</span>}
             </div>
-
+            <div className="form-group">
+              <label>Descripción *</label>
+              <textarea
+                name="descripcion"
+                value={formData.descripcion}
+                onChange={handleChange}
+                placeholder="Describe el juego"
+                required
+                className="descripcion-input"
+              />
+              {errors.descripcion && <span className="error-message">{errors.descripcion}</span>}
+            </div>
             <div className="form-group">
               <label>Precio ($) *</label>
               <input

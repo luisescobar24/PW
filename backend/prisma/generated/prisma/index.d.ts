@@ -4985,6 +4985,7 @@ export namespace Prisma {
     estado: boolean | null
     categoriaId: number | null
     videoUrl: string | null
+    descripcion: string | null
   }
 
   export type JuegoMaxAggregateOutputType = {
@@ -4995,6 +4996,7 @@ export namespace Prisma {
     estado: boolean | null
     categoriaId: number | null
     videoUrl: string | null
+    descripcion: string | null
   }
 
   export type JuegoCountAggregateOutputType = {
@@ -5005,6 +5007,7 @@ export namespace Prisma {
     estado: number
     categoriaId: number
     videoUrl: number
+    descripcion: number
     _all: number
   }
 
@@ -5029,6 +5032,7 @@ export namespace Prisma {
     estado?: true
     categoriaId?: true
     videoUrl?: true
+    descripcion?: true
   }
 
   export type JuegoMaxAggregateInputType = {
@@ -5039,6 +5043,7 @@ export namespace Prisma {
     estado?: true
     categoriaId?: true
     videoUrl?: true
+    descripcion?: true
   }
 
   export type JuegoCountAggregateInputType = {
@@ -5049,6 +5054,7 @@ export namespace Prisma {
     estado?: true
     categoriaId?: true
     videoUrl?: true
+    descripcion?: true
     _all?: true
   }
 
@@ -5146,6 +5152,7 @@ export namespace Prisma {
     estado: boolean
     categoriaId: number
     videoUrl: string | null
+    descripcion: string | null
     _count: JuegoCountAggregateOutputType | null
     _avg: JuegoAvgAggregateOutputType | null
     _sum: JuegoSumAggregateOutputType | null
@@ -5175,6 +5182,7 @@ export namespace Prisma {
     estado?: boolean
     categoriaId?: boolean
     videoUrl?: boolean
+    descripcion?: boolean
     calificaciones?: boolean | Juego$calificacionesArgs<ExtArgs>
     imagenes?: boolean | Juego$imagenesArgs<ExtArgs>
     categoria?: boolean | CategoriaDefaultArgs<ExtArgs>
@@ -5191,6 +5199,7 @@ export namespace Prisma {
     estado?: boolean
     categoriaId?: boolean
     videoUrl?: boolean
+    descripcion?: boolean
     categoria?: boolean | CategoriaDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["juego"]>
 
@@ -5202,6 +5211,7 @@ export namespace Prisma {
     estado?: boolean
     categoriaId?: boolean
     videoUrl?: boolean
+    descripcion?: boolean
     categoria?: boolean | CategoriaDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["juego"]>
 
@@ -5213,9 +5223,10 @@ export namespace Prisma {
     estado?: boolean
     categoriaId?: boolean
     videoUrl?: boolean
+    descripcion?: boolean
   }
 
-  export type JuegoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nombre" | "precio" | "estaOferta" | "estado" | "categoriaId" | "videoUrl", ExtArgs["result"]["juego"]>
+  export type JuegoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nombre" | "precio" | "estaOferta" | "estado" | "categoriaId" | "videoUrl" | "descripcion", ExtArgs["result"]["juego"]>
   export type JuegoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     calificaciones?: boolean | Juego$calificacionesArgs<ExtArgs>
     imagenes?: boolean | Juego$imagenesArgs<ExtArgs>
@@ -5248,6 +5259,7 @@ export namespace Prisma {
       estado: boolean
       categoriaId: number
       videoUrl: string | null
+      descripcion: string | null
     }, ExtArgs["result"]["juego"]>
     composites: {}
   }
@@ -5683,6 +5695,7 @@ export namespace Prisma {
     readonly estado: FieldRef<"Juego", 'Boolean'>
     readonly categoriaId: FieldRef<"Juego", 'Int'>
     readonly videoUrl: FieldRef<"Juego", 'String'>
+    readonly descripcion: FieldRef<"Juego", 'String'>
   }
     
 
@@ -10655,7 +10668,8 @@ export namespace Prisma {
     estaOferta: 'estaOferta',
     estado: 'estado',
     categoriaId: 'categoriaId',
-    videoUrl: 'videoUrl'
+    videoUrl: 'videoUrl',
+    descripcion: 'descripcion'
   };
 
   export type JuegoScalarFieldEnum = (typeof JuegoScalarFieldEnum)[keyof typeof JuegoScalarFieldEnum]
@@ -10978,6 +10992,7 @@ export namespace Prisma {
     estado?: BoolFilter<"Juego"> | boolean
     categoriaId?: IntFilter<"Juego"> | number
     videoUrl?: StringNullableFilter<"Juego"> | string | null
+    descripcion?: StringNullableFilter<"Juego"> | string | null
     calificaciones?: CalificacionListRelationFilter
     imagenes?: ImagenListRelationFilter
     categoria?: XOR<CategoriaScalarRelationFilter, CategoriaWhereInput>
@@ -10993,6 +11008,7 @@ export namespace Prisma {
     estado?: SortOrder
     categoriaId?: SortOrder
     videoUrl?: SortOrderInput | SortOrder
+    descripcion?: SortOrderInput | SortOrder
     calificaciones?: CalificacionOrderByRelationAggregateInput
     imagenes?: ImagenOrderByRelationAggregateInput
     categoria?: CategoriaOrderByWithRelationInput
@@ -11011,6 +11027,7 @@ export namespace Prisma {
     estado?: BoolFilter<"Juego"> | boolean
     categoriaId?: IntFilter<"Juego"> | number
     videoUrl?: StringNullableFilter<"Juego"> | string | null
+    descripcion?: StringNullableFilter<"Juego"> | string | null
     calificaciones?: CalificacionListRelationFilter
     imagenes?: ImagenListRelationFilter
     categoria?: XOR<CategoriaScalarRelationFilter, CategoriaWhereInput>
@@ -11026,6 +11043,7 @@ export namespace Prisma {
     estado?: SortOrder
     categoriaId?: SortOrder
     videoUrl?: SortOrderInput | SortOrder
+    descripcion?: SortOrderInput | SortOrder
     _count?: JuegoCountOrderByAggregateInput
     _avg?: JuegoAvgOrderByAggregateInput
     _max?: JuegoMaxOrderByAggregateInput
@@ -11044,6 +11062,7 @@ export namespace Prisma {
     estado?: BoolWithAggregatesFilter<"Juego"> | boolean
     categoriaId?: IntWithAggregatesFilter<"Juego"> | number
     videoUrl?: StringNullableWithAggregatesFilter<"Juego"> | string | null
+    descripcion?: StringNullableWithAggregatesFilter<"Juego"> | string | null
   }
 
   export type ImagenWhereInput = {
@@ -11425,6 +11444,7 @@ export namespace Prisma {
     estaOferta: boolean
     estado: boolean
     videoUrl?: string | null
+    descripcion?: string | null
     calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
     imagenes?: ImagenCreateNestedManyWithoutJuegoInput
     categoria: CategoriaCreateNestedOneWithoutJuegosInput
@@ -11440,6 +11460,7 @@ export namespace Prisma {
     estado: boolean
     categoriaId: number
     videoUrl?: string | null
+    descripcion?: string | null
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
     imagenes?: ImagenUncheckedCreateNestedManyWithoutJuegoInput
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
@@ -11452,6 +11473,7 @@ export namespace Prisma {
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
     calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
     imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
     categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
@@ -11467,6 +11489,7 @@ export namespace Prisma {
     estado?: BoolFieldUpdateOperationsInput | boolean
     categoriaId?: IntFieldUpdateOperationsInput | number
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
     calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
     imagenes?: ImagenUncheckedUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
@@ -11481,6 +11504,7 @@ export namespace Prisma {
     estado: boolean
     categoriaId: number
     videoUrl?: string | null
+    descripcion?: string | null
   }
 
   export type JuegoUpdateManyMutationInput = {
@@ -11489,6 +11513,7 @@ export namespace Prisma {
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type JuegoUncheckedUpdateManyInput = {
@@ -11499,6 +11524,7 @@ export namespace Prisma {
     estado?: BoolFieldUpdateOperationsInput | boolean
     categoriaId?: IntFieldUpdateOperationsInput | number
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ImagenCreateInput = {
@@ -11970,6 +11996,7 @@ export namespace Prisma {
     estado?: SortOrder
     categoriaId?: SortOrder
     videoUrl?: SortOrder
+    descripcion?: SortOrder
   }
 
   export type JuegoAvgOrderByAggregateInput = {
@@ -11986,6 +12013,7 @@ export namespace Prisma {
     estado?: SortOrder
     categoriaId?: SortOrder
     videoUrl?: SortOrder
+    descripcion?: SortOrder
   }
 
   export type JuegoMinOrderByAggregateInput = {
@@ -11996,6 +12024,7 @@ export namespace Prisma {
     estado?: SortOrder
     categoriaId?: SortOrder
     videoUrl?: SortOrder
+    descripcion?: SortOrder
   }
 
   export type JuegoSumOrderByAggregateInput = {
@@ -12998,6 +13027,7 @@ export namespace Prisma {
     estaOferta: boolean
     estado: boolean
     videoUrl?: string | null
+    descripcion?: string | null
     calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
     imagenes?: ImagenCreateNestedManyWithoutJuegoInput
     categoria: CategoriaCreateNestedOneWithoutJuegosInput
@@ -13012,6 +13042,7 @@ export namespace Prisma {
     estado: boolean
     categoriaId: number
     videoUrl?: string | null
+    descripcion?: string | null
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
     imagenes?: ImagenUncheckedCreateNestedManyWithoutJuegoInput
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
@@ -13049,6 +13080,7 @@ export namespace Prisma {
     estado?: BoolFilter<"Juego"> | boolean
     categoriaId?: IntFilter<"Juego"> | number
     videoUrl?: StringNullableFilter<"Juego"> | string | null
+    descripcion?: StringNullableFilter<"Juego"> | string | null
   }
 
   export type JuegoCreateWithoutCategoriaInput = {
@@ -13057,6 +13089,7 @@ export namespace Prisma {
     estaOferta: boolean
     estado: boolean
     videoUrl?: string | null
+    descripcion?: string | null
     calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
     imagenes?: ImagenCreateNestedManyWithoutJuegoInput
     ventas?: VentaCreateNestedManyWithoutJuegoInput
@@ -13070,6 +13103,7 @@ export namespace Prisma {
     estaOferta: boolean
     estado: boolean
     videoUrl?: string | null
+    descripcion?: string | null
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
     imagenes?: ImagenUncheckedCreateNestedManyWithoutJuegoInput
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
@@ -13307,6 +13341,7 @@ export namespace Prisma {
     estaOferta: boolean
     estado: boolean
     videoUrl?: string | null
+    descripcion?: string | null
     calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
     categoria: CategoriaCreateNestedOneWithoutJuegosInput
     ventas?: VentaCreateNestedManyWithoutJuegoInput
@@ -13321,6 +13356,7 @@ export namespace Prisma {
     estado: boolean
     categoriaId: number
     videoUrl?: string | null
+    descripcion?: string | null
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaUncheckedCreateNestedManyWithoutJuegosInput
@@ -13348,6 +13384,7 @@ export namespace Prisma {
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
     calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
     categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
     ventas?: VentaUpdateManyWithoutJuegoNestedInput
@@ -13362,6 +13399,7 @@ export namespace Prisma {
     estado?: BoolFieldUpdateOperationsInput | boolean
     categoriaId?: IntFieldUpdateOperationsInput | number
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
     calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUncheckedUpdateManyWithoutJuegosNestedInput
@@ -13373,6 +13411,7 @@ export namespace Prisma {
     estaOferta: boolean
     estado: boolean
     videoUrl?: string | null
+    descripcion?: string | null
     calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
     imagenes?: ImagenCreateNestedManyWithoutJuegoInput
     categoria: CategoriaCreateNestedOneWithoutJuegosInput
@@ -13387,6 +13426,7 @@ export namespace Prisma {
     estado: boolean
     categoriaId: number
     videoUrl?: string | null
+    descripcion?: string | null
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
     imagenes?: ImagenUncheckedCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaUncheckedCreateNestedManyWithoutJuegosInput
@@ -13440,6 +13480,7 @@ export namespace Prisma {
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
     calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
     imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
     categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
@@ -13454,6 +13495,7 @@ export namespace Prisma {
     estado?: BoolFieldUpdateOperationsInput | boolean
     categoriaId?: IntFieldUpdateOperationsInput | number
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
     calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
     imagenes?: ImagenUncheckedUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUncheckedUpdateManyWithoutJuegosNestedInput
@@ -13497,6 +13539,7 @@ export namespace Prisma {
     estaOferta: boolean
     estado: boolean
     videoUrl?: string | null
+    descripcion?: string | null
     imagenes?: ImagenCreateNestedManyWithoutJuegoInput
     categoria: CategoriaCreateNestedOneWithoutJuegosInput
     ventas?: VentaCreateNestedManyWithoutJuegoInput
@@ -13511,6 +13554,7 @@ export namespace Prisma {
     estado: boolean
     categoriaId: number
     videoUrl?: string | null
+    descripcion?: string | null
     imagenes?: ImagenUncheckedCreateNestedManyWithoutJuegoInput
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaUncheckedCreateNestedManyWithoutJuegosInput
@@ -13564,6 +13608,7 @@ export namespace Prisma {
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
     imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
     categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
     ventas?: VentaUpdateManyWithoutJuegoNestedInput
@@ -13578,6 +13623,7 @@ export namespace Prisma {
     estado?: BoolFieldUpdateOperationsInput | boolean
     categoriaId?: IntFieldUpdateOperationsInput | number
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
     imagenes?: ImagenUncheckedUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUncheckedUpdateManyWithoutJuegosNestedInput
@@ -13679,6 +13725,7 @@ export namespace Prisma {
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
     calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
     imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
     categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
@@ -13693,6 +13740,7 @@ export namespace Prisma {
     estado?: BoolFieldUpdateOperationsInput | boolean
     categoriaId?: IntFieldUpdateOperationsInput | number
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
     calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
     imagenes?: ImagenUncheckedUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
@@ -13706,6 +13754,7 @@ export namespace Prisma {
     estado?: BoolFieldUpdateOperationsInput | boolean
     categoriaId?: IntFieldUpdateOperationsInput | number
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type JuegoCreateManyCategoriaInput = {
@@ -13715,6 +13764,7 @@ export namespace Prisma {
     estaOferta: boolean
     estado: boolean
     videoUrl?: string | null
+    descripcion?: string | null
   }
 
   export type JuegoUpdateWithoutCategoriaInput = {
@@ -13723,6 +13773,7 @@ export namespace Prisma {
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
     calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
     imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUpdateManyWithoutJuegoNestedInput
@@ -13736,6 +13787,7 @@ export namespace Prisma {
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
     calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
     imagenes?: ImagenUncheckedUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
@@ -13749,6 +13801,7 @@ export namespace Prisma {
     estaOferta?: BoolFieldUpdateOperationsInput | boolean
     estado?: BoolFieldUpdateOperationsInput | boolean
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CalificacionCreateManyJuegoInput = {

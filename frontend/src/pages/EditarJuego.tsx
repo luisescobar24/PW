@@ -20,6 +20,7 @@ interface Categoria {
 interface Game {
   id?: number;
   nombre: string;
+  descripcion: string;
   precio: number;
   estaOferta: boolean;
   estado: boolean;
@@ -37,7 +38,10 @@ export interface EditarJuegoProps {
 const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<Game>(juego);
+  const [formData, setFormData] = useState<Game>({
+    ...juego,
+    descripcion: juego.descripcion || "",
+  });
   const [todasPlataformas, setTodasPlataformas] = useState<Plataforma[]>([]);
   const [todasCategorias, setTodasCategorias] = useState<Categoria[]>([]);
   const [error, setError] = useState<string>('');
@@ -169,6 +173,7 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
 
       const form = new FormData();
       form.append('nombre', formData.nombre);
+      form.append('descripcion', formData.descripcion); // Nuevo campo
       form.append('precio', String(formData.precio));
       form.append('estaOferta', String(formData.estaOferta));
       form.append('estado', String(formData.estado));
@@ -177,7 +182,6 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
       form.append('plataformas', JSON.stringify(plataformasIds)); // <-- solo IDs
       imagenesFiles.forEach(file => form.append('imagenes', file));
       form.append('imagenesAConservar', JSON.stringify(imagenesAConservar));
-
       await fetch(`http://localhost:3000/api/juegos/${formData.id}`, {
         method: 'PUT',
         body: form,
@@ -225,6 +229,17 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
               required
               value={formData.nombre || ''}
               onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label>Descripción *</label>
+            <textarea
+              name="descripcion"
+              value={formData.descripcion || ''}
+              onChange={handleChange}
+              placeholder="Describe el juego"
+              required
+              className="descripcion-input"
             />
           </div>
           <div>

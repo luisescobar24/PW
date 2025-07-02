@@ -468,12 +468,13 @@ app.get('/api/juegos', async (req, res) => {
 
 // Ruta para agregar un nuevo juego (sin token requerido)
 app.post('/api/juegos', async (req: Request, res: Response) => {
-  const { nombre, precio, estaOferta, estado, categoriaId, imagenes, videoUrl, plataformas } = req.body;
+  const { nombre, descripcion, precio, estaOferta, estado, categoriaId, imagenes, videoUrl, plataformas } = req.body;
 
   try {
     const nuevoJuego = await prisma.juego.create({
       data: {
         nombre,
+        descripcion, // Nuevo campo
         precio,
         estaOferta,
         estado,
@@ -504,7 +505,7 @@ app.post('/api/juegos', async (req: Request, res: Response) => {
 // Ruta para editar un juego (sin token requerido)
 app.put('/api/juegos/:id', upload.array('imagenes', 10), async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { nombre, precio, estaOferta, estado, categoriaId, videoUrl, plataformas, imagenesAConservar } = req.body;
+  const { nombre, descripcion, precio, estaOferta, estado, categoriaId, videoUrl, plataformas, imagenesAConservar } = req.body;
 
   try {
     // Convertir 'estado' y 'estaOferta' a booleanos
@@ -603,6 +604,7 @@ app.put('/api/juegos/:id', upload.array('imagenes', 10), async (req: Request, re
       where: { id: parseInt(id) },
       data: {
         nombre,
+        descripcion, // Nuevo campo
         precio,
         estaOferta: isOferta,
         estado: isEstado,

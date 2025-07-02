@@ -26,7 +26,6 @@ const SignIn = () => {
           token: response.data.token,
         };
 
-        alert(`Welcome ${response.data.user.nombre}, role: ${userData.role}`);
         navigate('/paginaprincipal');  // Redirect to main page after login
       }
     } catch (error: unknown) {
