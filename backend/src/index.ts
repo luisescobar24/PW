@@ -11,11 +11,11 @@ import fs from 'fs';
 
 dotenv.config();  // Cargar las variables de entorno desde .env
 
-// Configuración global de Cloudinary (asegúrate de tener las variables en tu .env)
+// Configuración global de Cloudinary (asegúrate de tener las variables en tu .env o usa estas configuraciones directamente)
 cloudinary.v2.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: 'dd8jmnal3',  // Cloud name fijo
+  api_key: process.env.CLOUDINARY_API_KEY,  // API Key desde .env
+  api_secret: process.env.CLOUDINARY_API_SECRET,  // API Secret desde .env
 });
 
 // Configuración de Multer para manejar la carga de imágenes
@@ -781,22 +781,60 @@ function cors(options: {
   };
 }
 
-// Implementación real para subir imágenes a Cloudinary
+// Implementación real para subir imágenes a Cloudinary with upload_preset
 async function uploadImageToCloudinary(path: string): Promise<string> {
-  // Ya no necesitas configurar aquí
   try {
+    // Subir la imagen a Cloudinary utilizando el upload_preset 'userpw_cloud'
     const result = await cloudinary.v2.uploader.upload(path, {
-      folder: 'juegos', // Puedes cambiar el folder si lo deseas
+      upload_preset: 'userpw_cloud',  // El upload preset proporcionado
+      folder: 'juegos',
     });
-    // Elimina el archivo local después de subirlo
     fs.unlinkSync(path);
     return result.secure_url;
   } catch (error) {
-    // Elimina el archivo local si ocurre un error
     if (fs.existsSync(path)) {
       fs.unlinkSync(path);
     }
     throw error;
   }
 }
+
+// Ruta para subir una imagen a Cloudinary
+app.post('/api/upload-image', upload.single('image'), async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No se recibió ninguna imagen' });
+    }
+    // Subir la imagen a Cloudinary
+    const imageUrl = await uploadImageToCloudinary(req.file.path);
+    return res.status(200).json({ imageUrl });
+  } catch (error) {
+    console.error('Error al subir la imagen a Cloudinary:', error);
+    return res.status(500).json({ message: 'Error al subir la imagen' });
+  }
+});
+
+// Ruta para eliminar una imagen de un juego y de Cloudinary
+app.delete('/api/imagenes/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    // Buscar la imagen en la base de datos
+    const imagen = await prisma.imagen.findUnique({ where: { id: Number(id) } });
+    if (!imagen) {
+      return res.status(404).json({ message: 'Imagen no encontrada' });
+    }
+    // Extraer el public_id de Cloudinary desde la URL
+    const urlParts = imagen.url.split('/');
+    const fileName = urlParts[urlParts.length - 1];
+    const publicId = `juegos/${fileName.split('.')[0]}`;
+    // Eliminar de Cloudinary
+    await cloudinary.v2.uploader.destroy(publicId);
+    // Eliminar de la base de datos
+    await prisma.imagen.delete({ where: { id: Number(id) } });
+    return res.status(200).json({ message: 'Imagen eliminada correctamente' });
+  } catch (error) {
+    console.error('Error al eliminar la imagen:', error);
+    return res.status(500).json({ message: 'Error al eliminar la imagen' });
+  }
+});
 

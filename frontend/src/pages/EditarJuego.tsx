@@ -297,13 +297,31 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
               Confirmar imágenes
             </button>
             <div>
-              {/* Imágenes existentes (con opción de eliminar) */}
-              {formData.imagenes.map((img: any) =>
+              {/* Imágenes existentes (con opción de eliminar y editar descripción) */}
+              {formData.imagenes.map((img: any, idx: number) =>
                 imagenesAConservar.includes(img.id) ? (
-                  <div key={img.id} style={{ display: 'inline-block', margin: 4 }}>
-                    <img src={img.url} alt={img.descripcion} style={{ maxWidth: 100 }} />
-                    <span>{img.descripcion}</span>
-                    <button type="button" onClick={() => handleEliminarImagenExistente(img.id)}>
+                  <div key={img.id} className="imagen-item">
+                    <img src={img.url} alt={img.descripcion} className="imagen-preview" />
+                    <input
+                      type="text"
+                      value={img.descripcion}
+                      onChange={e => {
+                        const nuevaDescripcion = e.target.value;
+                        setFormData(prev => ({
+                          ...prev,
+                          imagenes: prev.imagenes.map((im, i) =>
+                            i === idx ? { ...im, descripcion: nuevaDescripcion } : im
+                          ),
+                        }));
+                      }}
+                      placeholder="Descripción"
+                      className="imagen-descripcion-input"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleEliminarImagenExistente(img.id)}
+                      className="btn-quitar-imagen"
+                    >
                       Quitar
                     </button>
                   </div>
@@ -311,9 +329,13 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
               )}
               {/* Nuevas imágenes seleccionadas (con opción de eliminar) */}
               {previewUrls.map((url, idx) => (
-                <div key={url} style={{ display: 'inline-block', margin: 4 }}>
-                  <img src={url} alt={`preview-${idx}`} style={{ maxWidth: 100 }} />
-                  <button type="button" onClick={() => handleEliminarImagenNueva(idx)}>
+                <div key={url} className="imagen-item">
+                  <img src={url} alt={`preview-${idx}`} className="imagen-preview" />
+                  <button
+                    type="button"
+                    onClick={() => handleEliminarImagenNueva(idx)}
+                    className="btn-quitar-imagen"
+                  >
                     Quitar
                   </button>
                 </div>

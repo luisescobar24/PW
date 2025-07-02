@@ -99,6 +99,13 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
     }));
   };
 
+  const handleEditImagen = (index: number) => {
+    const imagen = formData.imagenes[index];
+    setImagenUrl(imagen.url);
+    setImagenDescripcion(imagen.descripcion);
+    handleRemoveImagen(index);
+  };
+
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
     if (!formData.nombre.trim()) newErrors.nombre = "El nombre es requerido";
@@ -131,35 +138,120 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
     }
   };
 
+const handleImageUpload = async () => {
+  if (!imagenFile) {
+    setErrors((prev) => ({ ...prev, imagenUrl: "Selecciona una imagen" }));
+    return;
+  }
+  setSubiendoImagen(true);
+  try {
+    const formData = new FormData();
+    formData.append("image", imagenFile); // Añadir la imagen al FormData
+
+    // Realizar la solicitud de subida de la imagen al servidor
+    const res = await axios.post("http://localhost:3000/api/upload-image", formData, {
+      headers: { "Content-Type": "multipart/form-data" }, // Especifica que estamos enviando un archivo
+    });
+
+    if (res.status === 200) {
+      const url = res.data.imageUrl; // Asumimos que el servidor responde con la URL de la imagen
+
+      // Actualiza el estado con la nueva imagen
+      setFormData((prev) => ({
+        ...prev,
+        imagenes: [...prev.imagenes, { url, descripcion: imagenDescripcion }],
+      }));
+
+      // Resetea los campos de la imagen
+      setImagenDescripcion("");
+      setImagenFile(null);
+      setErrors((prev) => ({ ...prev, imagenUrl: "" }));
+    } else {
+      setErrors((prev) => ({ ...prev, imagenUrl: "Error al subir la imagen. Intenta nuevamente." }));
+    }
+  } catch (err) {
+    // Manejamos el error si ocurre durante la solicitud
+    console.error("Error al subir la imagen:", err);
+    setErrors((prev) => ({ ...prev, imagenUrl: "Error al subir la imagen. Intenta nuevamente." }));
+  } finally {
+    // Independientemente de si hubo error o no, setSubiendoImagen a false
+    setSubiendoImagen(false);
+  }
+};
+
+
+
   return (
     <div className="modal">
       <div className="modal-content">
+        <button className="close-btn" onClick={() => navigate("/adminjuegos/")}>
+          ×
+        </button>
+        
         <h3>Agregar Nuevo Juego</h3>
+        
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Nombre *</label>
-            <input
-              name="nombre"
-              type="text"
-              value={formData.nombre}
-              onChange={handleChange}
-              placeholder="Ingresa el nombre del juego"
-            />
-            {errors.nombre && <span className="error-message">{errors.nombre}</span>}
+          <div className="form-row">
+            <div className="form-group">
+              <label>Nombre *</label>
+              <input
+                name="nombre"
+                type="text"
+                value={formData.nombre}
+                onChange={handleChange}
+                placeholder="Ingresa el nombre del juego"
+              />
+              {errors.nombre && <span className="error-message">{errors.nombre}</span>}
+            </div>
+
+            <div className="form-group">
+              <label>Precio ($) *</label>
+              <input
+                name="precio"
+                type="number"
+                min="0"
+                step="0.01"
+                value={formData.precio}
+                onChange={handleChange}
+                placeholder="0.00"
+              />
+              {errors.precio && <span className="error-message">{errors.precio}</span>}
+            </div>
           </div>
 
-          <div className="form-group">
-            <label>Precio ($) *</label>
-            <input
-              name="precio"
-              type="number"
-              min="0"
-              step="0.01"
-              value={formData.precio}
-              onChange={handleChange}
-              placeholder="0.00"
-            />
-            {errors.precio && <span className="error-message">{errors.precio}</span>}
+          <div className="form-row">
+            <div className="form-group">
+              <label>Categoría *</label>
+              <select
+                name="categoriaId"
+                value={formData.categoriaId}
+                onChange={handleChange}
+              >
+                {categorias.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.nombre}
+                  </option>
+                ))}
+              </select>
+              {errors.categoriaId && <span className="error-message">{errors.categoriaId}</span>}
+            </div>
+
+            <div className="form-group">
+              <label>Estado</label>
+              <select
+                name="estado"
+                value={formData.estado ? "true" : "false"}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    estado: e.target.value === "true",
+                  }))
+                }
+              >
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+              </select>
+            </div>
           </div>
 
           <div className="form-group checkbox-group">
@@ -176,100 +268,75 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
           </div>
 
           <div className="form-group">
-            <label>Estado</label>
-            <select
-              name="estado"
-              value={formData.estado ? "true" : "false"}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  estado: e.target.value === "true",
-                }))
-              }
-            >
-              <option value="true">Activo</option>
-              <option value="false">Inactivo</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label>Categoría *</label>
-            <select
-              name="categoriaId"
-              value={formData.categoriaId}
+            <label>URL del Video (YouTube)</label>
+            <input
+              name="videoUrl"
+              type="url"
+              value={formData.videoUrl}
               onChange={handleChange}
-            >
-              {categorias.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.nombre}
-                </option>
-              ))}
-            </select>
-            {errors.categoriaId && <span className="error-message">{errors.categoriaId}</span>}
+              placeholder="https://youtube.com/watch?v=..."
+            />
           </div>
 
-          <div className="form-group">
+          <div className="imagenes-section">
             <label>Imágenes *</label>
-            <div className="image-input-group">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setImagenFile(e.target.files?.[0] || null)}
-              />
-              <input
-                type="text"
-                placeholder="Descripción"
-                value={imagenDescripcion}
-                onChange={(e) => setImagenDescripcion(e.target.value)}
-              />
-              <button
-                type="button"
-                onClick={async () => {
-                  if (!imagenFile) {
-                    setErrors((prev) => ({ ...prev, imagenUrl: "Selecciona una imagen" }));
-                    return;
-                  }
-                  setSubiendoImagen(true);
-                  try {
-                    const formData = new FormData();
-                    formData.append("image", imagenFile);
-                    const res = await axios.post("http://localhost:3000/api/upload-image", formData, {
-                      headers: { "Content-Type": "multipart/form-data" },
-                    });
-                    const url = res.data.imageUrl;
-                    setFormData((prev) => ({
-                      ...prev,
-                      imagenes: [...prev.imagenes, { url, descripcion: imagenDescripcion }],
-                    }));
-                    setImagenDescripcion("");
-                    setImagenFile(null);
-                    setErrors((prev) => ({ ...prev, imagenUrl: "" }));
-                  } catch (err) {
-                    setErrors((prev) => ({ ...prev, imagenUrl: "Error al subir la imagen" }));
-                  } finally {
-                    setSubiendoImagen(false);
-                  }
-                }}
-                className="add-btn"
-                disabled={subiendoImagen}
-              >
-                {subiendoImagen ? "Subiendo..." : "Agregar Imagen"}
-              </button>
-            </div>
-            {errors.imagenUrl && <span className="error-message">{errors.imagenUrl}</span>}
             
+            <div className="image-input-container">
+              <div className="image-input-group">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setImagenFile(e.target.files?.[0] || null)}
+                  className="file-input"
+                />
+                <input
+                  type="text"
+                  placeholder="Descripción de la imagen"
+                  value={imagenDescripcion}
+                  onChange={(e) => setImagenDescripcion(e.target.value)}
+                  className="description-input"
+                />
+                <button
+                  type="button"
+                  onClick={handleImageUpload}
+                  className="add-btn"
+                  disabled={subiendoImagen}
+                >
+                  {subiendoImagen ? "Subiendo..." : "Agregar"}
+                </button>
+              </div>
+              {errors.imagenUrl && <span className="error-message">{errors.imagenUrl}</span>}
+            </div>
+
             {formData.imagenes.length > 0 && (
-              <div className="images-list">
+              <div className="imagenes-grid">
                 {formData.imagenes.map((img, idx) => (
-                  <div key={idx} className="image-item">
-                    <span>{img.descripcion || 'Sin descripción'}</span>
-                    <button 
-                      type="button" 
-                      onClick={() => handleRemoveImagen(idx)}
-                      className="remove-btn"
-                    >
-                      ×
-                    </button>
+                  <div key={idx} className="imagen-item">
+                    <img 
+                      src={img.url} 
+                      alt={img.descripcion || 'Imagen del juego'} 
+                      className="imagen-preview"
+                    />
+                    <input
+                      type="text"
+                      value={img.descripcion}
+                      onChange={(e) => {
+                        const newImagenes = [...formData.imagenes];
+                        newImagenes[idx].descripcion = e.target.value;
+                        setFormData(prev => ({ ...prev, imagenes: newImagenes }));
+                      }}
+                      placeholder="Descripción"
+                      className="imagen-descripcion-input"
+                    />
+                    <div className="imagen-actions">
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImagen(idx)}
+                        className="btn-quitar-imagen"
+                      >
+                        Quitar
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -295,19 +362,11 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
             {errors.plataformas && <span className="error-message">{errors.plataformas}</span>}
           </div>
 
-          <div className="form-group">
-            <label>URL del Video (YouTube)</label>
-            <input
-              name="videoUrl"
-              type="url"
-              value={formData.videoUrl}
-              onChange={handleChange}
-              placeholder="https://youtube.com/watch?v=..."
-            />
-          </div>
-
           <div className="modal-buttons">
-            <button type="button" onClick={onClose}>
+            <button
+              type="button"
+              onClick={() => navigate("/adminjuegos/")}
+            >
               Cancelar
             </button>
             <button type="submit">
