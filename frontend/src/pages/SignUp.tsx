@@ -1,22 +1,21 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../estilos/SignUp.css'; // Asegúrate de tener el archivo de estilo correspondiente
+import '../estilos/SignUp.css';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [country, setCountry] = useState('');
-  const [name, setName] = useState(''); // Estado para almacenar el nombre
+  const [name, setName] = useState('');
   const [modal, setModal] = useState({ show: false, message: '', type: '' });
-  const [userCount, setUserCount] = useState<number | null>(null); // Estado para almacenar el número de usuarios
-  const [step, setStep] = useState(1); // 1: registro, 2: verificación
+  const [userCount, setUserCount] = useState<number | null>(null);
+  const [step, setStep] = useState(1);
   const [verificationCode, setVerificationCode] = useState('');
 
   const navigate = useNavigate();
 
-  // Mostrar el modal con un mensaje específico
   const showModal = (message: string, type: string = 'error') => {
     setModal({ show: true, message, type });
   };
@@ -24,7 +23,7 @@ const SignUp = () => {
   const closeModal = () => {
     setModal({ show: false, message: '', type: '' });
     if (modal.type === 'success') {
-      navigate('/'); // Redirigir a la página de inicio de sesión
+      navigate('/');
     }
   };
 
@@ -45,12 +44,11 @@ const SignUp = () => {
         correo: email,
         password,
         nombre: username,
-        estado: false, // Estado en false hasta que verifique el código
+        estado: false,
       });
 
       if (response.data.success) {
-        // Ya se envió el correo de verificación desde el backend
-        setStep(2); // Ir al paso de verificación
+        setStep(2);
       }
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
@@ -73,7 +71,6 @@ const SignUp = () => {
       });
       if (response.status === 200) {
         showModal('Your account has been verified! You can now sign in.', 'success');
-        // Aquí podrías limpiar los campos si lo deseas
       }
     } catch (error: any) {
       showModal(error.response?.data.message || 'Invalid or expired code.');
@@ -99,7 +96,6 @@ const SignUp = () => {
             <div className="signup-right-side">
               <h2 className="signup-title">Sign up to GameStore</h2>
 
-              {/* Mostrar el número total de usuarios debajo del título */}
               {userCount !== null && (
                 <p className="user-count">
                   Total users: {userCount}
@@ -141,15 +137,35 @@ const SignUp = () => {
 
               <label className="signup-label">Your Country/Region:</label>
               <select
-                className="signup-input"
+                className="select-country"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
               >
                 <option value="">Select your country</option>
-                <option>United States</option>
-                <option>Peru</option>
-                <option>Argentina</option>
-                <option>Mexico</option>
+                <option value="United States">United States</option>
+                <option value="Peru">Peru</option>
+                <option value="Argentina">Argentina</option>
+                <option value="Mexico">Mexico</option>
+                <option value="Brazil">Brazil</option>
+                <option value="Chile">Chile</option>
+                <option value="Colombia">Colombia</option>
+                <option value="Venezuela">Venezuela</option>
+                <option value="Uruguay">Uruguay</option>
+                <option value="Paraguay">Paraguay</option>
+                <option value="Ecuador">Ecuador</option>
+                <option value="Bolivia">Bolivia</option>
+                <option value="Spain">Spain</option>
+                <option value="France">France</option>
+                <option value="Germany">Germany</option>
+                <option value="Italy">Italy</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="Canada">Canada</option>
+                <option value="Australia">Australia</option>
+                <option value="Japan">Japan</option>
+                <option value="South Korea">South Korea</option>
+                <option value="China">China</option>
+                <option value="India">India</option>
+                <option value="Russia">Russia</option>
               </select>
               <small className="signup-hint">
                 For compliance reasons, we're required to collect country information to send you occasional updates and announcements.
@@ -157,7 +173,6 @@ const SignUp = () => {
 
               <button className="signup-btn" onClick={handleContinue}>Continue →</button>
 
-              {/* Cuadro para mostrar el nombre después de la creación de la cuenta */}
               {name && (
                 <div className="name-display">
                   <p>Welcome, {name}!</p>
@@ -170,7 +185,7 @@ const SignUp = () => {
         {step === 2 && (
           <div className="verify-section">
             <h2>Verify your email</h2>
-            <p>Enter the code sent to <b>{email}</b></p>
+            <p>Enter the code sent to {email}</p>
             <input
               className="signup-input"
               type="text"
@@ -185,7 +200,6 @@ const SignUp = () => {
         )}
       </div>
 
-      {/* Modal */}
       {modal.show && (
         <div className="modal-signup-overlay">
           <div className="modal-signup">
