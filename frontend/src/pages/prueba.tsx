@@ -1,43 +1,38 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const ImageUpload = () => {
-  const [image, setImage] = useState<File | null>(null);
-  const [imageUrl, setImageUrl] = useState<string>('');
+const SendEmailTest = () => {
+  const [correoDestino, setCorreoDestino] = useState<string>('');
+  const [asunto, setAsunto] = useState<string>('');
+  const [contenido, setContenido] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImage(file);
-    }
-  };
+  const [success, setSuccess] = useState<string>('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!image) {
-      setError('Please select an image to upload');
+    
+    if (!correoDestino || !asunto || !contenido) {
+      setError('Correo destino, asunto y contenido son requeridos');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('image', image);
-
     setLoading(true);
+    setError('');
+    setSuccess('');
+
     try {
-      const response = await axios.post('http://localhost:3000/api/upload-image', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      const response = await axios.post('http://localhost:3000/api/test-send-email', {
+        correoDestino,
+        asunto,
+        contenido,
       });
 
-      setImageUrl(response.data.imageUrl);
-      setError('');
-      console.log('Imagen subida exitosamente a Cloudinary:', response.data.imageUrl); // <-- Agregado
+      setSuccess(response.data.message);
+      console.log('Correo enviado:', response.data.message); // <-- Agregado
     } catch (err) {
-      setError('Error uploading image');
-      console.error('Error al subir la imagen:', err); // <-- Opcional: muestra el error en consola
+      setError('Error al enviar el correo');
+      console.error('Error al enviar el correo:', err); // <-- Opcional: muestra el error en consola
     } finally {
       setLoading(false);
     }
@@ -45,17 +40,40 @@ const ImageUpload = () => {
 
   return (
     <div>
+      <h1>Prueba de Envío de Correo</h1>
       <form onSubmit={handleSubmit}>
-        <input type="file" onChange={handleImageChange} />
+        <div>
+          <input
+            type="email"
+            placeholder="Correo destino"
+            value={correoDestino}
+            onChange={(e) => setCorreoDestino(e.target.value)}
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            placeholder="Asunto"
+            value={asunto}
+            onChange={(e) => setAsunto(e.target.value)}
+          />
+        </div>
+        <div>
+          <textarea
+            placeholder="Contenido"
+            value={contenido}
+            onChange={(e) => setContenido(e.target.value)}
+          />
+        </div>
         <button type="submit" disabled={loading}>
-          {loading ? 'Uploading...' : 'Upload Image'}
+          {loading ? 'Enviando...' : 'Enviar Correo'}
         </button>
       </form>
 
-      {imageUrl && <img src={imageUrl} alt="Uploaded" />}
-      {error && <p>{error}</p>}
+      {success && <p style={{ color: 'green' }}>{success}</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
 };
 
-export default ImageUpload;
+export default SendEmailTest;

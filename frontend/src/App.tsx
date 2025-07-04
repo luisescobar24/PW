@@ -35,6 +35,7 @@ function App() {
             juego={{
               id: 0,
               nombre: '',
+              descripcion: '',
               precio: 0,
               imagenes: [],
               estaOferta: false,
