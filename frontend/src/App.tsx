@@ -5,29 +5,31 @@ import ResetPass from './pages/ResetPass';
 import Prueba from './pages/prueba';
 import PaginaPrincipal from './pages/PaginaPrincipal';
 import Detalle from './pages/Detalle';
-import ConfirmarOrden from './pages/Confirmarorden'; // Asegúrate de importar ConfirmarOrden
+import ConfirmarOrden from './pages/Confirmarorden';
+
 import AdminJuegos from './pages/AdminJuegos';
 import AgregarJuego from './pages/AgregarJuego';
-import EditarJuegos from './pages/EditarJuego';  
+import EditarJuegos from './pages/EditarJuego';
 import EliminarJuego from './pages/EliminarJuego';
+
+import AdminNoticias from './pages/AdminNoticias';
+import AgregarNoticia from './pages/AgregarNoticia';
+import EditarNoticia from './pages/EditarNoticia';
+import EliminarNoticia from './pages/EliminarNoticia';
 
 function App() {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <SignIn
-          />
-        }
-      />
-      <Route path="/paginaprincipal" element={<PaginaPrincipal />} />
+      <Route path="/" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/resetpass" element={<ResetPass />} />
+      <Route path="/paginaprincipal" element={<PaginaPrincipal />} />
       <Route path="/detalle/:id" element={<Detalle />} />
-      <Route path="/confirmarorden" element={<ConfirmarOrden />} /> {/* Ruta para confirmar la compra */}
-      <Route path="/adminjuegos" element={<AdminJuegos />} /> {/* Ruta para el panel de administración de juegos */}
-      <Route path="/agregarjuego" element={<AgregarJuego onClose={() => {}} />} /> {/* Ruta para agregar un nuevo juego */}
+      <Route path="/confirmarorden" element={<ConfirmarOrden />} />
+
+      {/* Juegos */}
+      <Route path="/adminjuegos" element={<AdminJuegos />} />
+      <Route path="/agregarjuego" element={<AgregarJuego onClose={() => {}} />} />
       <Route
         path="/editarjuego/:id"
         element={
@@ -42,18 +44,46 @@ function App() {
               categoriaId: 0,
               videoUrl: '',
               plataformas: [],
-              // agrega aquí cualquier otro campo requerido por Game
             }}
             onSave={() => {}}
           />
         }
-      /> {/* Ruta para editar un juego existente */}
+      />
       <Route
         path="/eliminarjuego/:id"
         element={
           <EliminarJuego
-            id={0} // Este valor se actualizará dinámicamente
-            juego="" // Este valor se actualizará dinámicamente
+            id={0}
+            juego=""
+            onClose={() => {}}
+            onDeleted={() => {}}
+          />
+        }
+      />
+
+      {/* Noticias */}
+      <Route path="/adminnoticias" element={<AdminNoticias />} />
+      <Route path="/adminnoticias/agregar" element={<AgregarNoticia onClose={() => {}} />} />
+      <Route
+        path="/adminnoticias/editar/:id"
+        element={
+          <EditarNoticia
+            noticia={{
+              id: 0,
+              titulo: '',
+              contenido: '',
+              imagenes: [],
+            }}
+            onSave={() => {}}
+          />
+        }
+      />
+      <Route
+        path="/adminnoticias/eliminar/:id"
+        element={
+          <EliminarNoticia
+            id={0}
+            titulo=""
             onClose={() => {}}
             onDeleted={() => {}}
           />
