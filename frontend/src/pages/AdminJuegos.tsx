@@ -89,8 +89,15 @@ const AdminJuegos = () => {
         <p>Admin Panel</p>
         <nav>
           <button>Users</button>
-          <button className="active">Games</button>
-          <button>News</button>
+          <button
+          className={window.location.pathname.includes('juegos') ? 'active' : ''}
+          onClick={() => navigate('/adminjuegos')}>
+            Games</button>
+          <button
+          className={window.location.pathname.includes('noticias') ? 'active' : ''}
+          onClick={() => navigate('/adminnoticias')}
+          >News</button>
+
           <button>Statistics</button>
           <button onClick={handleLogout}>Log out</button>
         </nav>
