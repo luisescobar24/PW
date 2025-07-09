@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import EliminarJuego from './EliminarJuego';
 import '../estilos/AdminJuegos.css';
 
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
+
 interface Categoria {
   id: number;
   nombre: string;
@@ -37,7 +39,7 @@ const AdminJuegos = () => {
 
   // Cargar juegos desde el backend
   const fetchJuegos = async () => {
-    const res = await fetch('http://localhost:3000/api/juegos');
+    const res = await fetch(`${URL_BACKEND}api/juegos`);
     const data = await res.json();
     const juegosNormalizados = data.map((juego: any) => ({
       ...juego,
@@ -49,7 +51,7 @@ const AdminJuegos = () => {
 
   // Cargar categorías desde el backend
   const fetchCategorias = async () => {
-    const res = await fetch('http://localhost:3000/api/categorias');
+    const res = await fetch(`${URL_BACKEND}api/categorias`);
     const data = await res.json();
     setCategorias(data);
   };
@@ -67,7 +69,7 @@ const AdminJuegos = () => {
   // Eliminar juego
   const eliminarJuego = async () => {
     if (juegoAEliminar) {
-      await fetch(`http://localhost:3000/api/juegos/${juegoAEliminar.id}`, {
+      await fetch(`${URL_BACKEND}api/juegos/${juegoAEliminar.id}`, {
         method: 'DELETE',
       });
       setMostrarEliminar(false);
@@ -176,11 +178,7 @@ const AdminJuegos = () => {
           id={juegoAEliminar.id}
           juego={juegoAEliminar.nombre}
           onClose={() => setMostrarEliminar(false)}
-          onDeleted={() => {
-            setMostrarEliminar(false);
-            setJuegoAEliminar(null);
-            fetchJuegos();
-          }}
+          onDeleted={eliminarJuego} // Usamos la función aquí
         />
       )}
     </>

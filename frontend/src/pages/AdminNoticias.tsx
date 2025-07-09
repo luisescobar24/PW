@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import EliminarNoticia from './EliminarNoticia';
 import '../estilos/AdminJuegos.css';
 
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
+
 interface Imagen {
   url: string;
   descripcion: string;
@@ -20,6 +22,21 @@ const AdminNoticias = () => {
   const [mostrarEliminar, setMostrarEliminar] = useState(false);
   const [noticiaAEliminar, setNoticiaAEliminar] = useState<Noticia | null>(null);
   const navigate = useNavigate();
+
+  const fetchNoticias = async () => {
+    try {
+      const response = await fetch(`${URL_BACKEND}noticias`);
+      if (!response.ok) throw new Error('Error al obtener noticias');
+      const data = await response.json();
+      setNoticias(data);
+    } catch (error) {
+      setNoticias([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchNoticias();
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');

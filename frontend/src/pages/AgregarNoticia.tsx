@@ -2,20 +2,23 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../estilos/EditarJuego.css';
 
-interface Imagen {
-  url?: string;
-  descripcion?: string;
-}
+
 
 interface Noticia {
+  id: number;
   titulo: string;
   contenido: string;
-  imagenes: Imagen[];
+  imagenes: string[];
 }
 
-const AgregarNoticia = () => {
+interface AgregarNoticiaProps {
+  onClose: () => void; // Asegúrate de usar onClose si es necesario
+}
+
+const AgregarNoticia: React.FC<AgregarNoticiaProps> = ({ onClose }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<Noticia>({
+    id: 0,
     titulo: '',
     contenido: '',
     imagenes: [],
@@ -36,7 +39,7 @@ const AgregarNoticia = () => {
 
   const handleImagenesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setImagenesFiles(prev => [...prev, ...Array.from(e.target.files)]);
+      setImagenesFiles(prev => [...prev, ...Array.from(e.target.files as FileList)]);
     }
   };
 
@@ -139,7 +142,7 @@ const AgregarNoticia = () => {
             </div>
           </div>
           <div className="modal-buttons">
-            <button type="button" onClick={() => navigate('/adminnoticias')}>
+            <button type="button" onClick={onClose}>
               Cancelar
             </button>
             <button type="submit" disabled={loading}>

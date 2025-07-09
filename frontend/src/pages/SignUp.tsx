@@ -1,16 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../estilos/SignUp.css';
+
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [country, setCountry] = useState('');
-  const [name, setName] = useState('');
+  // const [name, setName] = useState('');
   const [modal, setModal] = useState({ show: false, message: '', type: '' });
-  const [userCount, setUserCount] = useState<number | null>(null);
+  // const [userCount, setUserCount] = useState<number | null>(null);
   const [step, setStep] = useState(1);
   const [verificationCode, setVerificationCode] = useState('');
 
@@ -40,7 +42,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/signup', {
+      const response = await axios.post(`${URL_BACKEND}api/auth/signup`, {
         correo: email,
         password,
         nombre: username,
@@ -65,7 +67,7 @@ const SignUp = () => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/verify-code', {
+      const response = await axios.post(`${URL_BACKEND}api/auth/verify-code`, {
         correo: email,
         verificationCode,
       });
@@ -96,11 +98,7 @@ const SignUp = () => {
             <div className="signup-right-side">
               <h2 className="signup-title">Sign up to GameStore</h2>
 
-              {userCount !== null && (
-                <p className="user-count">
-                  Total users: {userCount}
-                </p>
-              )}
+              {/* User count display removed because userCount is unused */}
 
               <label className="signup-label">Email address:</label>
               <input
@@ -173,11 +171,7 @@ const SignUp = () => {
 
               <button className="signup-btn" onClick={handleContinue}>Continue →</button>
 
-              {name && (
-                <div className="name-display">
-                  <p>Welcome, {name}!</p>
-                </div>
-              )}
+              {/* Name display removed because 'name' state is unused */}
             </div>
           </>
         )}

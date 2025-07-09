@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../estilos/ResetPass.css';
 
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
+
 const ResetPass = () => {
   // Estados para los inputs
   const [email, setEmail] = useState('');
@@ -38,7 +40,7 @@ const ResetPass = () => {
       setMessageType('');
 
       try {
-        const response = await axios.post('http://localhost:3000/api/auth/forgot-password', { 
+        const response = await axios.post(`${URL_BACKEND}api/auth/forgot-password`, { 
           correo: email
         });
 
@@ -64,7 +66,7 @@ const ResetPass = () => {
       try {
         console.log('Enviando datos al backend para validación del código:', { correo: email, verificationCode });
 
-        const response = await axios.post('http://localhost:3000/api/auth/verify-code', {
+        const response = await axios.post(`${URL_BACKEND}api/auth/verify-code`, {
           correo: email,
           verificationCode,
         });
@@ -99,7 +101,7 @@ const ResetPass = () => {
       setMessageType('');
 
       try {
-        const response = await axios.post('http://localhost:3000/api/auth/reset-password', {
+        const response = await axios.post(`${URL_BACKEND}api/auth/reset-password`, {
           correo: email,
           verificationCode,
           newPassword: newPass,

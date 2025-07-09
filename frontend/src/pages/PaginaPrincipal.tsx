@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../estilos/PaginaPrincipal.css';  // Importa el archivo de estilos
 
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
+
 interface Juego {
   id: number;
   nombre: string;
@@ -33,21 +35,20 @@ const PaginaPrincipal: React.FC = () => {
   const [categoriaFiltro, setCategoriaFiltro] = useState<number>(0);  // 0 = todas
   const [plataformaFiltro, setPlataformaFiltro] = useState<number>(0); // 0 = todas
   const [ordenamiento, setOrdenamiento] = useState('nombre');
-  const [cargando, setCargando] = useState(false);
   const [mensaje, setMensaje] = useState('');
   const [categorias, setCategorias] = useState<{ id: number, nombre: string }[]>([]);
   const [plataformas, setPlataformas] = useState<{ id: number, nombre: string }[]>([]);
+  // const [cargando, setCargando] = useState(false);
 
   // Estado para los valores del carrito
   const [cantidades, setCantidades] = useState<Record<number, number>>({});
-  const [isOrderVisible, setIsOrderVisible] = useState(false); // Nuevo estado para el modal
 
   // Cargar juegos desde el backend
   useEffect(() => {
     const fetchJuegos = async () => {
       try {
-        setCargando(true);
-        const response = await axios.get('http://localhost:3000/api/juegos', {
+        // setCargando(true);
+        const response = await axios.get(`${URL_BACKEND}api/juegos`, {
           params: {
             plataformaId: plataformaFiltro, // número o 0
             categoriaId: categoriaFiltro,   // número o 0
@@ -56,18 +57,16 @@ const PaginaPrincipal: React.FC = () => {
         setJuegos(response.data);
       } catch (error) {
         console.error('Error al obtener juegos', error);
-      } finally {
-        setCargando(false);
       }
-    };
     fetchJuegos();
+    }
   }, [plataformaFiltro, categoriaFiltro]);
 
   // Cargar categorías desde el backend
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/categorias');
+        const response = await axios.get(`${URL_BACKEND}api/categorias`);
         setCategorias([{ id: 0, nombre: 'todas' }, ...response.data]); // Agregar 'todas' como opción
       } catch (error) {
         console.error('Error al obtener categorías', error);
@@ -80,7 +79,7 @@ const PaginaPrincipal: React.FC = () => {
   useEffect(() => {
     const fetchPlataformas = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/plataformas');
+        const response = await axios.get(`${URL_BACKEND}api/plataformas`);
         setPlataformas([{ id: 0, nombre: 'todas' }, ...response.data]); // Agregar 'todas' como opción
       } catch (error) {
         console.error('Error al obtener plataformas', error);
@@ -101,7 +100,7 @@ const PaginaPrincipal: React.FC = () => {
   }, [juegos.length]);
 
   // Función para mostrar mensajes temporales
-  const mostrarMensaje = (texto: string, tipo: 'success' | 'error' | 'info' = 'info') => {
+  const mostrarMensaje = (texto: string) => {
     setMensaje(texto);
     setTimeout(() => setMensaje(''), 3000);
   };
@@ -111,7 +110,7 @@ const PaginaPrincipal: React.FC = () => {
     const cantidad = cantidades[juego.id] || 1;
 
     if (cantidad <= 0) {
-      mostrarMensaje('La cantidad debe ser al menos 1', 'error');
+      mostrarMensaje('La cantidad debe ser al menos 1');
       return;
     }
 
@@ -126,13 +125,13 @@ const PaginaPrincipal: React.FC = () => {
       }
     });
     setCantidades(prev => ({ ...prev, [juego.id]: 1 }));
-    mostrarMensaje(`${juego.nombre} agregado al carrito`, 'success');
+    mostrarMensaje(`${juego.nombre} agregado al carrito`);
   }, [cantidades]);
 
   // Función para eliminar del carrito
   const eliminarDelCarrito = useCallback((id: number) => {
     setCarrito(prev => prev.filter(item => item.id !== id));
-    mostrarMensaje('Producto eliminado del carrito', 'info');
+    mostrarMensaje('Producto eliminado del carrito');
   }, []);
 
   // Función para actualizar las cantidades en el carrito
@@ -214,9 +213,9 @@ const PaginaPrincipal: React.FC = () => {
     return carrito.reduce((total, item) => total + item.cantidad, 0);
   }, [carrito]);
 
-  function cancelarCarrito(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+  function cancelarCarrito(): void {
     setCarrito([]);
-    mostrarMensaje('Carrito vaciado', 'info');
+    mostrarMensaje('Carrito vaciado');
   }
 
   return (
@@ -409,5 +408,5 @@ const PaginaPrincipal: React.FC = () => {
     </div>
   );
 };
-
 export default PaginaPrincipal;
+

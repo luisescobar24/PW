@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../estilos/Detalle.css';
 
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
+
 interface ImagenJuego {
   id: number;
   juegoId: number;
@@ -48,7 +50,7 @@ const Detalle: React.FC = () => {
   useEffect(() => {
     const fetchJuego = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/juegos/${id}`);
+        const response = await axios.get(`${URL_BACKEND}api/juegos/${id}`);
         setJuego(response.data);
       } catch (err) {
         setError('❌ Error al cargar los datos del juego.');

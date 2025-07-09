@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
+
 interface Imagen {
   url: string;
   descripcion: string;
@@ -9,7 +11,7 @@ interface Imagen {
 
 interface Game {
   nombre: string;
-  descripcion: string; // Nuevo campo
+  descripcion: string;
   precio: number;
   estaOferta: boolean;
   estado: boolean;
@@ -19,15 +21,15 @@ interface Game {
   plataformas: number[];
 }
 
-export interface AgregarJuegoProps {
-  onClose: () => void;
+interface AgregarJuegoProps {
+  onClose: () => void; // Propiedad onClose para manejar el cierre del modal
 }
 
-const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
+const AgregarJuego: React.FC<AgregarJuegoProps> = ({ onClose }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<Game>({
     nombre: "",
-    descripcion: "", // Nuevo campo
+    descripcion: "",
     precio: 0,
     estaOferta: false,
     estado: true,
@@ -37,7 +39,6 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
     plataformas: [],
   });
 
-  const [imagenUrl, setImagenUrl] = useState("");
   const [imagenDescripcion, setImagenDescripcion] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [categorias, setCategorias] = useState<{ id: number; nombre: string }[]>([]);
@@ -49,10 +50,10 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
   const [subiendoImagen, setSubiendoImagen] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/categorias")
+    fetch(`${URL_BACKEND}api/categorias`)
       .then((res) => res.json())
       .then((data) => setCategorias(data));
-    fetch("http://localhost:3000/api/plataformas")
+    fetch(`${URL_BACKEND}api/plataformas`)
       .then((res) => res.json())
       .then((data) => setPlataformasDisponibles(data));
   }, []);
@@ -82,20 +83,6 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
     }));
   };
 
-  const handleAgregarImagen = () => {
-    if (!imagenUrl.trim()) {
-      setErrors((prev) => ({ ...prev, imagenUrl: "La URL de la imagen es requerida" }));
-      return;
-    }
-    setFormData((prev) => ({
-      ...prev,
-      imagenes: [...prev.imagenes, { url: imagenUrl, descripcion: imagenDescripcion }],
-    }));
-    setImagenUrl("");
-    setImagenDescripcion("");
-    setErrors((prev) => ({ ...prev, imagenUrl: "" }));
-  };
-
   const handleRemoveImagen = (index: number) => {
     setFormData((prev) => ({
       ...prev,
@@ -105,7 +92,6 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
 
   const handleEditImagen = (index: number) => {
     const imagen = formData.imagenes[index];
-    setImagenUrl(imagen.url);
     setImagenDescripcion(imagen.descripcion);
     handleRemoveImagen(index);
   };
@@ -126,7 +112,7 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await fetch("http://localhost:3000/api/juegos", {
+        const response = await fetch(`${URL_BACKEND}api/juegos`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData), // Incluye descripcion
@@ -143,53 +129,51 @@ const AgregarJuego = ({ onClose }: AgregarJuegoProps) => {
     }
   };
 
-const handleImageUpload = async () => {
-  if (!imagenFile) {
-    setErrors((prev) => ({ ...prev, imagenUrl: "Selecciona una imagen" }));
-    return;
-  }
-  setSubiendoImagen(true);
-  try {
-    const formData = new FormData();
-    formData.append("image", imagenFile); // Añadir la imagen al FormData
-
-    // Realizar la solicitud de subida de la imagen al servidor
-    const res = await axios.post("http://localhost:3000/api/upload-image", formData, {
-      headers: { "Content-Type": "multipart/form-data" }, // Especifica que estamos enviando un archivo
-    });
-
-    if (res.status === 200) {
-      const url = res.data.imageUrl; // Asumimos que el servidor responde con la URL de la imagen
-
-      // Actualiza el estado con la nueva imagen
-      setFormData((prev) => ({
-        ...prev,
-        imagenes: [...prev.imagenes, { url, descripcion: imagenDescripcion }],
-      }));
-
-      // Resetea los campos de la imagen
-      setImagenDescripcion("");
-      setImagenFile(null);
-      setErrors((prev) => ({ ...prev, imagenUrl: "" }));
-    } else {
-      setErrors((prev) => ({ ...prev, imagenUrl: "Error al subir la imagen. Intenta nuevamente." }));
+  const handleImageUpload = async () => {
+    if (!imagenFile) {
+      setErrors((prev) => ({ ...prev, imagenUrl: "Selecciona una imagen" }));
+      return;
     }
-  } catch (err) {
-    // Manejamos el error si ocurre durante la solicitud
-    console.error("Error al subir la imagen:", err);
-    setErrors((prev) => ({ ...prev, imagenUrl: "Error al subir la imagen. Intenta nuevamente." }));
-  } finally {
-    // Independientemente de si hubo error o no, setSubiendoImagen a false
-    setSubiendoImagen(false);
-  }
-};
+    setSubiendoImagen(true);
+    try {
+      const formData = new FormData();
+      formData.append("image", imagenFile); // Añadir la imagen al FormData
 
+      // Realizar la solicitud de subida de la imagen al servidor
+      const res = await axios.post(`${URL_BACKEND}api/upload-image`, formData, {
+        headers: { "Content-Type": "multipart/form-data" }, // Especifica que estamos enviando un archivo
+      });
 
+      if (res.status === 200) {
+        const url = res.data.imageUrl; // Asumimos que el servidor responde con la URL de la imagen
+
+        // Actualiza el estado con la nueva imagen
+        setFormData((prev) => ({
+          ...prev,
+          imagenes: [...prev.imagenes, { url, descripcion: imagenDescripcion }],
+        }));
+
+        // Resetea los campos de la imagen
+        setImagenDescripcion("");
+        setImagenFile(null);
+        setErrors((prev) => ({ ...prev, imagenUrl: "" }));
+      } else {
+        setErrors((prev) => ({ ...prev, imagenUrl: "Error al subir la imagen. Intenta nuevamente." }));
+      }
+    } catch (err) {
+      // Manejamos el error si ocurre durante la solicitud
+      console.error("Error al subir la imagen:", err);
+      setErrors((prev) => ({ ...prev, imagenUrl: "Error al subir la imagen. Intenta nuevamente." }));
+    } finally {
+      // Independientemente de si hubo error o no, setSubiendoImagen a false
+      setSubiendoImagen(false);
+    }
+  };
 
   return (
     <div className="modal">
       <div className="modal-content">
-        <button className="close-btn" onClick={() => navigate("/adminjuegos/")}>
+        <button className="close-btn" onClick={onClose}>
           ×
         </button>
         
@@ -352,6 +336,13 @@ const handleImageUpload = async () => {
                       >
                         Quitar
                       </button>
+                      <button
+                        type="button"
+                        onClick={() => handleEditImagen(idx)}
+                        className="btn-editar-imagen"
+                      >
+                        Editar
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -381,7 +372,7 @@ const handleImageUpload = async () => {
           <div className="modal-buttons">
             <button
               type="button"
-              onClick={() => navigate("/adminjuegos/")}
+              onClick={onClose}
             >
               Cancelar
             </button>

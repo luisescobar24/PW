@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';  
 import '../estilos/SignIn.css';
 
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
+
 const SignIn = () => {
   const navigate = useNavigate();
 
@@ -16,16 +18,11 @@ const SignIn = () => {
     setLoading(true);  // Start loading when attempting to log in
     try {
       // Send POST request to backend
-      const response = await axios.post('http://localhost:3000/api/auth/login', { correo: username, password });
+      const response = await axios.post(`${URL_BACKEND}api/auth/login`, { correo: username, password });
 
       if (response.data.success) {
-        // Create an object with user data
-        const userData = {
-          username: response.data.user.nombre,
-          role: response.data.user.estado ? 'admin' : 'user',
-          token: response.data.token,
-        };
-
+        // You can store user data in localStorage or context if needed
+        // For now, just navigate to the main page after login
         navigate('/paginaprincipal');  // Redirect to main page after login
       }
     } catch (error: unknown) {

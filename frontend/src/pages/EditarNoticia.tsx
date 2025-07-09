@@ -1,21 +1,26 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../estilos/EditarJuego.css';
 
-interface Imagen {
-  id?: number;
+type Imagen = {
+  id: number;
   url: string;
-  descripcion: string;
-}
+  descripcion?: string;
+};
 
-interface Noticia {
-  id?: number;
+type Noticia = {
+  id: number;
   titulo: string;
   contenido: string;
   imagenes: Imagen[];
+};
+
+interface EditarNoticiaProps {
+  noticia: Noticia;
+  onSave: () => void;
 }
 
-const EditarNoticia = () => {
+const EditarNoticia: React.FC<EditarNoticiaProps> = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<Noticia | null>(null);
