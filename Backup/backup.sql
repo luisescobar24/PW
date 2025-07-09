@@ -144,16 +144,6 @@ INSERT INTO public."_JuegoPlataforma" VALUES (5, 4);
 
 
 --
--- TOC entry 4960 (class 0 OID 34796)
--- Dependencies: 217
--- Data for Name: _prisma_migrations; Type: TABLE DATA; Schema: public; Owner: userpw
---
-
-INSERT INTO public._prisma_migrations VALUES ('f07a7753-6955-4935-a25e-9afdb663437d', 'd61bc5e251b697c4c8f3ff92e76b6a9dd2363eaa0dcf5c04a8c7290444946783', '2025-07-01 23:48:54.764034-05', '20250630161211_init', NULL, NULL, '2025-07-01 23:48:54.712226-05', 1);
-INSERT INTO public._prisma_migrations VALUES ('718f02d8-9b37-4bbb-b528-9c8feb368c8a', 'f169bf17fc50c8c25426ee3f0e81f4c0d4863feac0cb2959b64d9a4049bec241', '2025-07-01 23:51:00.37741-05', '20250702045100_v2_add_description_to_game', NULL, NULL, '2025-07-01 23:51:00.367388-05', 1);
-
-
---
 -- TOC entry 4983 (class 0 OID 0)
 -- Dependencies: 232
 -- Name: Calificacion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: userpw
