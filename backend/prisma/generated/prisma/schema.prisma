@@ -40,7 +40,7 @@ model Juego {
   estado         Boolean
   categoriaId    Int
   videoUrl       String?        @db.VarChar(255)
-  descripcion    String?        @db.VarChar(255) // New description field
+  descripcion    String?        @db.VarChar(255)
   calificaciones Calificacion[]
   imagenes       Imagen[]       @relation("JuegoImagenes")
   categoria      Categoria      @relation(fields: [categoriaId], references: [id])
@@ -57,10 +57,19 @@ model Imagen {
 }
 
 model Noticia {
-  id     Int     @id @default(autoincrement())
-  titulo String  @db.VarChar(200)
-  texto  String
-  activo Boolean
+  id       Int             @id @default(autoincrement())
+  titulo   String          @db.VarChar(200)
+  texto    String
+  activo   Boolean
+  imagenes ImagenNoticia[] @relation("NoticiaImagenes")
+}
+
+model ImagenNoticia {
+  id          Int     @id @default(autoincrement())
+  noticiaId   Int
+  url         String
+  descripcion String?
+  noticia     Noticia @relation("NoticiaImagenes", fields: [noticiaId], references: [id])
 }
 
 model Venta {

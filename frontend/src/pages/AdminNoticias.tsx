@@ -5,16 +5,11 @@ import '../estilos/AdminJuegos.css';
 
 const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
-interface Imagen {
-  url: string;
-  descripcion: string;
-}
-
 interface Noticia {
   id: number;
   titulo: string;
   contenido: string;
-  imagenes: Imagen[];
+  // Sin imágenes por ahora
 }
 
 const AdminNoticias = () => {
@@ -25,7 +20,7 @@ const AdminNoticias = () => {
 
   const fetchNoticias = async () => {
     try {
-      const response = await fetch(`${URL_BACKEND}noticias`);
+      const response = await fetch(`${URL_BACKEND}api/noticias`);
       if (!response.ok) throw new Error('Error al obtener noticias');
       const data = await response.json();
       setNoticias(data);
@@ -82,21 +77,11 @@ const AdminNoticias = () => {
                   <td>{noticia.id}</td>
                   <td>{noticia.titulo}</td>
                   <td>
-                    {noticia.contenido.length > 60
+                    {noticia.contenido && noticia.contenido.length > 60
                       ? noticia.contenido.slice(0, 60) + '...'
                       : noticia.contenido}
                   </td>
-                  <td>
-                    {noticia.imagenes.length > 0 ? (
-                      <img
-                        src={noticia.imagenes[0].url}
-                        alt={noticia.imagenes[0].descripcion}
-                        style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 8 }}
-                      />
-                    ) : (
-                      '❌'
-                    )}
-                  </td>
+                  <td>❌</td>
                   <td>
                     <button onClick={() => navigate(`/adminnoticias/editar/${noticia.id}`)}>
                       Editar
@@ -113,21 +98,21 @@ const AdminNoticias = () => {
             </tbody>
           </table>
         )}
-      </main>
 
-      {/* MODAL DE CONFIRMACIÓN */}
-      {mostrarEliminar && noticiaAEliminar && (
-        <EliminarNoticia
-          id={noticiaAEliminar.id}
-          titulo={noticiaAEliminar.titulo}
-          onClose={() => setMostrarEliminar(false)}
-          onDeleted={() => {
-            setMostrarEliminar(false);
-            setNoticiaAEliminar(null);
-            fetchNoticias();
-          }}
-        />
-      )}
+        {/* MODAL DE CONFIRMACIÓN */}
+        {mostrarEliminar && noticiaAEliminar && (
+          <EliminarNoticia
+            id={noticiaAEliminar.id}
+            titulo={noticiaAEliminar.titulo}
+            onClose={() => setMostrarEliminar(false)}
+            onDeleted={() => {
+              setMostrarEliminar(false);
+              setNoticiaAEliminar(null);
+              fetchNoticias();
+            }}
+          />
+        )}
+      </main>
     </>
   );
 };

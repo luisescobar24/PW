@@ -9,6 +9,8 @@ import cloudinary from 'cloudinary';
 import multer from 'multer';
 import fs from 'fs';
 
+
+
 dotenv.config();  // Cargar las variables de entorno desde .env
 
 // Configuración global de Cloudinary (asegúrate de tener las variables en tu .env o usa estas configuraciones directamente)
@@ -845,3 +847,67 @@ app.delete('/api/imagenes/:id', async (req: Request, res: Response) => {
   }
 });
 
+// Obtener todas las noticias
+app.get('/api/noticias', async (req, res) => {
+  try {
+    const noticias = await prisma.noticia.findMany({ orderBy: { id: 'desc' } });
+    res.json(noticias);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener noticias' });
+  }
+});
+
+// Obtener una noticia por ID
+app.get('/api/noticias/:id', async (req, res) => {
+  try {
+    const noticia = await prisma.noticia.findUnique({ where: { id: Number(req.params.id) } });
+    if (!noticia) return res.status(404).json({ message: 'Noticia no encontrada' });
+    res.json(noticia);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener noticia' });
+  }
+});
+
+// Agregar noticia
+app.post('/api/noticias', upload.array('imagenes', 10), async (req, res) => {
+  const { titulo, contenido } = req.body;
+  try {
+    const nuevaNoticia = await prisma.noticia.create({
+      data: {
+        titulo,
+        texto: contenido,
+        activo: true,
+      }
+    });
+    res.status(201).json(nuevaNoticia);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al agregar noticia' });
+  }
+});
+
+// Editar noticia
+app.put('/api/noticias/:id', upload.array('imagenes', 10), async (req, res) => {
+  const { titulo, contenido } = req.body;
+  try {
+    const noticiaEditada = await prisma.noticia.update({
+      where: { id: Number(req.params.id) },
+      data: {
+        titulo,
+        texto: contenido,
+      }
+    });
+    res.json(noticiaEditada);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al editar noticia' });
+  }
+});
+
+// Eliminar noticia
+app.delete('/api/noticias/:id', async (req, res) => {
+  try {
+    await prisma.noticia.delete({ where: { id: Number(req.params.id) } });
+    res.status(204).end();
+  } catch (error) {
+    res.status(500).json({ message: 'Error al eliminar noticia' });
+  }
+});

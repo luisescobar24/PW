@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
+const URL_BACKEND = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000/";
 
 interface EliminarNoticiaProps {
   id: number;
