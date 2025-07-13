@@ -8,8 +8,7 @@ const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 interface Noticia {
   id: number;
   titulo: string;
-  contenido: string;
-  // Sin imágenes por ahora
+  texto: string; // OJO: el backend devuelve "texto" (no "contenido")
 }
 
 const AdminNoticias = () => {
@@ -77,9 +76,9 @@ const AdminNoticias = () => {
                   <td>{noticia.id}</td>
                   <td>{noticia.titulo}</td>
                   <td>
-                    {noticia.contenido && noticia.contenido.length > 60
-                      ? noticia.contenido.slice(0, 60) + '...'
-                      : noticia.contenido}
+                    {noticia.texto && noticia.texto.length > 60
+                      ? noticia.texto.slice(0, 60) + '...'
+                      : noticia.texto}
                   </td>
                   <td>❌</td>
                   <td>
