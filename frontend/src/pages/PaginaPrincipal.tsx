@@ -38,6 +38,8 @@ const PaginaPrincipal: React.FC = () => {
   const [mensaje, setMensaje] = useState('');
   const [categorias, setCategorias] = useState<{ id: number, nombre: string }[]>([]);
   const [plataformas, setPlataformas] = useState<{ id: number, nombre: string }[]>([]);
+  const [precioMin, setPrecioMin] = useState(0);
+  const [precioMax, setPrecioMax] = useState(0);
   // const [cargando, setCargando] = useState(false);
 
   // Estado para los valores del carrito
@@ -182,7 +184,11 @@ const PaginaPrincipal: React.FC = () => {
         )
       );
     }
-
+    if (ordenamiento === 'rango-precio' && precioMin >= 0 && precioMax > 0) {
+      resultado = resultado.filter(juego =>
+        juego.precio >= precioMin && juego.precio <= precioMax
+      );
+    }
     // Ordenar los juegos
     if (resultado.length > 0) {
       resultado.sort((a, b) => {
@@ -289,7 +295,28 @@ const PaginaPrincipal: React.FC = () => {
             <option value="nombre">Ordenar por Nombre</option>
             <option value="precio-asc">Precio: Menor a Mayor</option>
             <option value="precio-desc">Precio: Mayor a Menor</option>
+            <option value="rango-precio">Filtrar por Rango de Precios</option>
           </select>
+          
+          {ordenamiento === 'rango-precio' && (
+            <div className="flex items-center gap-2 mt-2">
+              <label>Desde:</label>
+              <input
+                type="number"
+                value={precioMin}
+                onChange={(e) => setPrecioMin(Number(e.target.value))}
+                className="border p-1 w-20"
+              />
+              <label>Hasta:</label>
+              <input
+                type="number"
+                value={precioMax}
+                onChange={(e) => setPrecioMax(Number(e.target.value))}
+                className="border p-1 w-20"
+              />
+            </div>
+          )}
+
         </div>
       </header>
 
