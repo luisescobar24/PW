@@ -22,7 +22,7 @@ interface Game {
 }
 
 interface AgregarJuegoProps {
-  onClose: () => void; // Propiedad onClose para manejar el cierre del modal
+  onClose: () => void;
 }
 
 const AgregarJuego: React.FC<AgregarJuegoProps> = ({ onClose }) => {
@@ -173,7 +173,7 @@ const AgregarJuego: React.FC<AgregarJuegoProps> = ({ onClose }) => {
   return (
     <div className="modal">
       <div className="modal-content">
-        <button className="close-btn" onClick={onClose}>
+        <button className="close-btn" onClick={() => onClose ? onClose() : navigate(-1)}>
           ×
         </button>
         
@@ -372,7 +372,7 @@ const AgregarJuego: React.FC<AgregarJuegoProps> = ({ onClose }) => {
           <div className="modal-buttons">
             <button
               type="button"
-              onClick={onClose}
+              onClick={() => onClose ? onClose() : navigate(-1)}
             >
               Cancelar
             </button>
