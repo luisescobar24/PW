@@ -5,16 +5,12 @@ import '../estilos/AdminJuegos.css';
 
 const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
-interface Imagen {
-  url: string;
-  descripcion: string;
-}
-
 interface Noticia {
   id: number;
   titulo: string;
-  contenido: string;
-  imagenes: Imagen[];
+  texto: string;
+  imagen?: string | null;
+  activo: boolean;
 }
 
 const AdminNoticias = () => {
@@ -25,11 +21,11 @@ const AdminNoticias = () => {
 
   const fetchNoticias = async () => {
     try {
-      const response = await fetch(`${URL_BACKEND}noticias`);
+      const response = await fetch(`${URL_BACKEND}api/noticias`);
       if (!response.ok) throw new Error('Error al obtener noticias');
       const data = await response.json();
       setNoticias(data);
-    } catch (error) {
+    } catch {
       setNoticias([]);
     }
   };
@@ -49,15 +45,23 @@ const AdminNoticias = () => {
       <aside className="sidebar">
         <p>Admin Panel</p>
         <nav>
-            <button>Users</button>  
-            <button onClick={() => navigate('/adminjuegos')}>Games</button>
-            <button className="active" onClick={() => navigate('/adminnoticias')}>News</button>
-            <button>Statistics</button>
-            <button onClick={handleLogout}>Log out</button>
+          <button>Users</button>
+          <button onClick={() => navigate('/adminjuegos')}>Games</button>
+          <button className="active" onClick={() => navigate('/adminnoticias')}>News</button>
+          <button>Statistics</button>
+          <button onClick={handleLogout}>Log out</button>
         </nav>
       </aside>
 
       <main className="admin-panel">
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 16 }}>
+          <button
+            style={{ background: '#ff6600', color: '#fff', border: 'none', borderRadius: 4, padding: '8px 16px', cursor: 'pointer', fontWeight: 'bold' }}
+            onClick={() => navigate('/paginaprincipal')}
+          >
+            Volver a Principal
+          </button>
+        </div>
         <h2>Gestión de Noticias</h2>
         <div className="actions">
           <button onClick={() => navigate('/adminnoticias/agregar')}>+ Agregar Noticia</button>
@@ -73,6 +77,7 @@ const AdminNoticias = () => {
                 <th>Título</th>
                 <th>Contenido</th>
                 <th>Imagen</th>
+                <th>Activo</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -82,21 +87,16 @@ const AdminNoticias = () => {
                   <td>{noticia.id}</td>
                   <td>{noticia.titulo}</td>
                   <td>
-                    {noticia.contenido.length > 60
-                      ? noticia.contenido.slice(0, 60) + '...'
-                      : noticia.contenido}
+                    {noticia.texto && noticia.texto.length > 60
+                      ? noticia.texto.slice(0, 60) + '...'
+                      : noticia.texto}
                   </td>
                   <td>
-                    {noticia.imagenes.length > 0 ? (
-                      <img
-                        src={noticia.imagenes[0].url}
-                        alt={noticia.imagenes[0].descripcion}
-                        style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 8 }}
-                      />
-                    ) : (
-                      '❌'
-                    )}
+                    {noticia.imagen
+                      ? <img src={noticia.imagen} alt={noticia.titulo} style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 8 }} />
+                      : "❌"}
                   </td>
+                  <td>{noticia.activo ? 'Sí' : 'No'}</td>
                   <td>
                     <button onClick={() => navigate(`/adminnoticias/editar/${noticia.id}`)}>
                       Editar
@@ -113,21 +113,20 @@ const AdminNoticias = () => {
             </tbody>
           </table>
         )}
-      </main>
 
-      {/* MODAL DE CONFIRMACIÓN */}
-      {mostrarEliminar && noticiaAEliminar && (
-        <EliminarNoticia
-          id={noticiaAEliminar.id}
-          titulo={noticiaAEliminar.titulo}
-          onClose={() => setMostrarEliminar(false)}
-          onDeleted={() => {
-            setMostrarEliminar(false);
-            setNoticiaAEliminar(null);
-            fetchNoticias();
-          }}
-        />
-      )}
+        {mostrarEliminar && noticiaAEliminar && (
+          <EliminarNoticia
+            id={noticiaAEliminar.id}
+            titulo={noticiaAEliminar.titulo}
+            onClose={() => setMostrarEliminar(false)}
+            onDeleted={() => {
+              setMostrarEliminar(false);
+              setNoticiaAEliminar(null);
+              fetchNoticias();
+            }}
+          />
+        )}
+      </main>
     </>
   );
 };

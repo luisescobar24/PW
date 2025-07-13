@@ -7314,6 +7314,7 @@ export namespace Prisma {
     titulo: string | null
     texto: string | null
     activo: boolean | null
+    imagen: string | null
   }
 
   export type NoticiaMaxAggregateOutputType = {
@@ -7321,6 +7322,7 @@ export namespace Prisma {
     titulo: string | null
     texto: string | null
     activo: boolean | null
+    imagen: string | null
   }
 
   export type NoticiaCountAggregateOutputType = {
@@ -7328,6 +7330,7 @@ export namespace Prisma {
     titulo: number
     texto: number
     activo: number
+    imagen: number
     _all: number
   }
 
@@ -7345,6 +7348,7 @@ export namespace Prisma {
     titulo?: true
     texto?: true
     activo?: true
+    imagen?: true
   }
 
   export type NoticiaMaxAggregateInputType = {
@@ -7352,6 +7356,7 @@ export namespace Prisma {
     titulo?: true
     texto?: true
     activo?: true
+    imagen?: true
   }
 
   export type NoticiaCountAggregateInputType = {
@@ -7359,6 +7364,7 @@ export namespace Prisma {
     titulo?: true
     texto?: true
     activo?: true
+    imagen?: true
     _all?: true
   }
 
@@ -7453,6 +7459,7 @@ export namespace Prisma {
     titulo: string
     texto: string
     activo: boolean
+    imagen: string | null
     _count: NoticiaCountAggregateOutputType | null
     _avg: NoticiaAvgAggregateOutputType | null
     _sum: NoticiaSumAggregateOutputType | null
@@ -7479,6 +7486,7 @@ export namespace Prisma {
     titulo?: boolean
     texto?: boolean
     activo?: boolean
+    imagen?: boolean
   }, ExtArgs["result"]["noticia"]>
 
   export type NoticiaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7486,6 +7494,7 @@ export namespace Prisma {
     titulo?: boolean
     texto?: boolean
     activo?: boolean
+    imagen?: boolean
   }, ExtArgs["result"]["noticia"]>
 
   export type NoticiaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7493,6 +7502,7 @@ export namespace Prisma {
     titulo?: boolean
     texto?: boolean
     activo?: boolean
+    imagen?: boolean
   }, ExtArgs["result"]["noticia"]>
 
   export type NoticiaSelectScalar = {
@@ -7500,9 +7510,10 @@ export namespace Prisma {
     titulo?: boolean
     texto?: boolean
     activo?: boolean
+    imagen?: boolean
   }
 
-  export type NoticiaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "titulo" | "texto" | "activo", ExtArgs["result"]["noticia"]>
+  export type NoticiaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "titulo" | "texto" | "activo" | "imagen", ExtArgs["result"]["noticia"]>
 
   export type $NoticiaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Noticia"
@@ -7512,6 +7523,7 @@ export namespace Prisma {
       titulo: string
       texto: string
       activo: boolean
+      imagen: string | null
     }, ExtArgs["result"]["noticia"]>
     composites: {}
   }
@@ -7939,6 +7951,7 @@ export namespace Prisma {
     readonly titulo: FieldRef<"Noticia", 'String'>
     readonly texto: FieldRef<"Noticia", 'String'>
     readonly activo: FieldRef<"Noticia", 'Boolean'>
+    readonly imagen: FieldRef<"Noticia", 'String'>
   }
     
 
@@ -10689,7 +10702,8 @@ export namespace Prisma {
     id: 'id',
     titulo: 'titulo',
     texto: 'texto',
-    activo: 'activo'
+    activo: 'activo',
+    imagen: 'imagen'
   };
 
   export type NoticiaScalarFieldEnum = (typeof NoticiaScalarFieldEnum)[keyof typeof NoticiaScalarFieldEnum]
@@ -11125,6 +11139,7 @@ export namespace Prisma {
     titulo?: StringFilter<"Noticia"> | string
     texto?: StringFilter<"Noticia"> | string
     activo?: BoolFilter<"Noticia"> | boolean
+    imagen?: StringNullableFilter<"Noticia"> | string | null
   }
 
   export type NoticiaOrderByWithRelationInput = {
@@ -11132,6 +11147,7 @@ export namespace Prisma {
     titulo?: SortOrder
     texto?: SortOrder
     activo?: SortOrder
+    imagen?: SortOrderInput | SortOrder
   }
 
   export type NoticiaWhereUniqueInput = Prisma.AtLeast<{
@@ -11142,6 +11158,7 @@ export namespace Prisma {
     titulo?: StringFilter<"Noticia"> | string
     texto?: StringFilter<"Noticia"> | string
     activo?: BoolFilter<"Noticia"> | boolean
+    imagen?: StringNullableFilter<"Noticia"> | string | null
   }, "id">
 
   export type NoticiaOrderByWithAggregationInput = {
@@ -11149,6 +11166,7 @@ export namespace Prisma {
     titulo?: SortOrder
     texto?: SortOrder
     activo?: SortOrder
+    imagen?: SortOrderInput | SortOrder
     _count?: NoticiaCountOrderByAggregateInput
     _avg?: NoticiaAvgOrderByAggregateInput
     _max?: NoticiaMaxOrderByAggregateInput
@@ -11164,6 +11182,7 @@ export namespace Prisma {
     titulo?: StringWithAggregatesFilter<"Noticia"> | string
     texto?: StringWithAggregatesFilter<"Noticia"> | string
     activo?: BoolWithAggregatesFilter<"Noticia"> | boolean
+    imagen?: StringNullableWithAggregatesFilter<"Noticia"> | string | null
   }
 
   export type VentaWhereInput = {
@@ -11576,6 +11595,7 @@ export namespace Prisma {
     titulo: string
     texto: string
     activo: boolean
+    imagen?: string | null
   }
 
   export type NoticiaUncheckedCreateInput = {
@@ -11583,12 +11603,14 @@ export namespace Prisma {
     titulo: string
     texto: string
     activo: boolean
+    imagen?: string | null
   }
 
   export type NoticiaUpdateInput = {
     titulo?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     activo?: BoolFieldUpdateOperationsInput | boolean
+    imagen?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type NoticiaUncheckedUpdateInput = {
@@ -11596,6 +11618,7 @@ export namespace Prisma {
     titulo?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     activo?: BoolFieldUpdateOperationsInput | boolean
+    imagen?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type NoticiaCreateManyInput = {
@@ -11603,12 +11626,14 @@ export namespace Prisma {
     titulo: string
     texto: string
     activo: boolean
+    imagen?: string | null
   }
 
   export type NoticiaUpdateManyMutationInput = {
     titulo?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     activo?: BoolFieldUpdateOperationsInput | boolean
+    imagen?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type NoticiaUncheckedUpdateManyInput = {
@@ -11616,6 +11641,7 @@ export namespace Prisma {
     titulo?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     activo?: BoolFieldUpdateOperationsInput | boolean
+    imagen?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VentaCreateInput = {
@@ -12090,6 +12116,7 @@ export namespace Prisma {
     titulo?: SortOrder
     texto?: SortOrder
     activo?: SortOrder
+    imagen?: SortOrder
   }
 
   export type NoticiaAvgOrderByAggregateInput = {
@@ -12101,6 +12128,7 @@ export namespace Prisma {
     titulo?: SortOrder
     texto?: SortOrder
     activo?: SortOrder
+    imagen?: SortOrder
   }
 
   export type NoticiaMinOrderByAggregateInput = {
@@ -12108,6 +12136,7 @@ export namespace Prisma {
     titulo?: SortOrder
     texto?: SortOrder
     activo?: SortOrder
+    imagen?: SortOrder
   }
 
   export type NoticiaSumOrderByAggregateInput = {

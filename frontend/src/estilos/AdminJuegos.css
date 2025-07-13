@@ -499,3 +499,23 @@ body {
     flex-direction: column;
   }
 }
+
+.volver-principal-btn {
+  width: 100%;
+  margin: 20px 0;
+  background: #fff;
+  color: #ff9027;
+  border: 2px solid #ff9027;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  display: block;
+}
+.volver-principal-btn:hover {
+  background: #ff9027;
+  color: #fff;
+}
