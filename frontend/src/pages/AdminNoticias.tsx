@@ -44,8 +44,14 @@ const AdminNoticias = () => {
     <>
       <aside className="sidebar">
         <p>Admin Panel</p>
+        <button
+          className="volver-principal-btn"
+          onClick={() => navigate('/paginaprincipal')}
+        >
+          Volver a la página principal
+        </button>
         <nav>
-          <button>Users</button>  
+          <button>Users</button>
           <button onClick={() => navigate('/adminjuegos')}>Games</button>
           <button className="active" onClick={() => navigate('/adminnoticias')}>News</button>
           <button>Statistics</button>
