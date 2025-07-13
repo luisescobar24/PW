@@ -44,12 +44,6 @@ const AdminNoticias = () => {
     <>
       <aside className="sidebar">
         <p>Admin Panel</p>
-        <button
-          className="volver-principal-btn"
-          onClick={() => navigate('/paginaprincipal')}
-        >
-          Volver a la página principal
-        </button>
         <nav>
           <button>Users</button>
           <button onClick={() => navigate('/adminjuegos')}>Games</button>
@@ -60,6 +54,14 @@ const AdminNoticias = () => {
       </aside>
 
       <main className="admin-panel">
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 16 }}>
+          <button
+            style={{ background: '#ff6600', color: '#fff', border: 'none', borderRadius: 4, padding: '8px 16px', cursor: 'pointer', fontWeight: 'bold' }}
+            onClick={() => navigate('/paginaprincipal')}
+          >
+            Volver a Principal
+          </button>
+        </div>
         <h2>Gestión de Noticias</h2>
         <div className="actions">
           <button onClick={() => navigate('/adminnoticias/agregar')}>+ Agregar Noticia</button>
