@@ -1,66 +1,47 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../estilos/EditarJuego.css';
-
-interface Noticia {
-  id: number;
-  titulo: string;
-  contenido: string;
-}
-
-interface AgregarNoticiaProps {
-  onClose: () => void;
-}
 
 const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
-const AgregarNoticia: React.FC<AgregarNoticiaProps> = ({ onClose }) => {
+const AgregarNoticia: React.FC = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<Noticia>({
-    id: 0,
+  const [formData, setFormData] = useState({
     titulo: '',
-    contenido: '',
+    texto: '',
+    imagen: '',
+    activo: true
   });
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError('');
     setSuccess('');
-
-    // Solo enviamos título y contenido, sin imágenes
     try {
       const res = await fetch(`${URL_BACKEND}api/noticias`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          titulo: formData.titulo,
-          contenido: formData.contenido,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
       });
-
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.message || 'Error al guardar la noticia');
+        throw new Error(data.message || 'Error al agregar noticia');
       }
-      setSuccess('Noticia guardada correctamente');
+      setSuccess('Noticia agregada correctamente');
       setTimeout(() => navigate('/adminnoticias'), 1000);
     } catch (err: any) {
-      setError(err.message || 'No se pudo guardar la noticia');
-    } finally {
-      setLoading(false);
+      setError(err.message || 'No se pudo agregar la noticia');
     }
   };
 
@@ -84,20 +65,41 @@ const AgregarNoticia: React.FC<AgregarNoticiaProps> = ({ onClose }) => {
           <div>
             <label>Contenido *</label>
             <textarea
-              name="contenido"
+              name="texto"
               required
-              value={formData.contenido}
+              value={formData.texto}
               onChange={handleChange}
               className="descripcion-input"
               placeholder="Contenido de la noticia"
             />
           </div>
+          <div>
+            <label>URL Imagen</label>
+            <input
+              name="imagen"
+              type="text"
+              value={formData.imagen}
+              onChange={handleChange}
+              placeholder="https://...jpg"
+            />
+          </div>
+          <div>
+            <label>
+              <input
+                type="checkbox"
+                name="activo"
+                checked={formData.activo}
+                onChange={handleChange}
+              />
+              Activo
+            </label>
+          </div>
           <div className="modal-buttons">
             <button type="button" onClick={() => navigate('/adminnoticias')}>
               Cancelar
             </button>
-            <button type="submit" disabled={loading}>
-              {loading ? 'Guardando...' : 'Guardar'}
+            <button type="submit">
+              Guardar
             </button>
           </div>
         </form>

@@ -6,7 +6,9 @@ const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 type Noticia = {
   id: number;
   titulo: string;
-  contenido: string;
+  texto: string;
+  imagen?: string | null;
+  activo: boolean;
 };
 
 const EditarNoticia: React.FC = () => {
@@ -23,11 +25,7 @@ const EditarNoticia: React.FC = () => {
         const res = await fetch(`${URL_BACKEND}api/noticias/${id}`);
         if (!res.ok) throw new Error('No se pudo obtener la noticia');
         const data = await res.json();
-        setFormData({
-          id: data.id,
-          titulo: data.titulo,
-          contenido: data.texto, // OJO: el backend responde con "texto"
-        });
+        setFormData(data);
       } catch (err: any) {
         setError(err.message || 'Error al cargar la noticia');
       } finally {
@@ -41,10 +39,10 @@ const EditarNoticia: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     if (!formData) return;
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,
     });
   };
 
@@ -59,10 +57,7 @@ const EditarNoticia: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          titulo: formData.titulo,
-          contenido: formData.contenido,
-        }),
+        body: JSON.stringify(formData),
       });
       if (!res.ok) {
         const data = await res.json();
@@ -98,13 +93,34 @@ const EditarNoticia: React.FC = () => {
           <div>
             <label>Contenido *</label>
             <textarea
-              name="contenido"
+              name="texto"
               required
-              value={formData.contenido}
+              value={formData.texto}
               onChange={handleChange}
               className="descripcion-input"
               placeholder="Contenido de la noticia"
             />
+          </div>
+          <div>
+            <label>URL Imagen</label>
+            <input
+              name="imagen"
+              type="text"
+              value={formData.imagen || ""}
+              onChange={handleChange}
+              placeholder="https://...jpg"
+            />
+          </div>
+          <div>
+            <label>
+              <input
+                type="checkbox"
+                name="activo"
+                checked={formData.activo}
+                onChange={handleChange}
+              />
+              Activo
+            </label>
           </div>
           <div className="modal-buttons">
             <button type="button" onClick={() => navigate('/adminnoticias')}>

@@ -162,14 +162,8 @@ exports.Prisma.NoticiaScalarFieldEnum = {
   id: 'id',
   titulo: 'titulo',
   texto: 'texto',
-  activo: 'activo'
-};
-
-exports.Prisma.ImagenNoticiaScalarFieldEnum = {
-  id: 'id',
-  noticiaId: 'noticiaId',
-  url: 'url',
-  descripcion: 'descripcion'
+  activo: 'activo',
+  imagen: 'imagen'
 };
 
 exports.Prisma.VentaScalarFieldEnum = {
@@ -212,7 +206,6 @@ exports.Prisma.ModelName = {
   Juego: 'Juego',
   Imagen: 'Imagen',
   Noticia: 'Noticia',
-  ImagenNoticia: 'ImagenNoticia',
   Venta: 'Venta',
   Calificacion: 'Calificacion'
 };

@@ -847,67 +847,67 @@ app.delete('/api/imagenes/:id', async (req: Request, res: Response) => {
   }
 });
 
+
 // Obtener todas las noticias
-app.get('/api/noticias', async (req, res) => {
+app.get("/api/noticias", async (req, res) => {
   try {
-    const noticias = await prisma.noticia.findMany({ orderBy: { id: 'desc' } });
-    res.json(noticias);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener noticias' });
-  }
-});
-
-// Obtener una noticia por ID
-app.get('/api/noticias/:id', async (req, res) => {
-  try {
-    const noticia = await prisma.noticia.findUnique({ where: { id: Number(req.params.id) } });
-    if (!noticia) return res.status(404).json({ message: 'Noticia no encontrada' });
-    res.json(noticia);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener noticia' });
-  }
-});
-
-// Agregar noticia
-app.post('/api/noticias', upload.array('imagenes', 10), async (req, res) => {
-  const { titulo, contenido } = req.body;
-  try {
-    const nuevaNoticia = await prisma.noticia.create({
-      data: {
-        titulo,
-        texto: contenido,
-        activo: true,
-      }
+    const noticias = await prisma.noticia.findMany({
+      orderBy: { id: "desc" },
     });
-    res.status(201).json(nuevaNoticia);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al agregar noticia' });
+    res.json(noticias);
+  } catch (err) {
+    res.status(500).json({ message: "Error al obtener noticias" });
+  }
+});
+
+// Obtener una noticia por id
+app.get("/api/noticias/:id", async (req, res) => {
+  try {
+    const noticia = await prisma.noticia.findUnique({
+      where: { id: Number(req.params.id) },
+    });
+    if (!noticia) return res.status(404).json({ message: "Noticia no encontrada" });
+    res.json(noticia);
+  } catch (err) {
+    res.status(500).json({ message: "Error al obtener noticia" });
+  }
+});
+
+// Crear noticia
+app.post("/api/noticias", async (req, res) => {
+  try {
+    const { titulo, texto, imagen, activo } = req.body;
+    const noticia = await prisma.noticia.create({
+      data: { titulo, texto, imagen, activo: !!activo },
+    });
+    res.json(noticia);
+  } catch (err) {
+    res.status(500).json({ message: "Error al crear noticia" });
   }
 });
 
 // Editar noticia
-app.put('/api/noticias/:id', upload.array('imagenes', 10), async (req, res) => {
-  const { titulo, contenido } = req.body;
+app.put("/api/noticias/:id", async (req, res) => {
   try {
-    const noticiaEditada = await prisma.noticia.update({
+    const { titulo, texto, imagen, activo } = req.body;
+    const noticia = await prisma.noticia.update({
       where: { id: Number(req.params.id) },
-      data: {
-        titulo,
-        texto: contenido,
-      }
+      data: { titulo, texto, imagen, activo: !!activo },
     });
-    res.json(noticiaEditada);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al editar noticia' });
+    res.json(noticia);
+  } catch (err) {
+    res.status(500).json({ message: "Error al editar noticia" });
   }
 });
 
 // Eliminar noticia
-app.delete('/api/noticias/:id', async (req, res) => {
+app.delete("/api/noticias/:id", async (req, res) => {
   try {
-    await prisma.noticia.delete({ where: { id: Number(req.params.id) } });
-    res.status(204).end();
-  } catch (error) {
-    res.status(500).json({ message: 'Error al eliminar noticia' });
+    await prisma.noticia.delete({
+      where: { id: Number(req.params.id) },
+    });
+    res.json({ message: "Noticia eliminada" });
+  } catch (err) {
+    res.status(500).json({ message: "Error al eliminar noticia" });
   }
 });

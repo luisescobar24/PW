@@ -44,11 +44,6 @@ export type Imagen = $Result.DefaultSelection<Prisma.$ImagenPayload>
  */
 export type Noticia = $Result.DefaultSelection<Prisma.$NoticiaPayload>
 /**
- * Model ImagenNoticia
- * 
- */
-export type ImagenNoticia = $Result.DefaultSelection<Prisma.$ImagenNoticiaPayload>
-/**
  * Model Venta
  * 
  */
@@ -243,16 +238,6 @@ export class PrismaClient<
     * ```
     */
   get noticia(): Prisma.NoticiaDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.imagenNoticia`: Exposes CRUD operations for the **ImagenNoticia** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more ImagenNoticias
-    * const imagenNoticias = await prisma.imagenNoticia.findMany()
-    * ```
-    */
-  get imagenNoticia(): Prisma.ImagenNoticiaDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.venta`: Exposes CRUD operations for the **Venta** model.
@@ -719,7 +704,6 @@ export namespace Prisma {
     Juego: 'Juego',
     Imagen: 'Imagen',
     Noticia: 'Noticia',
-    ImagenNoticia: 'ImagenNoticia',
     Venta: 'Venta',
     Calificacion: 'Calificacion'
   };
@@ -740,7 +724,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "usuario" | "plataforma" | "categoria" | "juego" | "imagen" | "noticia" | "imagenNoticia" | "venta" | "calificacion"
+      modelProps: "usuario" | "plataforma" | "categoria" | "juego" | "imagen" | "noticia" | "venta" | "calificacion"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1188,80 +1172,6 @@ export namespace Prisma {
           }
         }
       }
-      ImagenNoticia: {
-        payload: Prisma.$ImagenNoticiaPayload<ExtArgs>
-        fields: Prisma.ImagenNoticiaFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.ImagenNoticiaFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImagenNoticiaPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.ImagenNoticiaFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImagenNoticiaPayload>
-          }
-          findFirst: {
-            args: Prisma.ImagenNoticiaFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImagenNoticiaPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.ImagenNoticiaFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImagenNoticiaPayload>
-          }
-          findMany: {
-            args: Prisma.ImagenNoticiaFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImagenNoticiaPayload>[]
-          }
-          create: {
-            args: Prisma.ImagenNoticiaCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImagenNoticiaPayload>
-          }
-          createMany: {
-            args: Prisma.ImagenNoticiaCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.ImagenNoticiaCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImagenNoticiaPayload>[]
-          }
-          delete: {
-            args: Prisma.ImagenNoticiaDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImagenNoticiaPayload>
-          }
-          update: {
-            args: Prisma.ImagenNoticiaUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImagenNoticiaPayload>
-          }
-          deleteMany: {
-            args: Prisma.ImagenNoticiaDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.ImagenNoticiaUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.ImagenNoticiaUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImagenNoticiaPayload>[]
-          }
-          upsert: {
-            args: Prisma.ImagenNoticiaUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImagenNoticiaPayload>
-          }
-          aggregate: {
-            args: Prisma.ImagenNoticiaAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateImagenNoticia>
-          }
-          groupBy: {
-            args: Prisma.ImagenNoticiaGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ImagenNoticiaGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.ImagenNoticiaCountArgs<ExtArgs>
-            result: $Utils.Optional<ImagenNoticiaCountAggregateOutputType> | number
-          }
-        }
-      }
       Venta: {
         payload: Prisma.$VentaPayload<ExtArgs>
         fields: Prisma.VentaFieldRefs
@@ -1500,7 +1410,6 @@ export namespace Prisma {
     juego?: JuegoOmit
     imagen?: ImagenOmit
     noticia?: NoticiaOmit
-    imagenNoticia?: ImagenNoticiaOmit
     venta?: VentaOmit
     calificacion?: CalificacionOmit
   }
@@ -1749,37 +1658,6 @@ export namespace Prisma {
    */
   export type JuegoCountOutputTypeCountPlataformasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PlataformaWhereInput
-  }
-
-
-  /**
-   * Count Type NoticiaCountOutputType
-   */
-
-  export type NoticiaCountOutputType = {
-    imagenes: number
-  }
-
-  export type NoticiaCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    imagenes?: boolean | NoticiaCountOutputTypeCountImagenesArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * NoticiaCountOutputType without action
-   */
-  export type NoticiaCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NoticiaCountOutputType
-     */
-    select?: NoticiaCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * NoticiaCountOutputType without action
-   */
-  export type NoticiaCountOutputTypeCountImagenesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ImagenNoticiaWhereInput
   }
 
 
@@ -7436,6 +7314,7 @@ export namespace Prisma {
     titulo: string | null
     texto: string | null
     activo: boolean | null
+    imagen: string | null
   }
 
   export type NoticiaMaxAggregateOutputType = {
@@ -7443,6 +7322,7 @@ export namespace Prisma {
     titulo: string | null
     texto: string | null
     activo: boolean | null
+    imagen: string | null
   }
 
   export type NoticiaCountAggregateOutputType = {
@@ -7450,6 +7330,7 @@ export namespace Prisma {
     titulo: number
     texto: number
     activo: number
+    imagen: number
     _all: number
   }
 
@@ -7467,6 +7348,7 @@ export namespace Prisma {
     titulo?: true
     texto?: true
     activo?: true
+    imagen?: true
   }
 
   export type NoticiaMaxAggregateInputType = {
@@ -7474,6 +7356,7 @@ export namespace Prisma {
     titulo?: true
     texto?: true
     activo?: true
+    imagen?: true
   }
 
   export type NoticiaCountAggregateInputType = {
@@ -7481,6 +7364,7 @@ export namespace Prisma {
     titulo?: true
     texto?: true
     activo?: true
+    imagen?: true
     _all?: true
   }
 
@@ -7575,6 +7459,7 @@ export namespace Prisma {
     titulo: string
     texto: string
     activo: boolean
+    imagen: string | null
     _count: NoticiaCountAggregateOutputType | null
     _avg: NoticiaAvgAggregateOutputType | null
     _sum: NoticiaSumAggregateOutputType | null
@@ -7601,8 +7486,7 @@ export namespace Prisma {
     titulo?: boolean
     texto?: boolean
     activo?: boolean
-    imagenes?: boolean | Noticia$imagenesArgs<ExtArgs>
-    _count?: boolean | NoticiaCountOutputTypeDefaultArgs<ExtArgs>
+    imagen?: boolean
   }, ExtArgs["result"]["noticia"]>
 
   export type NoticiaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7610,6 +7494,7 @@ export namespace Prisma {
     titulo?: boolean
     texto?: boolean
     activo?: boolean
+    imagen?: boolean
   }, ExtArgs["result"]["noticia"]>
 
   export type NoticiaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7617,6 +7502,7 @@ export namespace Prisma {
     titulo?: boolean
     texto?: boolean
     activo?: boolean
+    imagen?: boolean
   }, ExtArgs["result"]["noticia"]>
 
   export type NoticiaSelectScalar = {
@@ -7624,26 +7510,20 @@ export namespace Prisma {
     titulo?: boolean
     texto?: boolean
     activo?: boolean
+    imagen?: boolean
   }
 
-  export type NoticiaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "titulo" | "texto" | "activo", ExtArgs["result"]["noticia"]>
-  export type NoticiaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    imagenes?: boolean | Noticia$imagenesArgs<ExtArgs>
-    _count?: boolean | NoticiaCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type NoticiaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type NoticiaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type NoticiaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "titulo" | "texto" | "activo" | "imagen", ExtArgs["result"]["noticia"]>
 
   export type $NoticiaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Noticia"
-    objects: {
-      imagenes: Prisma.$ImagenNoticiaPayload<ExtArgs>[]
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: number
       titulo: string
       texto: string
       activo: boolean
+      imagen: string | null
     }, ExtArgs["result"]["noticia"]>
     composites: {}
   }
@@ -8038,7 +7918,6 @@ export namespace Prisma {
    */
   export interface Prisma__NoticiaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    imagenes<T extends Noticia$imagenesArgs<ExtArgs> = {}>(args?: Subset<T, Noticia$imagenesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImagenNoticiaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8072,6 +7951,7 @@ export namespace Prisma {
     readonly titulo: FieldRef<"Noticia", 'String'>
     readonly texto: FieldRef<"Noticia", 'String'>
     readonly activo: FieldRef<"Noticia", 'Boolean'>
+    readonly imagen: FieldRef<"Noticia", 'String'>
   }
     
 
@@ -8088,10 +7968,6 @@ export namespace Prisma {
      * Omit specific fields from the Noticia
      */
     omit?: NoticiaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticiaInclude<ExtArgs> | null
     /**
      * Filter, which Noticia to fetch.
      */
@@ -8111,10 +7987,6 @@ export namespace Prisma {
      */
     omit?: NoticiaOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticiaInclude<ExtArgs> | null
-    /**
      * Filter, which Noticia to fetch.
      */
     where: NoticiaWhereUniqueInput
@@ -8132,10 +8004,6 @@ export namespace Prisma {
      * Omit specific fields from the Noticia
      */
     omit?: NoticiaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticiaInclude<ExtArgs> | null
     /**
      * Filter, which Noticia to fetch.
      */
@@ -8185,10 +8053,6 @@ export namespace Prisma {
      */
     omit?: NoticiaOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticiaInclude<ExtArgs> | null
-    /**
      * Filter, which Noticia to fetch.
      */
     where?: NoticiaWhereInput
@@ -8237,10 +8101,6 @@ export namespace Prisma {
      */
     omit?: NoticiaOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticiaInclude<ExtArgs> | null
-    /**
      * Filter, which Noticias to fetch.
      */
     where?: NoticiaWhereInput
@@ -8283,10 +8143,6 @@ export namespace Prisma {
      * Omit specific fields from the Noticia
      */
     omit?: NoticiaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticiaInclude<ExtArgs> | null
     /**
      * The data needed to create a Noticia.
      */
@@ -8335,10 +8191,6 @@ export namespace Prisma {
      * Omit specific fields from the Noticia
      */
     omit?: NoticiaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticiaInclude<ExtArgs> | null
     /**
      * The data needed to update a Noticia.
      */
@@ -8406,10 +8258,6 @@ export namespace Prisma {
      */
     omit?: NoticiaOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticiaInclude<ExtArgs> | null
-    /**
      * The filter to search for the Noticia to update in case it exists.
      */
     where: NoticiaWhereUniqueInput
@@ -8436,10 +8284,6 @@ export namespace Prisma {
      */
     omit?: NoticiaOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticiaInclude<ExtArgs> | null
-    /**
      * Filter which Noticia to delete.
      */
     where: NoticiaWhereUniqueInput
@@ -8460,30 +8304,6 @@ export namespace Prisma {
   }
 
   /**
-   * Noticia.imagenes
-   */
-  export type Noticia$imagenesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImagenNoticia
-     */
-    select?: ImagenNoticiaSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImagenNoticia
-     */
-    omit?: ImagenNoticiaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImagenNoticiaInclude<ExtArgs> | null
-    where?: ImagenNoticiaWhereInput
-    orderBy?: ImagenNoticiaOrderByWithRelationInput | ImagenNoticiaOrderByWithRelationInput[]
-    cursor?: ImagenNoticiaWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ImagenNoticiaScalarFieldEnum | ImagenNoticiaScalarFieldEnum[]
-  }
-
-  /**
    * Noticia without action
    */
   export type NoticiaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8495,1093 +8315,6 @@ export namespace Prisma {
      * Omit specific fields from the Noticia
      */
     omit?: NoticiaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NoticiaInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model ImagenNoticia
-   */
-
-  export type AggregateImagenNoticia = {
-    _count: ImagenNoticiaCountAggregateOutputType | null
-    _avg: ImagenNoticiaAvgAggregateOutputType | null
-    _sum: ImagenNoticiaSumAggregateOutputType | null
-    _min: ImagenNoticiaMinAggregateOutputType | null
-    _max: ImagenNoticiaMaxAggregateOutputType | null
-  }
-
-  export type ImagenNoticiaAvgAggregateOutputType = {
-    id: number | null
-    noticiaId: number | null
-  }
-
-  export type ImagenNoticiaSumAggregateOutputType = {
-    id: number | null
-    noticiaId: number | null
-  }
-
-  export type ImagenNoticiaMinAggregateOutputType = {
-    id: number | null
-    noticiaId: number | null
-    url: string | null
-    descripcion: string | null
-  }
-
-  export type ImagenNoticiaMaxAggregateOutputType = {
-    id: number | null
-    noticiaId: number | null
-    url: string | null
-    descripcion: string | null
-  }
-
-  export type ImagenNoticiaCountAggregateOutputType = {
-    id: number
-    noticiaId: number
-    url: number
-    descripcion: number
-    _all: number
-  }
-
-
-  export type ImagenNoticiaAvgAggregateInputType = {
-    id?: true
-    noticiaId?: true
-  }
-
-  export type ImagenNoticiaSumAggregateInputType = {
-    id?: true
-    noticiaId?: true
-  }
-
-  export type ImagenNoticiaMinAggregateInputType = {
-    id?: true
-    noticiaId?: true
-    url?: true
-    descripcion?: true
-  }
-
-  export type ImagenNoticiaMaxAggregateInputType = {
-    id?: true
-    noticiaId?: true
-    url?: true
-    descripcion?: true
-  }
-
-  export type ImagenNoticiaCountAggregateInputType = {
-    id?: true
-    noticiaId?: true
-    url?: true
-    descripcion?: true
-    _all?: true
-  }
-
-  export type ImagenNoticiaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ImagenNoticia to aggregate.
-     */
-    where?: ImagenNoticiaWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ImagenNoticias to fetch.
-     */
-    orderBy?: ImagenNoticiaOrderByWithRelationInput | ImagenNoticiaOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: ImagenNoticiaWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ImagenNoticias from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ImagenNoticias.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned ImagenNoticias
-    **/
-    _count?: true | ImagenNoticiaCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: ImagenNoticiaAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: ImagenNoticiaSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: ImagenNoticiaMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: ImagenNoticiaMaxAggregateInputType
-  }
-
-  export type GetImagenNoticiaAggregateType<T extends ImagenNoticiaAggregateArgs> = {
-        [P in keyof T & keyof AggregateImagenNoticia]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateImagenNoticia[P]>
-      : GetScalarType<T[P], AggregateImagenNoticia[P]>
-  }
-
-
-
-
-  export type ImagenNoticiaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ImagenNoticiaWhereInput
-    orderBy?: ImagenNoticiaOrderByWithAggregationInput | ImagenNoticiaOrderByWithAggregationInput[]
-    by: ImagenNoticiaScalarFieldEnum[] | ImagenNoticiaScalarFieldEnum
-    having?: ImagenNoticiaScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: ImagenNoticiaCountAggregateInputType | true
-    _avg?: ImagenNoticiaAvgAggregateInputType
-    _sum?: ImagenNoticiaSumAggregateInputType
-    _min?: ImagenNoticiaMinAggregateInputType
-    _max?: ImagenNoticiaMaxAggregateInputType
-  }
-
-  export type ImagenNoticiaGroupByOutputType = {
-    id: number
-    noticiaId: number
-    url: string
-    descripcion: string | null
-    _count: ImagenNoticiaCountAggregateOutputType | null
-    _avg: ImagenNoticiaAvgAggregateOutputType | null
-    _sum: ImagenNoticiaSumAggregateOutputType | null
-    _min: ImagenNoticiaMinAggregateOutputType | null
-    _max: ImagenNoticiaMaxAggregateOutputType | null
-  }
-
-  type GetImagenNoticiaGroupByPayload<T extends ImagenNoticiaGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<ImagenNoticiaGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof ImagenNoticiaGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], ImagenNoticiaGroupByOutputType[P]>
-            : GetScalarType<T[P], ImagenNoticiaGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type ImagenNoticiaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    noticiaId?: boolean
-    url?: boolean
-    descripcion?: boolean
-    noticia?: boolean | NoticiaDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["imagenNoticia"]>
-
-  export type ImagenNoticiaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    noticiaId?: boolean
-    url?: boolean
-    descripcion?: boolean
-    noticia?: boolean | NoticiaDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["imagenNoticia"]>
-
-  export type ImagenNoticiaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    noticiaId?: boolean
-    url?: boolean
-    descripcion?: boolean
-    noticia?: boolean | NoticiaDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["imagenNoticia"]>
-
-  export type ImagenNoticiaSelectScalar = {
-    id?: boolean
-    noticiaId?: boolean
-    url?: boolean
-    descripcion?: boolean
-  }
-
-  export type ImagenNoticiaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "noticiaId" | "url" | "descripcion", ExtArgs["result"]["imagenNoticia"]>
-  export type ImagenNoticiaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    noticia?: boolean | NoticiaDefaultArgs<ExtArgs>
-  }
-  export type ImagenNoticiaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    noticia?: boolean | NoticiaDefaultArgs<ExtArgs>
-  }
-  export type ImagenNoticiaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    noticia?: boolean | NoticiaDefaultArgs<ExtArgs>
-  }
-
-  export type $ImagenNoticiaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "ImagenNoticia"
-    objects: {
-      noticia: Prisma.$NoticiaPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      noticiaId: number
-      url: string
-      descripcion: string | null
-    }, ExtArgs["result"]["imagenNoticia"]>
-    composites: {}
-  }
-
-  type ImagenNoticiaGetPayload<S extends boolean | null | undefined | ImagenNoticiaDefaultArgs> = $Result.GetResult<Prisma.$ImagenNoticiaPayload, S>
-
-  type ImagenNoticiaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ImagenNoticiaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ImagenNoticiaCountAggregateInputType | true
-    }
-
-  export interface ImagenNoticiaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ImagenNoticia'], meta: { name: 'ImagenNoticia' } }
-    /**
-     * Find zero or one ImagenNoticia that matches the filter.
-     * @param {ImagenNoticiaFindUniqueArgs} args - Arguments to find a ImagenNoticia
-     * @example
-     * // Get one ImagenNoticia
-     * const imagenNoticia = await prisma.imagenNoticia.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends ImagenNoticiaFindUniqueArgs>(args: SelectSubset<T, ImagenNoticiaFindUniqueArgs<ExtArgs>>): Prisma__ImagenNoticiaClient<$Result.GetResult<Prisma.$ImagenNoticiaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one ImagenNoticia that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {ImagenNoticiaFindUniqueOrThrowArgs} args - Arguments to find a ImagenNoticia
-     * @example
-     * // Get one ImagenNoticia
-     * const imagenNoticia = await prisma.imagenNoticia.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends ImagenNoticiaFindUniqueOrThrowArgs>(args: SelectSubset<T, ImagenNoticiaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ImagenNoticiaClient<$Result.GetResult<Prisma.$ImagenNoticiaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ImagenNoticia that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImagenNoticiaFindFirstArgs} args - Arguments to find a ImagenNoticia
-     * @example
-     * // Get one ImagenNoticia
-     * const imagenNoticia = await prisma.imagenNoticia.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends ImagenNoticiaFindFirstArgs>(args?: SelectSubset<T, ImagenNoticiaFindFirstArgs<ExtArgs>>): Prisma__ImagenNoticiaClient<$Result.GetResult<Prisma.$ImagenNoticiaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ImagenNoticia that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImagenNoticiaFindFirstOrThrowArgs} args - Arguments to find a ImagenNoticia
-     * @example
-     * // Get one ImagenNoticia
-     * const imagenNoticia = await prisma.imagenNoticia.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends ImagenNoticiaFindFirstOrThrowArgs>(args?: SelectSubset<T, ImagenNoticiaFindFirstOrThrowArgs<ExtArgs>>): Prisma__ImagenNoticiaClient<$Result.GetResult<Prisma.$ImagenNoticiaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more ImagenNoticias that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImagenNoticiaFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all ImagenNoticias
-     * const imagenNoticias = await prisma.imagenNoticia.findMany()
-     * 
-     * // Get first 10 ImagenNoticias
-     * const imagenNoticias = await prisma.imagenNoticia.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const imagenNoticiaWithIdOnly = await prisma.imagenNoticia.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends ImagenNoticiaFindManyArgs>(args?: SelectSubset<T, ImagenNoticiaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImagenNoticiaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a ImagenNoticia.
-     * @param {ImagenNoticiaCreateArgs} args - Arguments to create a ImagenNoticia.
-     * @example
-     * // Create one ImagenNoticia
-     * const ImagenNoticia = await prisma.imagenNoticia.create({
-     *   data: {
-     *     // ... data to create a ImagenNoticia
-     *   }
-     * })
-     * 
-     */
-    create<T extends ImagenNoticiaCreateArgs>(args: SelectSubset<T, ImagenNoticiaCreateArgs<ExtArgs>>): Prisma__ImagenNoticiaClient<$Result.GetResult<Prisma.$ImagenNoticiaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many ImagenNoticias.
-     * @param {ImagenNoticiaCreateManyArgs} args - Arguments to create many ImagenNoticias.
-     * @example
-     * // Create many ImagenNoticias
-     * const imagenNoticia = await prisma.imagenNoticia.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends ImagenNoticiaCreateManyArgs>(args?: SelectSubset<T, ImagenNoticiaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many ImagenNoticias and returns the data saved in the database.
-     * @param {ImagenNoticiaCreateManyAndReturnArgs} args - Arguments to create many ImagenNoticias.
-     * @example
-     * // Create many ImagenNoticias
-     * const imagenNoticia = await prisma.imagenNoticia.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many ImagenNoticias and only return the `id`
-     * const imagenNoticiaWithIdOnly = await prisma.imagenNoticia.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends ImagenNoticiaCreateManyAndReturnArgs>(args?: SelectSubset<T, ImagenNoticiaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImagenNoticiaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a ImagenNoticia.
-     * @param {ImagenNoticiaDeleteArgs} args - Arguments to delete one ImagenNoticia.
-     * @example
-     * // Delete one ImagenNoticia
-     * const ImagenNoticia = await prisma.imagenNoticia.delete({
-     *   where: {
-     *     // ... filter to delete one ImagenNoticia
-     *   }
-     * })
-     * 
-     */
-    delete<T extends ImagenNoticiaDeleteArgs>(args: SelectSubset<T, ImagenNoticiaDeleteArgs<ExtArgs>>): Prisma__ImagenNoticiaClient<$Result.GetResult<Prisma.$ImagenNoticiaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one ImagenNoticia.
-     * @param {ImagenNoticiaUpdateArgs} args - Arguments to update one ImagenNoticia.
-     * @example
-     * // Update one ImagenNoticia
-     * const imagenNoticia = await prisma.imagenNoticia.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends ImagenNoticiaUpdateArgs>(args: SelectSubset<T, ImagenNoticiaUpdateArgs<ExtArgs>>): Prisma__ImagenNoticiaClient<$Result.GetResult<Prisma.$ImagenNoticiaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more ImagenNoticias.
-     * @param {ImagenNoticiaDeleteManyArgs} args - Arguments to filter ImagenNoticias to delete.
-     * @example
-     * // Delete a few ImagenNoticias
-     * const { count } = await prisma.imagenNoticia.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends ImagenNoticiaDeleteManyArgs>(args?: SelectSubset<T, ImagenNoticiaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more ImagenNoticias.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImagenNoticiaUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many ImagenNoticias
-     * const imagenNoticia = await prisma.imagenNoticia.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends ImagenNoticiaUpdateManyArgs>(args: SelectSubset<T, ImagenNoticiaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more ImagenNoticias and returns the data updated in the database.
-     * @param {ImagenNoticiaUpdateManyAndReturnArgs} args - Arguments to update many ImagenNoticias.
-     * @example
-     * // Update many ImagenNoticias
-     * const imagenNoticia = await prisma.imagenNoticia.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more ImagenNoticias and only return the `id`
-     * const imagenNoticiaWithIdOnly = await prisma.imagenNoticia.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends ImagenNoticiaUpdateManyAndReturnArgs>(args: SelectSubset<T, ImagenNoticiaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImagenNoticiaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one ImagenNoticia.
-     * @param {ImagenNoticiaUpsertArgs} args - Arguments to update or create a ImagenNoticia.
-     * @example
-     * // Update or create a ImagenNoticia
-     * const imagenNoticia = await prisma.imagenNoticia.upsert({
-     *   create: {
-     *     // ... data to create a ImagenNoticia
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the ImagenNoticia we want to update
-     *   }
-     * })
-     */
-    upsert<T extends ImagenNoticiaUpsertArgs>(args: SelectSubset<T, ImagenNoticiaUpsertArgs<ExtArgs>>): Prisma__ImagenNoticiaClient<$Result.GetResult<Prisma.$ImagenNoticiaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of ImagenNoticias.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImagenNoticiaCountArgs} args - Arguments to filter ImagenNoticias to count.
-     * @example
-     * // Count the number of ImagenNoticias
-     * const count = await prisma.imagenNoticia.count({
-     *   where: {
-     *     // ... the filter for the ImagenNoticias we want to count
-     *   }
-     * })
-    **/
-    count<T extends ImagenNoticiaCountArgs>(
-      args?: Subset<T, ImagenNoticiaCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], ImagenNoticiaCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a ImagenNoticia.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImagenNoticiaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends ImagenNoticiaAggregateArgs>(args: Subset<T, ImagenNoticiaAggregateArgs>): Prisma.PrismaPromise<GetImagenNoticiaAggregateType<T>>
-
-    /**
-     * Group by ImagenNoticia.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImagenNoticiaGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends ImagenNoticiaGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ImagenNoticiaGroupByArgs['orderBy'] }
-        : { orderBy?: ImagenNoticiaGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, ImagenNoticiaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetImagenNoticiaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the ImagenNoticia model
-   */
-  readonly fields: ImagenNoticiaFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for ImagenNoticia.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__ImagenNoticiaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    noticia<T extends NoticiaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NoticiaDefaultArgs<ExtArgs>>): Prisma__NoticiaClient<$Result.GetResult<Prisma.$NoticiaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the ImagenNoticia model
-   */
-  interface ImagenNoticiaFieldRefs {
-    readonly id: FieldRef<"ImagenNoticia", 'Int'>
-    readonly noticiaId: FieldRef<"ImagenNoticia", 'Int'>
-    readonly url: FieldRef<"ImagenNoticia", 'String'>
-    readonly descripcion: FieldRef<"ImagenNoticia", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * ImagenNoticia findUnique
-   */
-  export type ImagenNoticiaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImagenNoticia
-     */
-    select?: ImagenNoticiaSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImagenNoticia
-     */
-    omit?: ImagenNoticiaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImagenNoticiaInclude<ExtArgs> | null
-    /**
-     * Filter, which ImagenNoticia to fetch.
-     */
-    where: ImagenNoticiaWhereUniqueInput
-  }
-
-  /**
-   * ImagenNoticia findUniqueOrThrow
-   */
-  export type ImagenNoticiaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImagenNoticia
-     */
-    select?: ImagenNoticiaSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImagenNoticia
-     */
-    omit?: ImagenNoticiaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImagenNoticiaInclude<ExtArgs> | null
-    /**
-     * Filter, which ImagenNoticia to fetch.
-     */
-    where: ImagenNoticiaWhereUniqueInput
-  }
-
-  /**
-   * ImagenNoticia findFirst
-   */
-  export type ImagenNoticiaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImagenNoticia
-     */
-    select?: ImagenNoticiaSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImagenNoticia
-     */
-    omit?: ImagenNoticiaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImagenNoticiaInclude<ExtArgs> | null
-    /**
-     * Filter, which ImagenNoticia to fetch.
-     */
-    where?: ImagenNoticiaWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ImagenNoticias to fetch.
-     */
-    orderBy?: ImagenNoticiaOrderByWithRelationInput | ImagenNoticiaOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ImagenNoticias.
-     */
-    cursor?: ImagenNoticiaWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ImagenNoticias from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ImagenNoticias.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ImagenNoticias.
-     */
-    distinct?: ImagenNoticiaScalarFieldEnum | ImagenNoticiaScalarFieldEnum[]
-  }
-
-  /**
-   * ImagenNoticia findFirstOrThrow
-   */
-  export type ImagenNoticiaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImagenNoticia
-     */
-    select?: ImagenNoticiaSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImagenNoticia
-     */
-    omit?: ImagenNoticiaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImagenNoticiaInclude<ExtArgs> | null
-    /**
-     * Filter, which ImagenNoticia to fetch.
-     */
-    where?: ImagenNoticiaWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ImagenNoticias to fetch.
-     */
-    orderBy?: ImagenNoticiaOrderByWithRelationInput | ImagenNoticiaOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ImagenNoticias.
-     */
-    cursor?: ImagenNoticiaWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ImagenNoticias from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ImagenNoticias.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ImagenNoticias.
-     */
-    distinct?: ImagenNoticiaScalarFieldEnum | ImagenNoticiaScalarFieldEnum[]
-  }
-
-  /**
-   * ImagenNoticia findMany
-   */
-  export type ImagenNoticiaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImagenNoticia
-     */
-    select?: ImagenNoticiaSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImagenNoticia
-     */
-    omit?: ImagenNoticiaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImagenNoticiaInclude<ExtArgs> | null
-    /**
-     * Filter, which ImagenNoticias to fetch.
-     */
-    where?: ImagenNoticiaWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ImagenNoticias to fetch.
-     */
-    orderBy?: ImagenNoticiaOrderByWithRelationInput | ImagenNoticiaOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing ImagenNoticias.
-     */
-    cursor?: ImagenNoticiaWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ImagenNoticias from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ImagenNoticias.
-     */
-    skip?: number
-    distinct?: ImagenNoticiaScalarFieldEnum | ImagenNoticiaScalarFieldEnum[]
-  }
-
-  /**
-   * ImagenNoticia create
-   */
-  export type ImagenNoticiaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImagenNoticia
-     */
-    select?: ImagenNoticiaSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImagenNoticia
-     */
-    omit?: ImagenNoticiaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImagenNoticiaInclude<ExtArgs> | null
-    /**
-     * The data needed to create a ImagenNoticia.
-     */
-    data: XOR<ImagenNoticiaCreateInput, ImagenNoticiaUncheckedCreateInput>
-  }
-
-  /**
-   * ImagenNoticia createMany
-   */
-  export type ImagenNoticiaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many ImagenNoticias.
-     */
-    data: ImagenNoticiaCreateManyInput | ImagenNoticiaCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * ImagenNoticia createManyAndReturn
-   */
-  export type ImagenNoticiaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImagenNoticia
-     */
-    select?: ImagenNoticiaSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImagenNoticia
-     */
-    omit?: ImagenNoticiaOmit<ExtArgs> | null
-    /**
-     * The data used to create many ImagenNoticias.
-     */
-    data: ImagenNoticiaCreateManyInput | ImagenNoticiaCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImagenNoticiaIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * ImagenNoticia update
-   */
-  export type ImagenNoticiaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImagenNoticia
-     */
-    select?: ImagenNoticiaSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImagenNoticia
-     */
-    omit?: ImagenNoticiaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImagenNoticiaInclude<ExtArgs> | null
-    /**
-     * The data needed to update a ImagenNoticia.
-     */
-    data: XOR<ImagenNoticiaUpdateInput, ImagenNoticiaUncheckedUpdateInput>
-    /**
-     * Choose, which ImagenNoticia to update.
-     */
-    where: ImagenNoticiaWhereUniqueInput
-  }
-
-  /**
-   * ImagenNoticia updateMany
-   */
-  export type ImagenNoticiaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update ImagenNoticias.
-     */
-    data: XOR<ImagenNoticiaUpdateManyMutationInput, ImagenNoticiaUncheckedUpdateManyInput>
-    /**
-     * Filter which ImagenNoticias to update
-     */
-    where?: ImagenNoticiaWhereInput
-    /**
-     * Limit how many ImagenNoticias to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * ImagenNoticia updateManyAndReturn
-   */
-  export type ImagenNoticiaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImagenNoticia
-     */
-    select?: ImagenNoticiaSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImagenNoticia
-     */
-    omit?: ImagenNoticiaOmit<ExtArgs> | null
-    /**
-     * The data used to update ImagenNoticias.
-     */
-    data: XOR<ImagenNoticiaUpdateManyMutationInput, ImagenNoticiaUncheckedUpdateManyInput>
-    /**
-     * Filter which ImagenNoticias to update
-     */
-    where?: ImagenNoticiaWhereInput
-    /**
-     * Limit how many ImagenNoticias to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImagenNoticiaIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * ImagenNoticia upsert
-   */
-  export type ImagenNoticiaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImagenNoticia
-     */
-    select?: ImagenNoticiaSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImagenNoticia
-     */
-    omit?: ImagenNoticiaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImagenNoticiaInclude<ExtArgs> | null
-    /**
-     * The filter to search for the ImagenNoticia to update in case it exists.
-     */
-    where: ImagenNoticiaWhereUniqueInput
-    /**
-     * In case the ImagenNoticia found by the `where` argument doesn't exist, create a new ImagenNoticia with this data.
-     */
-    create: XOR<ImagenNoticiaCreateInput, ImagenNoticiaUncheckedCreateInput>
-    /**
-     * In case the ImagenNoticia was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<ImagenNoticiaUpdateInput, ImagenNoticiaUncheckedUpdateInput>
-  }
-
-  /**
-   * ImagenNoticia delete
-   */
-  export type ImagenNoticiaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImagenNoticia
-     */
-    select?: ImagenNoticiaSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImagenNoticia
-     */
-    omit?: ImagenNoticiaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImagenNoticiaInclude<ExtArgs> | null
-    /**
-     * Filter which ImagenNoticia to delete.
-     */
-    where: ImagenNoticiaWhereUniqueInput
-  }
-
-  /**
-   * ImagenNoticia deleteMany
-   */
-  export type ImagenNoticiaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ImagenNoticias to delete
-     */
-    where?: ImagenNoticiaWhereInput
-    /**
-     * Limit how many ImagenNoticias to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * ImagenNoticia without action
-   */
-  export type ImagenNoticiaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImagenNoticia
-     */
-    select?: ImagenNoticiaSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImagenNoticia
-     */
-    omit?: ImagenNoticiaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImagenNoticiaInclude<ExtArgs> | null
   }
 
 
@@ -11969,20 +10702,11 @@ export namespace Prisma {
     id: 'id',
     titulo: 'titulo',
     texto: 'texto',
-    activo: 'activo'
+    activo: 'activo',
+    imagen: 'imagen'
   };
 
   export type NoticiaScalarFieldEnum = (typeof NoticiaScalarFieldEnum)[keyof typeof NoticiaScalarFieldEnum]
-
-
-  export const ImagenNoticiaScalarFieldEnum: {
-    id: 'id',
-    noticiaId: 'noticiaId',
-    url: 'url',
-    descripcion: 'descripcion'
-  };
-
-  export type ImagenNoticiaScalarFieldEnum = (typeof ImagenNoticiaScalarFieldEnum)[keyof typeof ImagenNoticiaScalarFieldEnum]
 
 
   export const VentaScalarFieldEnum: {
@@ -12415,7 +11139,7 @@ export namespace Prisma {
     titulo?: StringFilter<"Noticia"> | string
     texto?: StringFilter<"Noticia"> | string
     activo?: BoolFilter<"Noticia"> | boolean
-    imagenes?: ImagenNoticiaListRelationFilter
+    imagen?: StringNullableFilter<"Noticia"> | string | null
   }
 
   export type NoticiaOrderByWithRelationInput = {
@@ -12423,7 +11147,7 @@ export namespace Prisma {
     titulo?: SortOrder
     texto?: SortOrder
     activo?: SortOrder
-    imagenes?: ImagenNoticiaOrderByRelationAggregateInput
+    imagen?: SortOrderInput | SortOrder
   }
 
   export type NoticiaWhereUniqueInput = Prisma.AtLeast<{
@@ -12434,7 +11158,7 @@ export namespace Prisma {
     titulo?: StringFilter<"Noticia"> | string
     texto?: StringFilter<"Noticia"> | string
     activo?: BoolFilter<"Noticia"> | boolean
-    imagenes?: ImagenNoticiaListRelationFilter
+    imagen?: StringNullableFilter<"Noticia"> | string | null
   }, "id">
 
   export type NoticiaOrderByWithAggregationInput = {
@@ -12442,6 +11166,7 @@ export namespace Prisma {
     titulo?: SortOrder
     texto?: SortOrder
     activo?: SortOrder
+    imagen?: SortOrderInput | SortOrder
     _count?: NoticiaCountOrderByAggregateInput
     _avg?: NoticiaAvgOrderByAggregateInput
     _max?: NoticiaMaxOrderByAggregateInput
@@ -12457,58 +11182,7 @@ export namespace Prisma {
     titulo?: StringWithAggregatesFilter<"Noticia"> | string
     texto?: StringWithAggregatesFilter<"Noticia"> | string
     activo?: BoolWithAggregatesFilter<"Noticia"> | boolean
-  }
-
-  export type ImagenNoticiaWhereInput = {
-    AND?: ImagenNoticiaWhereInput | ImagenNoticiaWhereInput[]
-    OR?: ImagenNoticiaWhereInput[]
-    NOT?: ImagenNoticiaWhereInput | ImagenNoticiaWhereInput[]
-    id?: IntFilter<"ImagenNoticia"> | number
-    noticiaId?: IntFilter<"ImagenNoticia"> | number
-    url?: StringFilter<"ImagenNoticia"> | string
-    descripcion?: StringNullableFilter<"ImagenNoticia"> | string | null
-    noticia?: XOR<NoticiaScalarRelationFilter, NoticiaWhereInput>
-  }
-
-  export type ImagenNoticiaOrderByWithRelationInput = {
-    id?: SortOrder
-    noticiaId?: SortOrder
-    url?: SortOrder
-    descripcion?: SortOrderInput | SortOrder
-    noticia?: NoticiaOrderByWithRelationInput
-  }
-
-  export type ImagenNoticiaWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    AND?: ImagenNoticiaWhereInput | ImagenNoticiaWhereInput[]
-    OR?: ImagenNoticiaWhereInput[]
-    NOT?: ImagenNoticiaWhereInput | ImagenNoticiaWhereInput[]
-    noticiaId?: IntFilter<"ImagenNoticia"> | number
-    url?: StringFilter<"ImagenNoticia"> | string
-    descripcion?: StringNullableFilter<"ImagenNoticia"> | string | null
-    noticia?: XOR<NoticiaScalarRelationFilter, NoticiaWhereInput>
-  }, "id">
-
-  export type ImagenNoticiaOrderByWithAggregationInput = {
-    id?: SortOrder
-    noticiaId?: SortOrder
-    url?: SortOrder
-    descripcion?: SortOrderInput | SortOrder
-    _count?: ImagenNoticiaCountOrderByAggregateInput
-    _avg?: ImagenNoticiaAvgOrderByAggregateInput
-    _max?: ImagenNoticiaMaxOrderByAggregateInput
-    _min?: ImagenNoticiaMinOrderByAggregateInput
-    _sum?: ImagenNoticiaSumOrderByAggregateInput
-  }
-
-  export type ImagenNoticiaScalarWhereWithAggregatesInput = {
-    AND?: ImagenNoticiaScalarWhereWithAggregatesInput | ImagenNoticiaScalarWhereWithAggregatesInput[]
-    OR?: ImagenNoticiaScalarWhereWithAggregatesInput[]
-    NOT?: ImagenNoticiaScalarWhereWithAggregatesInput | ImagenNoticiaScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"ImagenNoticia"> | number
-    noticiaId?: IntWithAggregatesFilter<"ImagenNoticia"> | number
-    url?: StringWithAggregatesFilter<"ImagenNoticia"> | string
-    descripcion?: StringNullableWithAggregatesFilter<"ImagenNoticia"> | string | null
+    imagen?: StringNullableWithAggregatesFilter<"Noticia"> | string | null
   }
 
   export type VentaWhereInput = {
@@ -12921,7 +11595,7 @@ export namespace Prisma {
     titulo: string
     texto: string
     activo: boolean
-    imagenes?: ImagenNoticiaCreateNestedManyWithoutNoticiaInput
+    imagen?: string | null
   }
 
   export type NoticiaUncheckedCreateInput = {
@@ -12929,14 +11603,14 @@ export namespace Prisma {
     titulo: string
     texto: string
     activo: boolean
-    imagenes?: ImagenNoticiaUncheckedCreateNestedManyWithoutNoticiaInput
+    imagen?: string | null
   }
 
   export type NoticiaUpdateInput = {
     titulo?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     activo?: BoolFieldUpdateOperationsInput | boolean
-    imagenes?: ImagenNoticiaUpdateManyWithoutNoticiaNestedInput
+    imagen?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type NoticiaUncheckedUpdateInput = {
@@ -12944,7 +11618,7 @@ export namespace Prisma {
     titulo?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     activo?: BoolFieldUpdateOperationsInput | boolean
-    imagenes?: ImagenNoticiaUncheckedUpdateManyWithoutNoticiaNestedInput
+    imagen?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type NoticiaCreateManyInput = {
@@ -12952,12 +11626,14 @@ export namespace Prisma {
     titulo: string
     texto: string
     activo: boolean
+    imagen?: string | null
   }
 
   export type NoticiaUpdateManyMutationInput = {
     titulo?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     activo?: BoolFieldUpdateOperationsInput | boolean
+    imagen?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type NoticiaUncheckedUpdateManyInput = {
@@ -12965,51 +11641,7 @@ export namespace Prisma {
     titulo?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     activo?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type ImagenNoticiaCreateInput = {
-    url: string
-    descripcion?: string | null
-    noticia: NoticiaCreateNestedOneWithoutImagenesInput
-  }
-
-  export type ImagenNoticiaUncheckedCreateInput = {
-    id?: number
-    noticiaId: number
-    url: string
-    descripcion?: string | null
-  }
-
-  export type ImagenNoticiaUpdateInput = {
-    url?: StringFieldUpdateOperationsInput | string
-    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
-    noticia?: NoticiaUpdateOneRequiredWithoutImagenesNestedInput
-  }
-
-  export type ImagenNoticiaUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    noticiaId?: IntFieldUpdateOperationsInput | number
-    url?: StringFieldUpdateOperationsInput | string
-    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type ImagenNoticiaCreateManyInput = {
-    id?: number
-    noticiaId: number
-    url: string
-    descripcion?: string | null
-  }
-
-  export type ImagenNoticiaUpdateManyMutationInput = {
-    url?: StringFieldUpdateOperationsInput | string
-    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type ImagenNoticiaUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    noticiaId?: IntFieldUpdateOperationsInput | number
-    url?: StringFieldUpdateOperationsInput | string
-    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    imagen?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VentaCreateInput = {
@@ -13479,21 +12111,12 @@ export namespace Prisma {
     juegoId?: SortOrder
   }
 
-  export type ImagenNoticiaListRelationFilter = {
-    every?: ImagenNoticiaWhereInput
-    some?: ImagenNoticiaWhereInput
-    none?: ImagenNoticiaWhereInput
-  }
-
-  export type ImagenNoticiaOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type NoticiaCountOrderByAggregateInput = {
     id?: SortOrder
     titulo?: SortOrder
     texto?: SortOrder
     activo?: SortOrder
+    imagen?: SortOrder
   }
 
   export type NoticiaAvgOrderByAggregateInput = {
@@ -13505,6 +12128,7 @@ export namespace Prisma {
     titulo?: SortOrder
     texto?: SortOrder
     activo?: SortOrder
+    imagen?: SortOrder
   }
 
   export type NoticiaMinOrderByAggregateInput = {
@@ -13512,46 +12136,11 @@ export namespace Prisma {
     titulo?: SortOrder
     texto?: SortOrder
     activo?: SortOrder
+    imagen?: SortOrder
   }
 
   export type NoticiaSumOrderByAggregateInput = {
     id?: SortOrder
-  }
-
-  export type NoticiaScalarRelationFilter = {
-    is?: NoticiaWhereInput
-    isNot?: NoticiaWhereInput
-  }
-
-  export type ImagenNoticiaCountOrderByAggregateInput = {
-    id?: SortOrder
-    noticiaId?: SortOrder
-    url?: SortOrder
-    descripcion?: SortOrder
-  }
-
-  export type ImagenNoticiaAvgOrderByAggregateInput = {
-    id?: SortOrder
-    noticiaId?: SortOrder
-  }
-
-  export type ImagenNoticiaMaxOrderByAggregateInput = {
-    id?: SortOrder
-    noticiaId?: SortOrder
-    url?: SortOrder
-    descripcion?: SortOrder
-  }
-
-  export type ImagenNoticiaMinOrderByAggregateInput = {
-    id?: SortOrder
-    noticiaId?: SortOrder
-    url?: SortOrder
-    descripcion?: SortOrder
-  }
-
-  export type ImagenNoticiaSumOrderByAggregateInput = {
-    id?: SortOrder
-    noticiaId?: SortOrder
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -14077,62 +12666,6 @@ export namespace Prisma {
     upsert?: JuegoUpsertWithoutImagenesInput
     connect?: JuegoWhereUniqueInput
     update?: XOR<XOR<JuegoUpdateToOneWithWhereWithoutImagenesInput, JuegoUpdateWithoutImagenesInput>, JuegoUncheckedUpdateWithoutImagenesInput>
-  }
-
-  export type ImagenNoticiaCreateNestedManyWithoutNoticiaInput = {
-    create?: XOR<ImagenNoticiaCreateWithoutNoticiaInput, ImagenNoticiaUncheckedCreateWithoutNoticiaInput> | ImagenNoticiaCreateWithoutNoticiaInput[] | ImagenNoticiaUncheckedCreateWithoutNoticiaInput[]
-    connectOrCreate?: ImagenNoticiaCreateOrConnectWithoutNoticiaInput | ImagenNoticiaCreateOrConnectWithoutNoticiaInput[]
-    createMany?: ImagenNoticiaCreateManyNoticiaInputEnvelope
-    connect?: ImagenNoticiaWhereUniqueInput | ImagenNoticiaWhereUniqueInput[]
-  }
-
-  export type ImagenNoticiaUncheckedCreateNestedManyWithoutNoticiaInput = {
-    create?: XOR<ImagenNoticiaCreateWithoutNoticiaInput, ImagenNoticiaUncheckedCreateWithoutNoticiaInput> | ImagenNoticiaCreateWithoutNoticiaInput[] | ImagenNoticiaUncheckedCreateWithoutNoticiaInput[]
-    connectOrCreate?: ImagenNoticiaCreateOrConnectWithoutNoticiaInput | ImagenNoticiaCreateOrConnectWithoutNoticiaInput[]
-    createMany?: ImagenNoticiaCreateManyNoticiaInputEnvelope
-    connect?: ImagenNoticiaWhereUniqueInput | ImagenNoticiaWhereUniqueInput[]
-  }
-
-  export type ImagenNoticiaUpdateManyWithoutNoticiaNestedInput = {
-    create?: XOR<ImagenNoticiaCreateWithoutNoticiaInput, ImagenNoticiaUncheckedCreateWithoutNoticiaInput> | ImagenNoticiaCreateWithoutNoticiaInput[] | ImagenNoticiaUncheckedCreateWithoutNoticiaInput[]
-    connectOrCreate?: ImagenNoticiaCreateOrConnectWithoutNoticiaInput | ImagenNoticiaCreateOrConnectWithoutNoticiaInput[]
-    upsert?: ImagenNoticiaUpsertWithWhereUniqueWithoutNoticiaInput | ImagenNoticiaUpsertWithWhereUniqueWithoutNoticiaInput[]
-    createMany?: ImagenNoticiaCreateManyNoticiaInputEnvelope
-    set?: ImagenNoticiaWhereUniqueInput | ImagenNoticiaWhereUniqueInput[]
-    disconnect?: ImagenNoticiaWhereUniqueInput | ImagenNoticiaWhereUniqueInput[]
-    delete?: ImagenNoticiaWhereUniqueInput | ImagenNoticiaWhereUniqueInput[]
-    connect?: ImagenNoticiaWhereUniqueInput | ImagenNoticiaWhereUniqueInput[]
-    update?: ImagenNoticiaUpdateWithWhereUniqueWithoutNoticiaInput | ImagenNoticiaUpdateWithWhereUniqueWithoutNoticiaInput[]
-    updateMany?: ImagenNoticiaUpdateManyWithWhereWithoutNoticiaInput | ImagenNoticiaUpdateManyWithWhereWithoutNoticiaInput[]
-    deleteMany?: ImagenNoticiaScalarWhereInput | ImagenNoticiaScalarWhereInput[]
-  }
-
-  export type ImagenNoticiaUncheckedUpdateManyWithoutNoticiaNestedInput = {
-    create?: XOR<ImagenNoticiaCreateWithoutNoticiaInput, ImagenNoticiaUncheckedCreateWithoutNoticiaInput> | ImagenNoticiaCreateWithoutNoticiaInput[] | ImagenNoticiaUncheckedCreateWithoutNoticiaInput[]
-    connectOrCreate?: ImagenNoticiaCreateOrConnectWithoutNoticiaInput | ImagenNoticiaCreateOrConnectWithoutNoticiaInput[]
-    upsert?: ImagenNoticiaUpsertWithWhereUniqueWithoutNoticiaInput | ImagenNoticiaUpsertWithWhereUniqueWithoutNoticiaInput[]
-    createMany?: ImagenNoticiaCreateManyNoticiaInputEnvelope
-    set?: ImagenNoticiaWhereUniqueInput | ImagenNoticiaWhereUniqueInput[]
-    disconnect?: ImagenNoticiaWhereUniqueInput | ImagenNoticiaWhereUniqueInput[]
-    delete?: ImagenNoticiaWhereUniqueInput | ImagenNoticiaWhereUniqueInput[]
-    connect?: ImagenNoticiaWhereUniqueInput | ImagenNoticiaWhereUniqueInput[]
-    update?: ImagenNoticiaUpdateWithWhereUniqueWithoutNoticiaInput | ImagenNoticiaUpdateWithWhereUniqueWithoutNoticiaInput[]
-    updateMany?: ImagenNoticiaUpdateManyWithWhereWithoutNoticiaInput | ImagenNoticiaUpdateManyWithWhereWithoutNoticiaInput[]
-    deleteMany?: ImagenNoticiaScalarWhereInput | ImagenNoticiaScalarWhereInput[]
-  }
-
-  export type NoticiaCreateNestedOneWithoutImagenesInput = {
-    create?: XOR<NoticiaCreateWithoutImagenesInput, NoticiaUncheckedCreateWithoutImagenesInput>
-    connectOrCreate?: NoticiaCreateOrConnectWithoutImagenesInput
-    connect?: NoticiaWhereUniqueInput
-  }
-
-  export type NoticiaUpdateOneRequiredWithoutImagenesNestedInput = {
-    create?: XOR<NoticiaCreateWithoutImagenesInput, NoticiaUncheckedCreateWithoutImagenesInput>
-    connectOrCreate?: NoticiaCreateOrConnectWithoutImagenesInput
-    upsert?: NoticiaUpsertWithoutImagenesInput
-    connect?: NoticiaWhereUniqueInput
-    update?: XOR<XOR<NoticiaUpdateToOneWithWhereWithoutImagenesInput, NoticiaUpdateWithoutImagenesInput>, NoticiaUncheckedUpdateWithoutImagenesInput>
   }
 
   export type JuegoCreateNestedOneWithoutVentasInput = {
@@ -14901,95 +13434,6 @@ export namespace Prisma {
     plataformas?: PlataformaUncheckedUpdateManyWithoutJuegosNestedInput
   }
 
-  export type ImagenNoticiaCreateWithoutNoticiaInput = {
-    url: string
-    descripcion?: string | null
-  }
-
-  export type ImagenNoticiaUncheckedCreateWithoutNoticiaInput = {
-    id?: number
-    url: string
-    descripcion?: string | null
-  }
-
-  export type ImagenNoticiaCreateOrConnectWithoutNoticiaInput = {
-    where: ImagenNoticiaWhereUniqueInput
-    create: XOR<ImagenNoticiaCreateWithoutNoticiaInput, ImagenNoticiaUncheckedCreateWithoutNoticiaInput>
-  }
-
-  export type ImagenNoticiaCreateManyNoticiaInputEnvelope = {
-    data: ImagenNoticiaCreateManyNoticiaInput | ImagenNoticiaCreateManyNoticiaInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ImagenNoticiaUpsertWithWhereUniqueWithoutNoticiaInput = {
-    where: ImagenNoticiaWhereUniqueInput
-    update: XOR<ImagenNoticiaUpdateWithoutNoticiaInput, ImagenNoticiaUncheckedUpdateWithoutNoticiaInput>
-    create: XOR<ImagenNoticiaCreateWithoutNoticiaInput, ImagenNoticiaUncheckedCreateWithoutNoticiaInput>
-  }
-
-  export type ImagenNoticiaUpdateWithWhereUniqueWithoutNoticiaInput = {
-    where: ImagenNoticiaWhereUniqueInput
-    data: XOR<ImagenNoticiaUpdateWithoutNoticiaInput, ImagenNoticiaUncheckedUpdateWithoutNoticiaInput>
-  }
-
-  export type ImagenNoticiaUpdateManyWithWhereWithoutNoticiaInput = {
-    where: ImagenNoticiaScalarWhereInput
-    data: XOR<ImagenNoticiaUpdateManyMutationInput, ImagenNoticiaUncheckedUpdateManyWithoutNoticiaInput>
-  }
-
-  export type ImagenNoticiaScalarWhereInput = {
-    AND?: ImagenNoticiaScalarWhereInput | ImagenNoticiaScalarWhereInput[]
-    OR?: ImagenNoticiaScalarWhereInput[]
-    NOT?: ImagenNoticiaScalarWhereInput | ImagenNoticiaScalarWhereInput[]
-    id?: IntFilter<"ImagenNoticia"> | number
-    noticiaId?: IntFilter<"ImagenNoticia"> | number
-    url?: StringFilter<"ImagenNoticia"> | string
-    descripcion?: StringNullableFilter<"ImagenNoticia"> | string | null
-  }
-
-  export type NoticiaCreateWithoutImagenesInput = {
-    titulo: string
-    texto: string
-    activo: boolean
-  }
-
-  export type NoticiaUncheckedCreateWithoutImagenesInput = {
-    id?: number
-    titulo: string
-    texto: string
-    activo: boolean
-  }
-
-  export type NoticiaCreateOrConnectWithoutImagenesInput = {
-    where: NoticiaWhereUniqueInput
-    create: XOR<NoticiaCreateWithoutImagenesInput, NoticiaUncheckedCreateWithoutImagenesInput>
-  }
-
-  export type NoticiaUpsertWithoutImagenesInput = {
-    update: XOR<NoticiaUpdateWithoutImagenesInput, NoticiaUncheckedUpdateWithoutImagenesInput>
-    create: XOR<NoticiaCreateWithoutImagenesInput, NoticiaUncheckedCreateWithoutImagenesInput>
-    where?: NoticiaWhereInput
-  }
-
-  export type NoticiaUpdateToOneWithWhereWithoutImagenesInput = {
-    where?: NoticiaWhereInput
-    data: XOR<NoticiaUpdateWithoutImagenesInput, NoticiaUncheckedUpdateWithoutImagenesInput>
-  }
-
-  export type NoticiaUpdateWithoutImagenesInput = {
-    titulo?: StringFieldUpdateOperationsInput | string
-    texto?: StringFieldUpdateOperationsInput | string
-    activo?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type NoticiaUncheckedUpdateWithoutImagenesInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    titulo?: StringFieldUpdateOperationsInput | string
-    texto?: StringFieldUpdateOperationsInput | string
-    activo?: BoolFieldUpdateOperationsInput | boolean
-  }
-
   export type JuegoCreateWithoutVentasInput = {
     nombre: string
     precio: Decimal | DecimalJsLike | number | string
@@ -15482,29 +13926,6 @@ export namespace Prisma {
   export type PlataformaUncheckedUpdateManyWithoutJuegosInput = {
     id?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type ImagenNoticiaCreateManyNoticiaInput = {
-    id?: number
-    url: string
-    descripcion?: string | null
-  }
-
-  export type ImagenNoticiaUpdateWithoutNoticiaInput = {
-    url?: StringFieldUpdateOperationsInput | string
-    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type ImagenNoticiaUncheckedUpdateWithoutNoticiaInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    url?: StringFieldUpdateOperationsInput | string
-    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type ImagenNoticiaUncheckedUpdateManyWithoutNoticiaInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    url?: StringFieldUpdateOperationsInput | string
-    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

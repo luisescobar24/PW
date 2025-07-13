@@ -57,19 +57,11 @@ model Imagen {
 }
 
 model Noticia {
-  id             Int             @id @default(autoincrement())
-  titulo         String          @db.VarChar(200)
-  texto          String
-  activo         Boolean
-  imagenes       ImagenNoticia[] @relation("NoticiaImagenes")
-}
-
-model ImagenNoticia {
-  id          Int     @id @default(autoincrement())
-  noticiaId   Int
-  url         String
-  descripcion String?
-  noticia     Noticia @relation("NoticiaImagenes", fields: [noticiaId], references: [id])
+  id        Int      @id @default(autoincrement())
+  titulo    String   @db.VarChar(200)
+  texto     String
+  activo    Boolean
+  imagen    String?  @db.VarChar(255)
 }
 
 model Venta {
@@ -91,4 +83,4 @@ model Calificacion {
   usuarioId  Int?
   juego      Juego?   @relation(fields: [juegoId], references: [id])
   usuario    Usuario? @relation(fields: [usuarioId], references: [id])
-}
+  }

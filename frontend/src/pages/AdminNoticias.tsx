@@ -8,7 +8,9 @@ const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 interface Noticia {
   id: number;
   titulo: string;
-  texto: string; // OJO: el backend devuelve "texto" (no "contenido")
+  texto: string;
+  imagen?: string | null;
+  activo: boolean;
 }
 
 const AdminNoticias = () => {
@@ -23,7 +25,7 @@ const AdminNoticias = () => {
       if (!response.ok) throw new Error('Error al obtener noticias');
       const data = await response.json();
       setNoticias(data);
-    } catch (error) {
+    } catch {
       setNoticias([]);
     }
   };
@@ -43,11 +45,11 @@ const AdminNoticias = () => {
       <aside className="sidebar">
         <p>Admin Panel</p>
         <nav>
-            <button>Users</button>  
-            <button onClick={() => navigate('/adminjuegos')}>Games</button>
-            <button className="active" onClick={() => navigate('/adminnoticias')}>News</button>
-            <button>Statistics</button>
-            <button onClick={handleLogout}>Log out</button>
+          <button>Users</button>  
+          <button onClick={() => navigate('/adminjuegos')}>Games</button>
+          <button className="active" onClick={() => navigate('/adminnoticias')}>News</button>
+          <button>Statistics</button>
+          <button onClick={handleLogout}>Log out</button>
         </nav>
       </aside>
 
@@ -67,6 +69,7 @@ const AdminNoticias = () => {
                 <th>Título</th>
                 <th>Contenido</th>
                 <th>Imagen</th>
+                <th>Activo</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -80,7 +83,12 @@ const AdminNoticias = () => {
                       ? noticia.texto.slice(0, 60) + '...'
                       : noticia.texto}
                   </td>
-                  <td>❌</td>
+                  <td>
+                    {noticia.imagen
+                      ? <img src={noticia.imagen} alt={noticia.titulo} style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 8 }} />
+                      : "❌"}
+                  </td>
+                  <td>{noticia.activo ? 'Sí' : 'No'}</td>
                   <td>
                     <button onClick={() => navigate(`/adminnoticias/editar/${noticia.id}`)}>
                       Editar
@@ -98,7 +106,6 @@ const AdminNoticias = () => {
           </table>
         )}
 
-        {/* MODAL DE CONFIRMACIÓN */}
         {mostrarEliminar && noticiaAEliminar && (
           <EliminarNoticia
             id={noticiaAEliminar.id}
