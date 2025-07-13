@@ -20,16 +20,19 @@ const SignIn = () => {
       // Send POST request to backend
       const response = await axios.post(`${URL_BACKEND}api/auth/login`, { correo: username, password });
 
-      if (response.data.success) {
-        // You can store user data in localStorage or context if needed
-        // For now, just navigate to the main page after login
-        navigate('/paginaprincipal');  // Redirect to main page after login
+      if (response.data.success && response.data.token) {
+        // Guardar el token en localStorage para mantener la autenticación
+        localStorage.setItem('token', response.data.token);
+        // Navegar a la página principal
+        navigate('/paginaprincipal');
+      } else {
+        alert('No se recibió el token de autenticación.');
       }
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        alert(error.response?.data.message || 'Incorrect username or password');
+        alert(error.response?.data.message || 'Usuario o contraseña incorrectos');
       } else {
-        alert('An unexpected error occurred.');
+        alert('Ocurrió un error inesperado.');
       }
     } finally {
       setLoading(false);  // End loading

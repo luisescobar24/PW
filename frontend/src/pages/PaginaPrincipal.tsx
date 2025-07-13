@@ -38,10 +38,19 @@ const PaginaPrincipal: React.FC = () => {
   const [mensaje, setMensaje] = useState('');
   const [categorias, setCategorias] = useState<{ id: number, nombre: string }[]>([]);
   const [plataformas, setPlataformas] = useState<{ id: number, nombre: string }[]>([]);
+
+  // Filtros adicionales restaurados
+  const [fechaInicio, setFechaInicio] = useState('');
+  const [fechaFin, setFechaFin] = useState('');
+  const [precioMin, setPrecioMin] = useState('');
+  const [precioMax, setPrecioMax] = useState('');
   // const [cargando, setCargando] = useState(false);
 
   // Estado para los valores del carrito
   const [cantidades, setCantidades] = useState<Record<number, number>>({});
+
+  // Estado para mostrar el modal de edición de usuario
+  const [modalEditarUsuario, setModalEditarUsuario] = useState(false);
 
   // Cargar juegos desde el backend
   useEffect(() => {
@@ -258,7 +267,9 @@ const PaginaPrincipal: React.FC = () => {
           <button onClick={() => navigate('/paginaprincipal')} className="active">Inicio</button>
           <button>Plataformas</button>
           <button>Ofertas Especiales</button>
-
+          <button id="boton-editar-usuario" title="Editar perfil" onClick={() => setModalEditarUsuario(true)}>
+            <span role="img" aria-label="editar usuario">🛠️</span>
+          </button>
           <div className="nav-icons" onClick={() => navigate('/adminjuegos')} title="Panel de Administración" role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && navigate('/adminjuegos')} >
             <span role="img" aria-label="usuario">👤</span>
           </div>
@@ -285,6 +296,12 @@ const PaginaPrincipal: React.FC = () => {
               </option>
             ))}
           </select>
+          {/* Filtros restaurados de fecha de lanzamiento */}
+          <input type="date" value={fechaInicio} onChange={e => setFechaInicio(e.target.value)} className="filter-select" placeholder="Fecha inicio" />
+          <input type="date" value={fechaFin} onChange={e => setFechaFin(e.target.value)} className="filter-select" placeholder="Fecha fin" />
+          {/* Filtros restaurados de precio */}
+          <input type="number" min="0" value={precioMin} onChange={e => setPrecioMin(e.target.value)} className="filter-select" placeholder="Precio mínimo" />
+          <input type="number" min="0" value={precioMax} onChange={e => setPrecioMax(e.target.value)} className="filter-select" placeholder="Precio máximo" />
           <select value={ordenamiento} onChange={(e) => setOrdenamiento(e.target.value)} className="sort-select">
             <option value="nombre">Ordenar por Nombre</option>
             <option value="precio-asc">Precio: Menor a Mayor</option>
@@ -292,6 +309,8 @@ const PaginaPrincipal: React.FC = () => {
           </select>
         </div>
       </header>
+
+      {/* ...existing code... */}
 
       {/* Carrusel de juegos */}
       {juegos.length > 0 && (
@@ -405,8 +424,110 @@ const PaginaPrincipal: React.FC = () => {
           </div>
         )}
       </section>
+
+      {/* Modal emergente para editar usuario */}
+      {modalEditarUsuario && (
+        <EditarUsuarioModal onClose={() => setModalEditarUsuario(false)} correo={localStorage.getItem('correo') || ''} />
+      )}
     </div>
   );
 };
 export default PaginaPrincipal;
+
+// Modal separado para lógica y conexión
+function EditarUsuarioModal({ onClose, correo }: { onClose: () => void; correo: string }) {
+  const [usuario, setUsuario] = useState('');
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [mensaje, setMensaje] = useState('');
+  const [error, setError] = useState('');
+
+  const handleGuardar = async () => {
+    setError('');
+    if (!usuario || !password || !password2) {
+      setError('Todos los campos son obligatorios');
+      return;
+    }
+    if (password !== password2) {
+      setError('Las contraseñas no coinciden');
+      return;
+    }
+    try {
+      // Actualizar usuario y contraseña en el backend
+      const res = await axios.put(`${URL_BACKEND}api/usuarios/actualizar`, {
+        correo,
+        nuevoUsuario: usuario,
+        nuevaContrasena: password
+      });
+      setMensaje('¡Datos actualizados correctamente!');
+      setTimeout(() => {
+        setMensaje('');
+        onClose();
+      }, 2000);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Error al actualizar');
+    }
+  };
+
+  return (
+    <div className="modal" style={{ zIndex: 2000 }}>
+      <div className="modal-content" style={{ maxWidth: 400, textAlign: 'center' }}>
+        <button className="close-btn" onClick={onClose} style={{ float: 'right', fontSize: 24 }}>×</button>
+        <h2 style={{ marginBottom: 24, color: '#111' }}>Editar Usuario</h2>
+        <label style={{ display: 'block', textAlign: 'left', marginBottom: 8, fontWeight: 600 }}>Nuevo Usuario</label>
+        <input type="text" value={usuario} onChange={e => setUsuario(e.target.value)} placeholder="Nuevo usuario" style={{ width: '100%', marginBottom: 16, textAlign: 'center', padding: '10px' }} />
+        <label style={{ display: 'block', textAlign: 'left', marginBottom: 8, fontWeight: 600 }}>Nueva Contraseña</label>
+        <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Nueva contraseña" style={{ width: '100%', marginBottom: 16, textAlign: 'center', padding: '10px' }} />
+        <label style={{ display: 'block', textAlign: 'left', marginBottom: 8, fontWeight: 600 }}>Reingrese Nueva Contraseña</label>
+        <input type="password" value={password2} onChange={e => setPassword2(e.target.value)} placeholder="Reingrese nueva contraseña" style={{ width: '100%', marginBottom: 24, textAlign: 'center', padding: '10px' }} />
+        {error && <div className="mensaje-temporal error" style={{ marginBottom: 12 }}>{error}</div>}
+        {mensaje && <div className="mensaje-temporal success" style={{ marginBottom: 12 }}>{mensaje}</div>}
+        <button className="boton-confirmar" style={{ marginTop: 8, width: '100%' }} onClick={handleGuardar}>Guardar Cambios</button>
+      </div>
+    </div>
+  );
+}
+
+// Carrusel de productos similares
+function CarruselSimilares({ juegos }: { juegos: any[] }) {
+  const [index, setIndex] = useState(0);
+  const visible = 5; // Mostrar 5 juegos a la vez
+  const total = juegos.length;
+  const mostrar = juegos.slice(index, index + visible);
+
+  const handlePrev = () => {
+    setIndex(i => Math.max(i - visible, 0));
+  };
+  const handleNext = () => {
+    setIndex(i => Math.min(i + visible, total - visible));
+  };
+
+  return (
+    <div style={{ background: 'rgba(30,30,30,0.95)', borderRadius: '18px', padding: '32px', margin: '32px 0', boxShadow: '0 4px 24px #0006', color: '#fff', position: 'relative' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+        <h2 style={{ fontSize: '1.4rem', fontWeight: 700, letterSpacing: 1, color: '#ff6600' }}>Noticias Recientes</h2>
+        {/* Eliminado el botón "Ver todo" */}
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+        <button onClick={handlePrev} disabled={index === 0} style={{ background: 'none', border: 'none', color: '#ff6600', fontSize: 32, cursor: 'pointer' }}>&lt;</button>
+        {mostrar.map(j => (
+          <div key={j.id} style={{ background: '#232323', borderRadius: 12, overflow: 'hidden', width: 200, boxShadow: '0 2px 12px #0004', position: 'relative' }}>
+            <img src={j.imagen} alt={j.nombre} style={{ width: '100%', height: 110, objectFit: 'cover' }} />
+            <div style={{ padding: '8px 12px', textAlign: 'left' }}>
+              <div style={{ fontWeight: 700, fontSize: '1.1rem', color: '#fff', marginBottom: 4 }}>{j.nombre}</div>
+              {j.descuento && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ background: '#7bbf32', color: '#fff', fontWeight: 700, borderRadius: 4, padding: '2px 8px', fontSize: 14 }}>-{j.descuento}%</span>
+                  <span style={{ textDecoration: 'line-through', color: '#aaa', fontSize: 13 }}>S/. {j.precioOriginal}</span>
+                </div>
+              )}
+              <div style={{ color: '#7bbf32', fontWeight: 700, fontSize: 18 }}>S/. {j.precio}</div>
+            </div>
+          </div>
+        ))}
+        <button onClick={handleNext} disabled={index + visible >= total} style={{ background: 'none', border: 'none', color: '#ff6600', fontSize: 32, cursor: 'pointer' }}>&gt;</button>
+      </div>
+    </div>
+  );
+}
 

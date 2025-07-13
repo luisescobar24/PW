@@ -19,6 +19,7 @@ interface Game {
   imagenes: Imagen[];
   videoUrl: string;
   plataformas: number[];
+  fechaLanzamiento?: string;
 }
 
 interface AgregarJuegoProps {
@@ -112,10 +113,15 @@ const AgregarJuego: React.FC<AgregarJuegoProps> = ({ onClose }) => {
     e.preventDefault();
     if (validateForm()) {
       try {
+        // Construir el objeto a enviar, asegurando que fechaLanzamiento esté presente
+        const juegoData = {
+          ...formData,
+          fechaLanzamiento: formData.fechaLanzamiento || null,
+        };
         const response = await fetch(`${URL_BACKEND}api/juegos`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData), // Incluye descripcion
+          body: JSON.stringify(juegoData),
         });
         if (response.ok) {
           navigate("/adminjuegos");
@@ -216,6 +222,16 @@ const AgregarJuego: React.FC<AgregarJuegoProps> = ({ onClose }) => {
                 placeholder="0.00"
               />
               {errors.precio && <span className="error-message">{errors.precio}</span>}
+            </div>
+            <div className="form-group">
+              <label>Fecha de lanzamiento *</label>
+              <input
+                name="fechaLanzamiento"
+                type="date"
+                value={formData.fechaLanzamiento || ""}
+                onChange={handleChange}
+              />
+              {errors.fechaLanzamiento && <span className="error-message">{errors.fechaLanzamiento}</span>}
             </div>
           </div>
 

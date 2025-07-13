@@ -13,10 +13,12 @@ import AgregarJuego from './pages/AgregarJuego';
 import EditarJuegos from './pages/EditarJuego';
 import EliminarJuego from './pages/EliminarJuego';
 
+
 import AdminNoticias from './pages/AdminNoticias';
 import AgregarNoticia from './pages/AgregarNoticia';
 import EditarNoticia from './pages/EditarNoticia';
 import EliminarNoticia from './pages/EliminarNoticia';
+import EditarUsuario from './pages/EditarUsuario';
 
 
 createRoot(document.getElementById("root")!).render(
@@ -93,6 +95,7 @@ createRoot(document.getElementById("root")!).render(
           />
         }
       />
+      <Route path="/editarusuario" element={<EditarUsuario />} />
     </Routes>
     </BrowserRouter>
   </React.StrictMode>

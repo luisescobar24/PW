@@ -148,7 +148,8 @@ exports.Prisma.JuegoScalarFieldEnum = {
   estado: 'estado',
   categoriaId: 'categoriaId',
   videoUrl: 'videoUrl',
-  descripcion: 'descripcion'
+  descripcion: 'descripcion',
+  fechaLanzamiento: 'fechaLanzamiento'
 };
 
 exports.Prisma.ImagenScalarFieldEnum = {

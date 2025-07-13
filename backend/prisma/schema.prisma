@@ -41,6 +41,7 @@ model Juego {
   categoriaId    Int
   videoUrl       String?        @db.VarChar(255)
   descripcion    String?        @db.VarChar(255)  // New description field
+  fechaLanzamiento DateTime?    @db.Timestamp(0) // Fecha de lanzamiento del juego
   calificaciones Calificacion[] 
   imagenes       Imagen[]       @relation("JuegoImagenes")
   categoria      Categoria      @relation(fields: [categoriaId], references: [id])
