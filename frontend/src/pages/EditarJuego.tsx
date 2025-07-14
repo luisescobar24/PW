@@ -30,6 +30,7 @@ interface Game {
   imagenes: Imagen[];
   videoUrl: string;
   plataformas: Plataforma[];
+  fechaLanzamiento?: string;
 }
 
 export interface EditarJuegoProps {
@@ -182,6 +183,7 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
       form.append('categoriaId', String(formData.categoriaId));
       form.append('videoUrl', formData.videoUrl || '');
       form.append('plataformas', JSON.stringify(plataformasIds)); // <-- solo IDs
+      form.append('fechaLanzamiento', formData.fechaLanzamiento || '');
       imagenesFiles.forEach(file => form.append('imagenes', file));
       form.append('imagenesAConservar', JSON.stringify(imagenesAConservar));
       await fetch(`${URL_BACKEND}api/juegos/${formData.id}`, {
@@ -253,6 +255,15 @@ const EditarJuego = ({ juego, onSave }: EditarJuegoProps) => {
               step="0.01"
               required
               value={formData.precio ?? ''}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label>Fecha de lanzamiento *</label>
+            <input
+              name="fechaLanzamiento"
+              type="date"
+              value={formData.fechaLanzamiento || ""}
               onChange={handleChange}
             />
           </div>

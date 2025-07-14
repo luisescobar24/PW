@@ -34,9 +34,9 @@ const upload = (0, multer_1.default)({ dest: 'uploads/' });
 const app = (0, express_1.default)();
 const prisma = new prisma_1.PrismaClient(); // Inicializando el cliente de Prisma
 app.use(cors({
-    origin: 'http://localhost:5173', // Solo permitir solicitudes desde este origen
+    origin: '*', // Permitir solicitudes desde cualquier origen
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'], // Agrega los encabezados que deseas permitir
+    allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 // Middleware para parsear el cuerpo de las peticiones como JSON
 app.use(express_1.default.json());
@@ -623,7 +623,7 @@ app.post('/api/auth/verify-code', (req, res) => __awaiter(void 0, void 0, void 0
         // Buscar al usuario por correo
         const user = yield prisma.usuario.findFirst({ where: { correo } });
         if (!user || !user.token) {
-            return res.status(400).json({ message: 'Código de verificación no válido o expirado' });
+            return res.status(400).json({ message: 'Código de verificación no válido o expirado (no token)' });
         }
         // Verificar el token JWT que contiene el código de verificación
         let decodedToken;
@@ -631,22 +631,28 @@ app.post('/api/auth/verify-code', (req, res) => __awaiter(void 0, void 0, void 0
             decodedToken = jsonwebtoken_1.default.verify(user.token, process.env.JWT_SECRET);
         }
         catch (err) {
-            return res.status(400).json({ message: 'Código de verificación no válido o expirado' });
+            console.log('Error al verificar el token:', err);
+            return res.status(400).json({ message: 'Código de verificación no válido o expirado (jwt error)' });
         }
+        // LOGS para depuración
+        console.log('Token decodificado:', decodedToken);
+        console.log('Código recibido:', verificationCode);
+        console.log('Código esperado:', decodedToken.verificationCode);
+        console.log('Expiración:', decodedToken.expiration, 'Ahora:', Date.now());
         // Comparar el código de verificación con el código generado
         if (decodedToken.verificationCode !== verificationCode) {
             return res.status(400).json({ message: 'Código de verificación incorrecto' });
         }
         // Verificar si el código ha expirado
-        if (decodedToken.expiration < Date.now()) {
+        if (typeof decodedToken.expiration !== 'number' || decodedToken.expiration < Date.now()) {
             return res.status(400).json({ message: 'El código de verificación ha expirado' });
         }
         // Si todo es correcto, actualizar el estado del usuario a true y limpiar el token
         yield prisma.usuario.update({
             where: { correo },
-            data: { estado: true, token: "" },
+            data: { estado: true },
         });
-        return res.status(200).json({ message: 'Código de verificación válido, cuenta activada' });
+        return res.status(200).json({ success: true, message: 'Código de verificación válido', token: user.token });
     }
     catch (error) {
         console.error('Error al verificar el código:', error);
@@ -662,11 +668,9 @@ app.listen(PORT, () => {
 // Implementación básica de CORS middleware
 function cors(options) {
     return (req, res, next) => {
-        res.header('Access-Control-Allow-Origin', options.origin);
+        res.header('Access-Control-Allow-Origin', '*'); // Permitir cualquier origen
         res.header('Access-Control-Allow-Methods', options.methods.join(','));
         res.header('Access-Control-Allow-Headers', options.allowedHeaders.join(','));
-        // Permitir credenciales si es necesario:
-        // res.header('Access-Control-Allow-Credentials', 'true');
         if (req.method === 'OPTIONS') {
             return res.sendStatus(204);
         }

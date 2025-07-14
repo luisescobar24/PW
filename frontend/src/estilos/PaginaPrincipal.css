@@ -1,3 +1,30 @@
+/* ===== BOTÓN EDITAR USUARIO EN NAVBAR ===== */
+#boton-editar-usuario {
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 102, 0, 0.2);
+  border-radius: 50%;
+  color: var(--text-light);
+  font-size: 1.4rem;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  position: relative;
+  margin: 0 8px;
+  padding: 0;
+}
+
+#boton-editar-usuario:hover {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  transform: scale(1.1);
+  box-shadow: var(--shadow-glow);
+  border-color: var(--primary-light);
+}
 /* ===== VARIABLES CSS ===== */
 :root {
   /* Colores principales */
