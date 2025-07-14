@@ -6,12 +6,16 @@ const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 type Noticia = {
   id: number;
   titulo: string;
-  texto: string;
-  imagen?: string | null;
-  activo: boolean;
+  contenido: string;
+  imagenes: string[];
 };
 
-const EditarNoticia: React.FC = () => {
+type EditarNoticiaProps = {
+  noticia: Noticia;
+  onSave: () => void;
+};
+
+const EditarNoticia: React.FC<EditarNoticiaProps> = ({ noticia, onSave }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<Noticia | null>(null);
@@ -93,9 +97,9 @@ const EditarNoticia: React.FC = () => {
           <div>
             <label>Contenido *</label>
             <textarea
-              name="texto"
+              name="contenido"
               required
-              value={formData.texto}
+              value={formData.contenido}
               onChange={handleChange}
               className="descripcion-input"
               placeholder="Contenido de la noticia"
@@ -104,9 +108,9 @@ const EditarNoticia: React.FC = () => {
           <div>
             <label>URL Imagen</label>
             <input
-              name="imagen"
+              name="imagenes"
               type="text"
-              value={formData.imagen || ""}
+              value={formData.imagenes.join(', ') || ""}
               onChange={handleChange}
               placeholder="https://...jpg"
             />

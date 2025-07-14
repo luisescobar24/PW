@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router-dom';
 
 const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
-const AgregarNoticia: React.FC = () => {
+interface AgregarNoticiaProps {
+  onClose: () => void;
+}
+
+const AgregarNoticia: React.FC<AgregarNoticiaProps> = ({ onClose }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     titulo: '',

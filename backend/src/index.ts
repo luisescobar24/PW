@@ -10,7 +10,6 @@ import multer from 'multer';
 import fs from 'fs';
 
 
-
 dotenv.config();  // Cargar las variables de entorno desde .env
 
 // Configuración global de Cloudinary (asegúrate de tener las variables en tu .env o usa estas configuraciones directamente)
@@ -312,7 +311,45 @@ app.post('/api/auth/forgot-password', async (req: Request, res: Response) => {
 // Ruta para obtener un juego específico with sus imágenes
 app.get('/api/juegos/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
+app.get('/api/juegos/:id/resenas', async (req: Request, res: Response) => {
+  const juegoId = parseInt(req.params.id);
+  if (isNaN(juegoId)) return res.status(400).json({ error: 'ID inválido' });
 
+  try {
+    const resenas = await prisma.resena.findMany({
+      where: { juegoId },
+      orderBy: { fecha: 'desc' },
+    });
+    res.json(resenas);
+  } catch (error) {
+    console.error('Error al obtener reseñas:', error);
+    res.status(500).json({ error: 'Error interno' });
+  }
+});
+app.post('/api/juegos/:id/resenas', async (req: Request, res: Response) => {
+  const juegoId = parseInt(req.params.id);
+  const { nombre, comentario, estrellas } = req.body;
+
+  if (!nombre || !comentario || isNaN(estrellas)) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios' });
+  }
+
+  try {
+    const nuevaResena = await prisma.resena.create({
+      data: {
+        juegoId,
+        nombre,
+        comentario,
+        estrellas,
+        fecha: new Date(),
+      },
+    });
+    res.status(201).json(nuevaResena);
+  } catch (error) {
+    console.error('Error al crear reseña:', error);
+    res.status(500).json({ error: 'No se pudo registrar la reseña' });
+  }
+});
   try {
     const juego = await prisma.juego.findUnique({
       where: { id: Number(id) },

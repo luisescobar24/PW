@@ -21,8 +21,10 @@ const SignIn = () => {
       const response = await axios.post(`${URL_BACKEND}api/auth/login`, { correo: username, password });
 
       if (response.data.success) {
-        // You can store user data in localStorage or context if needed
-        // For now, just navigate to the main page after login
+        // Guardar datos de usuario en localStorage
+        if (response.data.user) {
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+        }
         navigate('/paginaprincipal');  // Redirect to main page after login
       }
     } catch (error: unknown) {
