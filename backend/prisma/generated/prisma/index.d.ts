@@ -53,6 +53,11 @@ export type Venta = $Result.DefaultSelection<Prisma.$VentaPayload>
  * 
  */
 export type Calificacion = $Result.DefaultSelection<Prisma.$CalificacionPayload>
+/**
+ * Model Resena
+ * 
+ */
+export type Resena = $Result.DefaultSelection<Prisma.$ResenaPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -258,6 +263,16 @@ export class PrismaClient<
     * ```
     */
   get calificacion(): Prisma.CalificacionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.resena`: Exposes CRUD operations for the **Resena** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Resenas
+    * const resenas = await prisma.resena.findMany()
+    * ```
+    */
+  get resena(): Prisma.ResenaDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -705,7 +720,8 @@ export namespace Prisma {
     Imagen: 'Imagen',
     Noticia: 'Noticia',
     Venta: 'Venta',
-    Calificacion: 'Calificacion'
+    Calificacion: 'Calificacion',
+    Resena: 'Resena'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -724,7 +740,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "usuario" | "plataforma" | "categoria" | "juego" | "imagen" | "noticia" | "venta" | "calificacion"
+      modelProps: "usuario" | "plataforma" | "categoria" | "juego" | "imagen" | "noticia" | "venta" | "calificacion" | "resena"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1320,6 +1336,80 @@ export namespace Prisma {
           }
         }
       }
+      Resena: {
+        payload: Prisma.$ResenaPayload<ExtArgs>
+        fields: Prisma.ResenaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ResenaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResenaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ResenaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResenaPayload>
+          }
+          findFirst: {
+            args: Prisma.ResenaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResenaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ResenaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResenaPayload>
+          }
+          findMany: {
+            args: Prisma.ResenaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResenaPayload>[]
+          }
+          create: {
+            args: Prisma.ResenaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResenaPayload>
+          }
+          createMany: {
+            args: Prisma.ResenaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ResenaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResenaPayload>[]
+          }
+          delete: {
+            args: Prisma.ResenaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResenaPayload>
+          }
+          update: {
+            args: Prisma.ResenaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResenaPayload>
+          }
+          deleteMany: {
+            args: Prisma.ResenaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ResenaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ResenaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResenaPayload>[]
+          }
+          upsert: {
+            args: Prisma.ResenaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResenaPayload>
+          }
+          aggregate: {
+            args: Prisma.ResenaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateResena>
+          }
+          groupBy: {
+            args: Prisma.ResenaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ResenaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ResenaCountArgs<ExtArgs>
+            result: $Utils.Optional<ResenaCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1412,6 +1502,7 @@ export namespace Prisma {
     noticia?: NoticiaOmit
     venta?: VentaOmit
     calificacion?: CalificacionOmit
+    resena?: ResenaOmit
   }
 
   /* Types for Logging */
@@ -1612,6 +1703,7 @@ export namespace Prisma {
     imagenes: number
     ventas: number
     plataformas: number
+    Resena: number
   }
 
   export type JuegoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1619,6 +1711,7 @@ export namespace Prisma {
     imagenes?: boolean | JuegoCountOutputTypeCountImagenesArgs
     ventas?: boolean | JuegoCountOutputTypeCountVentasArgs
     plataformas?: boolean | JuegoCountOutputTypeCountPlataformasArgs
+    Resena?: boolean | JuegoCountOutputTypeCountResenaArgs
   }
 
   // Custom InputTypes
@@ -1658,6 +1751,13 @@ export namespace Prisma {
    */
   export type JuegoCountOutputTypeCountPlataformasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PlataformaWhereInput
+  }
+
+  /**
+   * JuegoCountOutputType without action
+   */
+  export type JuegoCountOutputTypeCountResenaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ResenaWhereInput
   }
 
 
@@ -5196,6 +5296,7 @@ export namespace Prisma {
     categoria?: boolean | CategoriaDefaultArgs<ExtArgs>
     ventas?: boolean | Juego$ventasArgs<ExtArgs>
     plataformas?: boolean | Juego$plataformasArgs<ExtArgs>
+    Resena?: boolean | Juego$ResenaArgs<ExtArgs>
     _count?: boolean | JuegoCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["juego"]>
 
@@ -5244,6 +5345,7 @@ export namespace Prisma {
     categoria?: boolean | CategoriaDefaultArgs<ExtArgs>
     ventas?: boolean | Juego$ventasArgs<ExtArgs>
     plataformas?: boolean | Juego$plataformasArgs<ExtArgs>
+    Resena?: boolean | Juego$ResenaArgs<ExtArgs>
     _count?: boolean | JuegoCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type JuegoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5261,6 +5363,7 @@ export namespace Prisma {
       categoria: Prisma.$CategoriaPayload<ExtArgs>
       ventas: Prisma.$VentaPayload<ExtArgs>[]
       plataformas: Prisma.$PlataformaPayload<ExtArgs>[]
+      Resena: Prisma.$ResenaPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -5671,6 +5774,7 @@ export namespace Prisma {
     categoria<T extends CategoriaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CategoriaDefaultArgs<ExtArgs>>): Prisma__CategoriaClient<$Result.GetResult<Prisma.$CategoriaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     ventas<T extends Juego$ventasArgs<ExtArgs> = {}>(args?: Subset<T, Juego$ventasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     plataformas<T extends Juego$plataformasArgs<ExtArgs> = {}>(args?: Subset<T, Juego$plataformasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlataformaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Resena<T extends Juego$ResenaArgs<ExtArgs> = {}>(args?: Subset<T, Juego$ResenaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResenaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6198,6 +6302,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PlataformaScalarFieldEnum | PlataformaScalarFieldEnum[]
+  }
+
+  /**
+   * Juego.Resena
+   */
+  export type Juego$ResenaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resena
+     */
+    select?: ResenaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resena
+     */
+    omit?: ResenaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResenaInclude<ExtArgs> | null
+    where?: ResenaWhereInput
+    orderBy?: ResenaOrderByWithRelationInput | ResenaOrderByWithRelationInput[]
+    cursor?: ResenaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ResenaScalarFieldEnum | ResenaScalarFieldEnum[]
   }
 
   /**
@@ -7327,6 +7455,7 @@ export namespace Prisma {
     titulo: string | null
     texto: string | null
     activo: boolean | null
+    imagen: string | null
   }
 
   export type NoticiaMaxAggregateOutputType = {
@@ -7334,6 +7463,7 @@ export namespace Prisma {
     titulo: string | null
     texto: string | null
     activo: boolean | null
+    imagen: string | null
   }
 
   export type NoticiaCountAggregateOutputType = {
@@ -7341,6 +7471,7 @@ export namespace Prisma {
     titulo: number
     texto: number
     activo: number
+    imagen: number
     _all: number
   }
 
@@ -7358,6 +7489,7 @@ export namespace Prisma {
     titulo?: true
     texto?: true
     activo?: true
+    imagen?: true
   }
 
   export type NoticiaMaxAggregateInputType = {
@@ -7365,6 +7497,7 @@ export namespace Prisma {
     titulo?: true
     texto?: true
     activo?: true
+    imagen?: true
   }
 
   export type NoticiaCountAggregateInputType = {
@@ -7372,6 +7505,7 @@ export namespace Prisma {
     titulo?: true
     texto?: true
     activo?: true
+    imagen?: true
     _all?: true
   }
 
@@ -7466,6 +7600,7 @@ export namespace Prisma {
     titulo: string
     texto: string
     activo: boolean
+    imagen: string | null
     _count: NoticiaCountAggregateOutputType | null
     _avg: NoticiaAvgAggregateOutputType | null
     _sum: NoticiaSumAggregateOutputType | null
@@ -7492,6 +7627,7 @@ export namespace Prisma {
     titulo?: boolean
     texto?: boolean
     activo?: boolean
+    imagen?: boolean
   }, ExtArgs["result"]["noticia"]>
 
   export type NoticiaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7499,6 +7635,7 @@ export namespace Prisma {
     titulo?: boolean
     texto?: boolean
     activo?: boolean
+    imagen?: boolean
   }, ExtArgs["result"]["noticia"]>
 
   export type NoticiaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7506,6 +7643,7 @@ export namespace Prisma {
     titulo?: boolean
     texto?: boolean
     activo?: boolean
+    imagen?: boolean
   }, ExtArgs["result"]["noticia"]>
 
   export type NoticiaSelectScalar = {
@@ -7513,9 +7651,10 @@ export namespace Prisma {
     titulo?: boolean
     texto?: boolean
     activo?: boolean
+    imagen?: boolean
   }
 
-  export type NoticiaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "titulo" | "texto" | "activo", ExtArgs["result"]["noticia"]>
+  export type NoticiaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "titulo" | "texto" | "activo" | "imagen", ExtArgs["result"]["noticia"]>
 
   export type $NoticiaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Noticia"
@@ -7525,6 +7664,7 @@ export namespace Prisma {
       titulo: string
       texto: string
       activo: boolean
+      imagen: string | null
     }, ExtArgs["result"]["noticia"]>
     composites: {}
   }
@@ -7952,6 +8092,7 @@ export namespace Prisma {
     readonly titulo: FieldRef<"Noticia", 'String'>
     readonly texto: FieldRef<"Noticia", 'String'>
     readonly activo: FieldRef<"Noticia", 'Boolean'>
+    readonly imagen: FieldRef<"Noticia", 'String'>
   }
     
 
@@ -10632,6 +10773,1119 @@ export namespace Prisma {
 
 
   /**
+   * Model Resena
+   */
+
+  export type AggregateResena = {
+    _count: ResenaCountAggregateOutputType | null
+    _avg: ResenaAvgAggregateOutputType | null
+    _sum: ResenaSumAggregateOutputType | null
+    _min: ResenaMinAggregateOutputType | null
+    _max: ResenaMaxAggregateOutputType | null
+  }
+
+  export type ResenaAvgAggregateOutputType = {
+    id: number | null
+    juegoId: number | null
+    estrellas: number | null
+  }
+
+  export type ResenaSumAggregateOutputType = {
+    id: number | null
+    juegoId: number | null
+    estrellas: number | null
+  }
+
+  export type ResenaMinAggregateOutputType = {
+    id: number | null
+    juegoId: number | null
+    nombre: string | null
+    comentario: string | null
+    estrellas: number | null
+    fecha: Date | null
+  }
+
+  export type ResenaMaxAggregateOutputType = {
+    id: number | null
+    juegoId: number | null
+    nombre: string | null
+    comentario: string | null
+    estrellas: number | null
+    fecha: Date | null
+  }
+
+  export type ResenaCountAggregateOutputType = {
+    id: number
+    juegoId: number
+    nombre: number
+    comentario: number
+    estrellas: number
+    fecha: number
+    _all: number
+  }
+
+
+  export type ResenaAvgAggregateInputType = {
+    id?: true
+    juegoId?: true
+    estrellas?: true
+  }
+
+  export type ResenaSumAggregateInputType = {
+    id?: true
+    juegoId?: true
+    estrellas?: true
+  }
+
+  export type ResenaMinAggregateInputType = {
+    id?: true
+    juegoId?: true
+    nombre?: true
+    comentario?: true
+    estrellas?: true
+    fecha?: true
+  }
+
+  export type ResenaMaxAggregateInputType = {
+    id?: true
+    juegoId?: true
+    nombre?: true
+    comentario?: true
+    estrellas?: true
+    fecha?: true
+  }
+
+  export type ResenaCountAggregateInputType = {
+    id?: true
+    juegoId?: true
+    nombre?: true
+    comentario?: true
+    estrellas?: true
+    fecha?: true
+    _all?: true
+  }
+
+  export type ResenaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Resena to aggregate.
+     */
+    where?: ResenaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Resenas to fetch.
+     */
+    orderBy?: ResenaOrderByWithRelationInput | ResenaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ResenaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Resenas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Resenas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Resenas
+    **/
+    _count?: true | ResenaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ResenaAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ResenaSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ResenaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ResenaMaxAggregateInputType
+  }
+
+  export type GetResenaAggregateType<T extends ResenaAggregateArgs> = {
+        [P in keyof T & keyof AggregateResena]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateResena[P]>
+      : GetScalarType<T[P], AggregateResena[P]>
+  }
+
+
+
+
+  export type ResenaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ResenaWhereInput
+    orderBy?: ResenaOrderByWithAggregationInput | ResenaOrderByWithAggregationInput[]
+    by: ResenaScalarFieldEnum[] | ResenaScalarFieldEnum
+    having?: ResenaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ResenaCountAggregateInputType | true
+    _avg?: ResenaAvgAggregateInputType
+    _sum?: ResenaSumAggregateInputType
+    _min?: ResenaMinAggregateInputType
+    _max?: ResenaMaxAggregateInputType
+  }
+
+  export type ResenaGroupByOutputType = {
+    id: number
+    juegoId: number
+    nombre: string
+    comentario: string
+    estrellas: number
+    fecha: Date
+    _count: ResenaCountAggregateOutputType | null
+    _avg: ResenaAvgAggregateOutputType | null
+    _sum: ResenaSumAggregateOutputType | null
+    _min: ResenaMinAggregateOutputType | null
+    _max: ResenaMaxAggregateOutputType | null
+  }
+
+  type GetResenaGroupByPayload<T extends ResenaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ResenaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ResenaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ResenaGroupByOutputType[P]>
+            : GetScalarType<T[P], ResenaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ResenaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    juegoId?: boolean
+    nombre?: boolean
+    comentario?: boolean
+    estrellas?: boolean
+    fecha?: boolean
+    juego?: boolean | JuegoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["resena"]>
+
+  export type ResenaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    juegoId?: boolean
+    nombre?: boolean
+    comentario?: boolean
+    estrellas?: boolean
+    fecha?: boolean
+    juego?: boolean | JuegoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["resena"]>
+
+  export type ResenaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    juegoId?: boolean
+    nombre?: boolean
+    comentario?: boolean
+    estrellas?: boolean
+    fecha?: boolean
+    juego?: boolean | JuegoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["resena"]>
+
+  export type ResenaSelectScalar = {
+    id?: boolean
+    juegoId?: boolean
+    nombre?: boolean
+    comentario?: boolean
+    estrellas?: boolean
+    fecha?: boolean
+  }
+
+  export type ResenaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "juegoId" | "nombre" | "comentario" | "estrellas" | "fecha", ExtArgs["result"]["resena"]>
+  export type ResenaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    juego?: boolean | JuegoDefaultArgs<ExtArgs>
+  }
+  export type ResenaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    juego?: boolean | JuegoDefaultArgs<ExtArgs>
+  }
+  export type ResenaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    juego?: boolean | JuegoDefaultArgs<ExtArgs>
+  }
+
+  export type $ResenaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Resena"
+    objects: {
+      juego: Prisma.$JuegoPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      juegoId: number
+      nombre: string
+      comentario: string
+      estrellas: number
+      fecha: Date
+    }, ExtArgs["result"]["resena"]>
+    composites: {}
+  }
+
+  type ResenaGetPayload<S extends boolean | null | undefined | ResenaDefaultArgs> = $Result.GetResult<Prisma.$ResenaPayload, S>
+
+  type ResenaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ResenaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ResenaCountAggregateInputType | true
+    }
+
+  export interface ResenaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Resena'], meta: { name: 'Resena' } }
+    /**
+     * Find zero or one Resena that matches the filter.
+     * @param {ResenaFindUniqueArgs} args - Arguments to find a Resena
+     * @example
+     * // Get one Resena
+     * const resena = await prisma.resena.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ResenaFindUniqueArgs>(args: SelectSubset<T, ResenaFindUniqueArgs<ExtArgs>>): Prisma__ResenaClient<$Result.GetResult<Prisma.$ResenaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Resena that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ResenaFindUniqueOrThrowArgs} args - Arguments to find a Resena
+     * @example
+     * // Get one Resena
+     * const resena = await prisma.resena.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ResenaFindUniqueOrThrowArgs>(args: SelectSubset<T, ResenaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ResenaClient<$Result.GetResult<Prisma.$ResenaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Resena that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResenaFindFirstArgs} args - Arguments to find a Resena
+     * @example
+     * // Get one Resena
+     * const resena = await prisma.resena.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ResenaFindFirstArgs>(args?: SelectSubset<T, ResenaFindFirstArgs<ExtArgs>>): Prisma__ResenaClient<$Result.GetResult<Prisma.$ResenaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Resena that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResenaFindFirstOrThrowArgs} args - Arguments to find a Resena
+     * @example
+     * // Get one Resena
+     * const resena = await prisma.resena.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ResenaFindFirstOrThrowArgs>(args?: SelectSubset<T, ResenaFindFirstOrThrowArgs<ExtArgs>>): Prisma__ResenaClient<$Result.GetResult<Prisma.$ResenaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Resenas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResenaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Resenas
+     * const resenas = await prisma.resena.findMany()
+     * 
+     * // Get first 10 Resenas
+     * const resenas = await prisma.resena.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const resenaWithIdOnly = await prisma.resena.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ResenaFindManyArgs>(args?: SelectSubset<T, ResenaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResenaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Resena.
+     * @param {ResenaCreateArgs} args - Arguments to create a Resena.
+     * @example
+     * // Create one Resena
+     * const Resena = await prisma.resena.create({
+     *   data: {
+     *     // ... data to create a Resena
+     *   }
+     * })
+     * 
+     */
+    create<T extends ResenaCreateArgs>(args: SelectSubset<T, ResenaCreateArgs<ExtArgs>>): Prisma__ResenaClient<$Result.GetResult<Prisma.$ResenaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Resenas.
+     * @param {ResenaCreateManyArgs} args - Arguments to create many Resenas.
+     * @example
+     * // Create many Resenas
+     * const resena = await prisma.resena.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ResenaCreateManyArgs>(args?: SelectSubset<T, ResenaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Resenas and returns the data saved in the database.
+     * @param {ResenaCreateManyAndReturnArgs} args - Arguments to create many Resenas.
+     * @example
+     * // Create many Resenas
+     * const resena = await prisma.resena.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Resenas and only return the `id`
+     * const resenaWithIdOnly = await prisma.resena.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ResenaCreateManyAndReturnArgs>(args?: SelectSubset<T, ResenaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResenaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Resena.
+     * @param {ResenaDeleteArgs} args - Arguments to delete one Resena.
+     * @example
+     * // Delete one Resena
+     * const Resena = await prisma.resena.delete({
+     *   where: {
+     *     // ... filter to delete one Resena
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ResenaDeleteArgs>(args: SelectSubset<T, ResenaDeleteArgs<ExtArgs>>): Prisma__ResenaClient<$Result.GetResult<Prisma.$ResenaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Resena.
+     * @param {ResenaUpdateArgs} args - Arguments to update one Resena.
+     * @example
+     * // Update one Resena
+     * const resena = await prisma.resena.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ResenaUpdateArgs>(args: SelectSubset<T, ResenaUpdateArgs<ExtArgs>>): Prisma__ResenaClient<$Result.GetResult<Prisma.$ResenaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Resenas.
+     * @param {ResenaDeleteManyArgs} args - Arguments to filter Resenas to delete.
+     * @example
+     * // Delete a few Resenas
+     * const { count } = await prisma.resena.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ResenaDeleteManyArgs>(args?: SelectSubset<T, ResenaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Resenas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResenaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Resenas
+     * const resena = await prisma.resena.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ResenaUpdateManyArgs>(args: SelectSubset<T, ResenaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Resenas and returns the data updated in the database.
+     * @param {ResenaUpdateManyAndReturnArgs} args - Arguments to update many Resenas.
+     * @example
+     * // Update many Resenas
+     * const resena = await prisma.resena.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Resenas and only return the `id`
+     * const resenaWithIdOnly = await prisma.resena.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ResenaUpdateManyAndReturnArgs>(args: SelectSubset<T, ResenaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResenaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Resena.
+     * @param {ResenaUpsertArgs} args - Arguments to update or create a Resena.
+     * @example
+     * // Update or create a Resena
+     * const resena = await prisma.resena.upsert({
+     *   create: {
+     *     // ... data to create a Resena
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Resena we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ResenaUpsertArgs>(args: SelectSubset<T, ResenaUpsertArgs<ExtArgs>>): Prisma__ResenaClient<$Result.GetResult<Prisma.$ResenaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Resenas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResenaCountArgs} args - Arguments to filter Resenas to count.
+     * @example
+     * // Count the number of Resenas
+     * const count = await prisma.resena.count({
+     *   where: {
+     *     // ... the filter for the Resenas we want to count
+     *   }
+     * })
+    **/
+    count<T extends ResenaCountArgs>(
+      args?: Subset<T, ResenaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ResenaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Resena.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResenaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ResenaAggregateArgs>(args: Subset<T, ResenaAggregateArgs>): Prisma.PrismaPromise<GetResenaAggregateType<T>>
+
+    /**
+     * Group by Resena.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResenaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ResenaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ResenaGroupByArgs['orderBy'] }
+        : { orderBy?: ResenaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ResenaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetResenaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Resena model
+   */
+  readonly fields: ResenaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Resena.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ResenaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    juego<T extends JuegoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, JuegoDefaultArgs<ExtArgs>>): Prisma__JuegoClient<$Result.GetResult<Prisma.$JuegoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Resena model
+   */
+  interface ResenaFieldRefs {
+    readonly id: FieldRef<"Resena", 'Int'>
+    readonly juegoId: FieldRef<"Resena", 'Int'>
+    readonly nombre: FieldRef<"Resena", 'String'>
+    readonly comentario: FieldRef<"Resena", 'String'>
+    readonly estrellas: FieldRef<"Resena", 'Int'>
+    readonly fecha: FieldRef<"Resena", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Resena findUnique
+   */
+  export type ResenaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resena
+     */
+    select?: ResenaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resena
+     */
+    omit?: ResenaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResenaInclude<ExtArgs> | null
+    /**
+     * Filter, which Resena to fetch.
+     */
+    where: ResenaWhereUniqueInput
+  }
+
+  /**
+   * Resena findUniqueOrThrow
+   */
+  export type ResenaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resena
+     */
+    select?: ResenaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resena
+     */
+    omit?: ResenaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResenaInclude<ExtArgs> | null
+    /**
+     * Filter, which Resena to fetch.
+     */
+    where: ResenaWhereUniqueInput
+  }
+
+  /**
+   * Resena findFirst
+   */
+  export type ResenaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resena
+     */
+    select?: ResenaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resena
+     */
+    omit?: ResenaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResenaInclude<ExtArgs> | null
+    /**
+     * Filter, which Resena to fetch.
+     */
+    where?: ResenaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Resenas to fetch.
+     */
+    orderBy?: ResenaOrderByWithRelationInput | ResenaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Resenas.
+     */
+    cursor?: ResenaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Resenas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Resenas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Resenas.
+     */
+    distinct?: ResenaScalarFieldEnum | ResenaScalarFieldEnum[]
+  }
+
+  /**
+   * Resena findFirstOrThrow
+   */
+  export type ResenaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resena
+     */
+    select?: ResenaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resena
+     */
+    omit?: ResenaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResenaInclude<ExtArgs> | null
+    /**
+     * Filter, which Resena to fetch.
+     */
+    where?: ResenaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Resenas to fetch.
+     */
+    orderBy?: ResenaOrderByWithRelationInput | ResenaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Resenas.
+     */
+    cursor?: ResenaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Resenas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Resenas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Resenas.
+     */
+    distinct?: ResenaScalarFieldEnum | ResenaScalarFieldEnum[]
+  }
+
+  /**
+   * Resena findMany
+   */
+  export type ResenaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resena
+     */
+    select?: ResenaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resena
+     */
+    omit?: ResenaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResenaInclude<ExtArgs> | null
+    /**
+     * Filter, which Resenas to fetch.
+     */
+    where?: ResenaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Resenas to fetch.
+     */
+    orderBy?: ResenaOrderByWithRelationInput | ResenaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Resenas.
+     */
+    cursor?: ResenaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Resenas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Resenas.
+     */
+    skip?: number
+    distinct?: ResenaScalarFieldEnum | ResenaScalarFieldEnum[]
+  }
+
+  /**
+   * Resena create
+   */
+  export type ResenaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resena
+     */
+    select?: ResenaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resena
+     */
+    omit?: ResenaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResenaInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Resena.
+     */
+    data: XOR<ResenaCreateInput, ResenaUncheckedCreateInput>
+  }
+
+  /**
+   * Resena createMany
+   */
+  export type ResenaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Resenas.
+     */
+    data: ResenaCreateManyInput | ResenaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Resena createManyAndReturn
+   */
+  export type ResenaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resena
+     */
+    select?: ResenaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resena
+     */
+    omit?: ResenaOmit<ExtArgs> | null
+    /**
+     * The data used to create many Resenas.
+     */
+    data: ResenaCreateManyInput | ResenaCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResenaIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Resena update
+   */
+  export type ResenaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resena
+     */
+    select?: ResenaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resena
+     */
+    omit?: ResenaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResenaInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Resena.
+     */
+    data: XOR<ResenaUpdateInput, ResenaUncheckedUpdateInput>
+    /**
+     * Choose, which Resena to update.
+     */
+    where: ResenaWhereUniqueInput
+  }
+
+  /**
+   * Resena updateMany
+   */
+  export type ResenaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Resenas.
+     */
+    data: XOR<ResenaUpdateManyMutationInput, ResenaUncheckedUpdateManyInput>
+    /**
+     * Filter which Resenas to update
+     */
+    where?: ResenaWhereInput
+    /**
+     * Limit how many Resenas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Resena updateManyAndReturn
+   */
+  export type ResenaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resena
+     */
+    select?: ResenaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resena
+     */
+    omit?: ResenaOmit<ExtArgs> | null
+    /**
+     * The data used to update Resenas.
+     */
+    data: XOR<ResenaUpdateManyMutationInput, ResenaUncheckedUpdateManyInput>
+    /**
+     * Filter which Resenas to update
+     */
+    where?: ResenaWhereInput
+    /**
+     * Limit how many Resenas to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResenaIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Resena upsert
+   */
+  export type ResenaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resena
+     */
+    select?: ResenaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resena
+     */
+    omit?: ResenaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResenaInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Resena to update in case it exists.
+     */
+    where: ResenaWhereUniqueInput
+    /**
+     * In case the Resena found by the `where` argument doesn't exist, create a new Resena with this data.
+     */
+    create: XOR<ResenaCreateInput, ResenaUncheckedCreateInput>
+    /**
+     * In case the Resena was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ResenaUpdateInput, ResenaUncheckedUpdateInput>
+  }
+
+  /**
+   * Resena delete
+   */
+  export type ResenaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resena
+     */
+    select?: ResenaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resena
+     */
+    omit?: ResenaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResenaInclude<ExtArgs> | null
+    /**
+     * Filter which Resena to delete.
+     */
+    where: ResenaWhereUniqueInput
+  }
+
+  /**
+   * Resena deleteMany
+   */
+  export type ResenaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Resenas to delete
+     */
+    where?: ResenaWhereInput
+    /**
+     * Limit how many Resenas to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Resena without action
+   */
+  export type ResenaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resena
+     */
+    select?: ResenaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resena
+     */
+    omit?: ResenaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResenaInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -10703,7 +11957,8 @@ export namespace Prisma {
     id: 'id',
     titulo: 'titulo',
     texto: 'texto',
-    activo: 'activo'
+    activo: 'activo',
+    imagen: 'imagen'
   };
 
   export type NoticiaScalarFieldEnum = (typeof NoticiaScalarFieldEnum)[keyof typeof NoticiaScalarFieldEnum]
@@ -10730,6 +11985,18 @@ export namespace Prisma {
   };
 
   export type CalificacionScalarFieldEnum = (typeof CalificacionScalarFieldEnum)[keyof typeof CalificacionScalarFieldEnum]
+
+
+  export const ResenaScalarFieldEnum: {
+    id: 'id',
+    juegoId: 'juegoId',
+    nombre: 'nombre',
+    comentario: 'comentario',
+    estrellas: 'estrellas',
+    fecha: 'fecha'
+  };
+
+  export type ResenaScalarFieldEnum = (typeof ResenaScalarFieldEnum)[keyof typeof ResenaScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -11013,6 +12280,7 @@ export namespace Prisma {
     categoria?: XOR<CategoriaScalarRelationFilter, CategoriaWhereInput>
     ventas?: VentaListRelationFilter
     plataformas?: PlataformaListRelationFilter
+    Resena?: ResenaListRelationFilter
   }
 
   export type JuegoOrderByWithRelationInput = {
@@ -11030,6 +12298,7 @@ export namespace Prisma {
     categoria?: CategoriaOrderByWithRelationInput
     ventas?: VentaOrderByRelationAggregateInput
     plataformas?: PlataformaOrderByRelationAggregateInput
+    Resena?: ResenaOrderByRelationAggregateInput
   }
 
   export type JuegoWhereUniqueInput = Prisma.AtLeast<{
@@ -11050,6 +12319,7 @@ export namespace Prisma {
     categoria?: XOR<CategoriaScalarRelationFilter, CategoriaWhereInput>
     ventas?: VentaListRelationFilter
     plataformas?: PlataformaListRelationFilter
+    Resena?: ResenaListRelationFilter
   }, "id">
 
   export type JuegoOrderByWithAggregationInput = {
@@ -11144,6 +12414,7 @@ export namespace Prisma {
     titulo?: StringFilter<"Noticia"> | string
     texto?: StringFilter<"Noticia"> | string
     activo?: BoolFilter<"Noticia"> | boolean
+    imagen?: StringNullableFilter<"Noticia"> | string | null
   }
 
   export type NoticiaOrderByWithRelationInput = {
@@ -11151,6 +12422,7 @@ export namespace Prisma {
     titulo?: SortOrder
     texto?: SortOrder
     activo?: SortOrder
+    imagen?: SortOrderInput | SortOrder
   }
 
   export type NoticiaWhereUniqueInput = Prisma.AtLeast<{
@@ -11161,6 +12433,7 @@ export namespace Prisma {
     titulo?: StringFilter<"Noticia"> | string
     texto?: StringFilter<"Noticia"> | string
     activo?: BoolFilter<"Noticia"> | boolean
+    imagen?: StringNullableFilter<"Noticia"> | string | null
   }, "id">
 
   export type NoticiaOrderByWithAggregationInput = {
@@ -11168,6 +12441,7 @@ export namespace Prisma {
     titulo?: SortOrder
     texto?: SortOrder
     activo?: SortOrder
+    imagen?: SortOrderInput | SortOrder
     _count?: NoticiaCountOrderByAggregateInput
     _avg?: NoticiaAvgOrderByAggregateInput
     _max?: NoticiaMaxOrderByAggregateInput
@@ -11183,6 +12457,7 @@ export namespace Prisma {
     titulo?: StringWithAggregatesFilter<"Noticia"> | string
     texto?: StringWithAggregatesFilter<"Noticia"> | string
     activo?: BoolWithAggregatesFilter<"Noticia"> | boolean
+    imagen?: StringNullableWithAggregatesFilter<"Noticia"> | string | null
   }
 
   export type VentaWhereInput = {
@@ -11308,6 +12583,68 @@ export namespace Prisma {
     comentario?: StringNullableWithAggregatesFilter<"Calificacion"> | string | null
     juegoId?: IntNullableWithAggregatesFilter<"Calificacion"> | number | null
     usuarioId?: IntNullableWithAggregatesFilter<"Calificacion"> | number | null
+  }
+
+  export type ResenaWhereInput = {
+    AND?: ResenaWhereInput | ResenaWhereInput[]
+    OR?: ResenaWhereInput[]
+    NOT?: ResenaWhereInput | ResenaWhereInput[]
+    id?: IntFilter<"Resena"> | number
+    juegoId?: IntFilter<"Resena"> | number
+    nombre?: StringFilter<"Resena"> | string
+    comentario?: StringFilter<"Resena"> | string
+    estrellas?: IntFilter<"Resena"> | number
+    fecha?: DateTimeFilter<"Resena"> | Date | string
+    juego?: XOR<JuegoScalarRelationFilter, JuegoWhereInput>
+  }
+
+  export type ResenaOrderByWithRelationInput = {
+    id?: SortOrder
+    juegoId?: SortOrder
+    nombre?: SortOrder
+    comentario?: SortOrder
+    estrellas?: SortOrder
+    fecha?: SortOrder
+    juego?: JuegoOrderByWithRelationInput
+  }
+
+  export type ResenaWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ResenaWhereInput | ResenaWhereInput[]
+    OR?: ResenaWhereInput[]
+    NOT?: ResenaWhereInput | ResenaWhereInput[]
+    juegoId?: IntFilter<"Resena"> | number
+    nombre?: StringFilter<"Resena"> | string
+    comentario?: StringFilter<"Resena"> | string
+    estrellas?: IntFilter<"Resena"> | number
+    fecha?: DateTimeFilter<"Resena"> | Date | string
+    juego?: XOR<JuegoScalarRelationFilter, JuegoWhereInput>
+  }, "id">
+
+  export type ResenaOrderByWithAggregationInput = {
+    id?: SortOrder
+    juegoId?: SortOrder
+    nombre?: SortOrder
+    comentario?: SortOrder
+    estrellas?: SortOrder
+    fecha?: SortOrder
+    _count?: ResenaCountOrderByAggregateInput
+    _avg?: ResenaAvgOrderByAggregateInput
+    _max?: ResenaMaxOrderByAggregateInput
+    _min?: ResenaMinOrderByAggregateInput
+    _sum?: ResenaSumOrderByAggregateInput
+  }
+
+  export type ResenaScalarWhereWithAggregatesInput = {
+    AND?: ResenaScalarWhereWithAggregatesInput | ResenaScalarWhereWithAggregatesInput[]
+    OR?: ResenaScalarWhereWithAggregatesInput[]
+    NOT?: ResenaScalarWhereWithAggregatesInput | ResenaScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Resena"> | number
+    juegoId?: IntWithAggregatesFilter<"Resena"> | number
+    nombre?: StringWithAggregatesFilter<"Resena"> | string
+    comentario?: StringWithAggregatesFilter<"Resena"> | string
+    estrellas?: IntWithAggregatesFilter<"Resena"> | number
+    fecha?: DateTimeWithAggregatesFilter<"Resena"> | Date | string
   }
 
   export type UsuarioCreateInput = {
@@ -11470,6 +12807,7 @@ export namespace Prisma {
     categoria: CategoriaCreateNestedOneWithoutJuegosInput
     ventas?: VentaCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaCreateNestedManyWithoutJuegosInput
+    Resena?: ResenaCreateNestedManyWithoutJuegoInput
   }
 
   export type JuegoUncheckedCreateInput = {
@@ -11486,6 +12824,7 @@ export namespace Prisma {
     imagenes?: ImagenUncheckedCreateNestedManyWithoutJuegoInput
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaUncheckedCreateNestedManyWithoutJuegosInput
+    Resena?: ResenaUncheckedCreateNestedManyWithoutJuegoInput
   }
 
   export type JuegoUpdateInput = {
@@ -11501,6 +12840,7 @@ export namespace Prisma {
     categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
     ventas?: VentaUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUpdateManyWithoutJuegosNestedInput
+    Resena?: ResenaUpdateManyWithoutJuegoNestedInput
   }
 
   export type JuegoUncheckedUpdateInput = {
@@ -11517,6 +12857,7 @@ export namespace Prisma {
     imagenes?: ImagenUncheckedUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUncheckedUpdateManyWithoutJuegosNestedInput
+    Resena?: ResenaUncheckedUpdateManyWithoutJuegoNestedInput
   }
 
   export type JuegoCreateManyInput = {
@@ -11602,6 +12943,7 @@ export namespace Prisma {
     titulo: string
     texto: string
     activo: boolean
+    imagen?: string | null
   }
 
   export type NoticiaUncheckedCreateInput = {
@@ -11609,12 +12951,14 @@ export namespace Prisma {
     titulo: string
     texto: string
     activo: boolean
+    imagen?: string | null
   }
 
   export type NoticiaUpdateInput = {
     titulo?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     activo?: BoolFieldUpdateOperationsInput | boolean
+    imagen?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type NoticiaUncheckedUpdateInput = {
@@ -11622,6 +12966,7 @@ export namespace Prisma {
     titulo?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     activo?: BoolFieldUpdateOperationsInput | boolean
+    imagen?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type NoticiaCreateManyInput = {
@@ -11629,12 +12974,14 @@ export namespace Prisma {
     titulo: string
     texto: string
     activo: boolean
+    imagen?: string | null
   }
 
   export type NoticiaUpdateManyMutationInput = {
     titulo?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     activo?: BoolFieldUpdateOperationsInput | boolean
+    imagen?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type NoticiaUncheckedUpdateManyInput = {
@@ -11642,6 +12989,7 @@ export namespace Prisma {
     titulo?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     activo?: BoolFieldUpdateOperationsInput | boolean
+    imagen?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VentaCreateInput = {
@@ -11751,6 +13099,65 @@ export namespace Prisma {
     comentario?: NullableStringFieldUpdateOperationsInput | string | null
     juegoId?: NullableIntFieldUpdateOperationsInput | number | null
     usuarioId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type ResenaCreateInput = {
+    nombre: string
+    comentario: string
+    estrellas: number
+    fecha?: Date | string
+    juego: JuegoCreateNestedOneWithoutResenaInput
+  }
+
+  export type ResenaUncheckedCreateInput = {
+    id?: number
+    juegoId: number
+    nombre: string
+    comentario: string
+    estrellas: number
+    fecha?: Date | string
+  }
+
+  export type ResenaUpdateInput = {
+    nombre?: StringFieldUpdateOperationsInput | string
+    comentario?: StringFieldUpdateOperationsInput | string
+    estrellas?: IntFieldUpdateOperationsInput | number
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+    juego?: JuegoUpdateOneRequiredWithoutResenaNestedInput
+  }
+
+  export type ResenaUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    juegoId?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    comentario?: StringFieldUpdateOperationsInput | string
+    estrellas?: IntFieldUpdateOperationsInput | number
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ResenaCreateManyInput = {
+    id?: number
+    juegoId: number
+    nombre: string
+    comentario: string
+    estrellas: number
+    fecha?: Date | string
+  }
+
+  export type ResenaUpdateManyMutationInput = {
+    nombre?: StringFieldUpdateOperationsInput | string
+    comentario?: StringFieldUpdateOperationsInput | string
+    estrellas?: IntFieldUpdateOperationsInput | number
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ResenaUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    juegoId?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    comentario?: StringFieldUpdateOperationsInput | string
+    estrellas?: IntFieldUpdateOperationsInput | number
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -12017,11 +13424,21 @@ export namespace Prisma {
     none?: PlataformaWhereInput
   }
 
+  export type ResenaListRelationFilter = {
+    every?: ResenaWhereInput
+    some?: ResenaWhereInput
+    none?: ResenaWhereInput
+  }
+
   export type ImagenOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type PlataformaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ResenaOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -12144,6 +13561,7 @@ export namespace Prisma {
     titulo?: SortOrder
     texto?: SortOrder
     activo?: SortOrder
+    imagen?: SortOrder
   }
 
   export type NoticiaAvgOrderByAggregateInput = {
@@ -12155,6 +13573,7 @@ export namespace Prisma {
     titulo?: SortOrder
     texto?: SortOrder
     activo?: SortOrder
+    imagen?: SortOrder
   }
 
   export type NoticiaMinOrderByAggregateInput = {
@@ -12162,6 +13581,7 @@ export namespace Prisma {
     titulo?: SortOrder
     texto?: SortOrder
     activo?: SortOrder
+    imagen?: SortOrder
   }
 
   export type NoticiaSumOrderByAggregateInput = {
@@ -12307,6 +13727,45 @@ export namespace Prisma {
     valoracion?: SortOrder
     juegoId?: SortOrder
     usuarioId?: SortOrder
+  }
+
+  export type ResenaCountOrderByAggregateInput = {
+    id?: SortOrder
+    juegoId?: SortOrder
+    nombre?: SortOrder
+    comentario?: SortOrder
+    estrellas?: SortOrder
+    fecha?: SortOrder
+  }
+
+  export type ResenaAvgOrderByAggregateInput = {
+    id?: SortOrder
+    juegoId?: SortOrder
+    estrellas?: SortOrder
+  }
+
+  export type ResenaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    juegoId?: SortOrder
+    nombre?: SortOrder
+    comentario?: SortOrder
+    estrellas?: SortOrder
+    fecha?: SortOrder
+  }
+
+  export type ResenaMinOrderByAggregateInput = {
+    id?: SortOrder
+    juegoId?: SortOrder
+    nombre?: SortOrder
+    comentario?: SortOrder
+    estrellas?: SortOrder
+    fecha?: SortOrder
+  }
+
+  export type ResenaSumOrderByAggregateInput = {
+    id?: SortOrder
+    juegoId?: SortOrder
+    estrellas?: SortOrder
   }
 
   export type CalificacionCreateNestedManyWithoutUsuarioInput = {
@@ -12526,6 +13985,13 @@ export namespace Prisma {
     connect?: PlataformaWhereUniqueInput | PlataformaWhereUniqueInput[]
   }
 
+  export type ResenaCreateNestedManyWithoutJuegoInput = {
+    create?: XOR<ResenaCreateWithoutJuegoInput, ResenaUncheckedCreateWithoutJuegoInput> | ResenaCreateWithoutJuegoInput[] | ResenaUncheckedCreateWithoutJuegoInput[]
+    connectOrCreate?: ResenaCreateOrConnectWithoutJuegoInput | ResenaCreateOrConnectWithoutJuegoInput[]
+    createMany?: ResenaCreateManyJuegoInputEnvelope
+    connect?: ResenaWhereUniqueInput | ResenaWhereUniqueInput[]
+  }
+
   export type CalificacionUncheckedCreateNestedManyWithoutJuegoInput = {
     create?: XOR<CalificacionCreateWithoutJuegoInput, CalificacionUncheckedCreateWithoutJuegoInput> | CalificacionCreateWithoutJuegoInput[] | CalificacionUncheckedCreateWithoutJuegoInput[]
     connectOrCreate?: CalificacionCreateOrConnectWithoutJuegoInput | CalificacionCreateOrConnectWithoutJuegoInput[]
@@ -12551,6 +14017,13 @@ export namespace Prisma {
     create?: XOR<PlataformaCreateWithoutJuegosInput, PlataformaUncheckedCreateWithoutJuegosInput> | PlataformaCreateWithoutJuegosInput[] | PlataformaUncheckedCreateWithoutJuegosInput[]
     connectOrCreate?: PlataformaCreateOrConnectWithoutJuegosInput | PlataformaCreateOrConnectWithoutJuegosInput[]
     connect?: PlataformaWhereUniqueInput | PlataformaWhereUniqueInput[]
+  }
+
+  export type ResenaUncheckedCreateNestedManyWithoutJuegoInput = {
+    create?: XOR<ResenaCreateWithoutJuegoInput, ResenaUncheckedCreateWithoutJuegoInput> | ResenaCreateWithoutJuegoInput[] | ResenaUncheckedCreateWithoutJuegoInput[]
+    connectOrCreate?: ResenaCreateOrConnectWithoutJuegoInput | ResenaCreateOrConnectWithoutJuegoInput[]
+    createMany?: ResenaCreateManyJuegoInputEnvelope
+    connect?: ResenaWhereUniqueInput | ResenaWhereUniqueInput[]
   }
 
   export type DecimalFieldUpdateOperationsInput = {
@@ -12628,6 +14101,20 @@ export namespace Prisma {
     deleteMany?: PlataformaScalarWhereInput | PlataformaScalarWhereInput[]
   }
 
+  export type ResenaUpdateManyWithoutJuegoNestedInput = {
+    create?: XOR<ResenaCreateWithoutJuegoInput, ResenaUncheckedCreateWithoutJuegoInput> | ResenaCreateWithoutJuegoInput[] | ResenaUncheckedCreateWithoutJuegoInput[]
+    connectOrCreate?: ResenaCreateOrConnectWithoutJuegoInput | ResenaCreateOrConnectWithoutJuegoInput[]
+    upsert?: ResenaUpsertWithWhereUniqueWithoutJuegoInput | ResenaUpsertWithWhereUniqueWithoutJuegoInput[]
+    createMany?: ResenaCreateManyJuegoInputEnvelope
+    set?: ResenaWhereUniqueInput | ResenaWhereUniqueInput[]
+    disconnect?: ResenaWhereUniqueInput | ResenaWhereUniqueInput[]
+    delete?: ResenaWhereUniqueInput | ResenaWhereUniqueInput[]
+    connect?: ResenaWhereUniqueInput | ResenaWhereUniqueInput[]
+    update?: ResenaUpdateWithWhereUniqueWithoutJuegoInput | ResenaUpdateWithWhereUniqueWithoutJuegoInput[]
+    updateMany?: ResenaUpdateManyWithWhereWithoutJuegoInput | ResenaUpdateManyWithWhereWithoutJuegoInput[]
+    deleteMany?: ResenaScalarWhereInput | ResenaScalarWhereInput[]
+  }
+
   export type CalificacionUncheckedUpdateManyWithoutJuegoNestedInput = {
     create?: XOR<CalificacionCreateWithoutJuegoInput, CalificacionUncheckedCreateWithoutJuegoInput> | CalificacionCreateWithoutJuegoInput[] | CalificacionUncheckedCreateWithoutJuegoInput[]
     connectOrCreate?: CalificacionCreateOrConnectWithoutJuegoInput | CalificacionCreateOrConnectWithoutJuegoInput[]
@@ -12681,6 +14168,20 @@ export namespace Prisma {
     update?: PlataformaUpdateWithWhereUniqueWithoutJuegosInput | PlataformaUpdateWithWhereUniqueWithoutJuegosInput[]
     updateMany?: PlataformaUpdateManyWithWhereWithoutJuegosInput | PlataformaUpdateManyWithWhereWithoutJuegosInput[]
     deleteMany?: PlataformaScalarWhereInput | PlataformaScalarWhereInput[]
+  }
+
+  export type ResenaUncheckedUpdateManyWithoutJuegoNestedInput = {
+    create?: XOR<ResenaCreateWithoutJuegoInput, ResenaUncheckedCreateWithoutJuegoInput> | ResenaCreateWithoutJuegoInput[] | ResenaUncheckedCreateWithoutJuegoInput[]
+    connectOrCreate?: ResenaCreateOrConnectWithoutJuegoInput | ResenaCreateOrConnectWithoutJuegoInput[]
+    upsert?: ResenaUpsertWithWhereUniqueWithoutJuegoInput | ResenaUpsertWithWhereUniqueWithoutJuegoInput[]
+    createMany?: ResenaCreateManyJuegoInputEnvelope
+    set?: ResenaWhereUniqueInput | ResenaWhereUniqueInput[]
+    disconnect?: ResenaWhereUniqueInput | ResenaWhereUniqueInput[]
+    delete?: ResenaWhereUniqueInput | ResenaWhereUniqueInput[]
+    connect?: ResenaWhereUniqueInput | ResenaWhereUniqueInput[]
+    update?: ResenaUpdateWithWhereUniqueWithoutJuegoInput | ResenaUpdateWithWhereUniqueWithoutJuegoInput[]
+    updateMany?: ResenaUpdateManyWithWhereWithoutJuegoInput | ResenaUpdateManyWithWhereWithoutJuegoInput[]
+    deleteMany?: ResenaScalarWhereInput | ResenaScalarWhereInput[]
   }
 
   export type JuegoCreateNestedOneWithoutImagenesInput = {
@@ -12771,6 +14272,20 @@ export namespace Prisma {
     delete?: UsuarioWhereInput | boolean
     connect?: UsuarioWhereUniqueInput
     update?: XOR<XOR<UsuarioUpdateToOneWithWhereWithoutCalificacionesInput, UsuarioUpdateWithoutCalificacionesInput>, UsuarioUncheckedUpdateWithoutCalificacionesInput>
+  }
+
+  export type JuegoCreateNestedOneWithoutResenaInput = {
+    create?: XOR<JuegoCreateWithoutResenaInput, JuegoUncheckedCreateWithoutResenaInput>
+    connectOrCreate?: JuegoCreateOrConnectWithoutResenaInput
+    connect?: JuegoWhereUniqueInput
+  }
+
+  export type JuegoUpdateOneRequiredWithoutResenaNestedInput = {
+    create?: XOR<JuegoCreateWithoutResenaInput, JuegoUncheckedCreateWithoutResenaInput>
+    connectOrCreate?: JuegoCreateOrConnectWithoutResenaInput
+    upsert?: JuegoUpsertWithoutResenaInput
+    connect?: JuegoWhereUniqueInput
+    update?: XOR<XOR<JuegoUpdateToOneWithWhereWithoutResenaInput, JuegoUpdateWithoutResenaInput>, JuegoUncheckedUpdateWithoutResenaInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -13116,6 +14631,7 @@ export namespace Prisma {
     imagenes?: ImagenCreateNestedManyWithoutJuegoInput
     categoria: CategoriaCreateNestedOneWithoutJuegosInput
     ventas?: VentaCreateNestedManyWithoutJuegoInput
+    Resena?: ResenaCreateNestedManyWithoutJuegoInput
   }
 
   export type JuegoUncheckedCreateWithoutPlataformasInput = {
@@ -13131,6 +14647,7 @@ export namespace Prisma {
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
     imagenes?: ImagenUncheckedCreateNestedManyWithoutJuegoInput
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
+    Resena?: ResenaUncheckedCreateNestedManyWithoutJuegoInput
   }
 
   export type JuegoCreateOrConnectWithoutPlataformasInput = {
@@ -13181,6 +14698,7 @@ export namespace Prisma {
     imagenes?: ImagenCreateNestedManyWithoutJuegoInput
     ventas?: VentaCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaCreateNestedManyWithoutJuegosInput
+    Resena?: ResenaCreateNestedManyWithoutJuegoInput
   }
 
   export type JuegoUncheckedCreateWithoutCategoriaInput = {
@@ -13196,6 +14714,7 @@ export namespace Prisma {
     imagenes?: ImagenUncheckedCreateNestedManyWithoutJuegoInput
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaUncheckedCreateNestedManyWithoutJuegosInput
+    Resena?: ResenaUncheckedCreateNestedManyWithoutJuegoInput
   }
 
   export type JuegoCreateOrConnectWithoutCategoriaInput = {
@@ -13321,6 +14840,31 @@ export namespace Prisma {
     create: XOR<PlataformaCreateWithoutJuegosInput, PlataformaUncheckedCreateWithoutJuegosInput>
   }
 
+  export type ResenaCreateWithoutJuegoInput = {
+    nombre: string
+    comentario: string
+    estrellas: number
+    fecha?: Date | string
+  }
+
+  export type ResenaUncheckedCreateWithoutJuegoInput = {
+    id?: number
+    nombre: string
+    comentario: string
+    estrellas: number
+    fecha?: Date | string
+  }
+
+  export type ResenaCreateOrConnectWithoutJuegoInput = {
+    where: ResenaWhereUniqueInput
+    create: XOR<ResenaCreateWithoutJuegoInput, ResenaUncheckedCreateWithoutJuegoInput>
+  }
+
+  export type ResenaCreateManyJuegoInputEnvelope = {
+    data: ResenaCreateManyJuegoInput | ResenaCreateManyJuegoInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CalificacionUpsertWithWhereUniqueWithoutJuegoInput = {
     where: CalificacionWhereUniqueInput
     update: XOR<CalificacionUpdateWithoutJuegoInput, CalificacionUncheckedUpdateWithoutJuegoInput>
@@ -13423,6 +14967,34 @@ export namespace Prisma {
     nombre?: StringFilter<"Plataforma"> | string
   }
 
+  export type ResenaUpsertWithWhereUniqueWithoutJuegoInput = {
+    where: ResenaWhereUniqueInput
+    update: XOR<ResenaUpdateWithoutJuegoInput, ResenaUncheckedUpdateWithoutJuegoInput>
+    create: XOR<ResenaCreateWithoutJuegoInput, ResenaUncheckedCreateWithoutJuegoInput>
+  }
+
+  export type ResenaUpdateWithWhereUniqueWithoutJuegoInput = {
+    where: ResenaWhereUniqueInput
+    data: XOR<ResenaUpdateWithoutJuegoInput, ResenaUncheckedUpdateWithoutJuegoInput>
+  }
+
+  export type ResenaUpdateManyWithWhereWithoutJuegoInput = {
+    where: ResenaScalarWhereInput
+    data: XOR<ResenaUpdateManyMutationInput, ResenaUncheckedUpdateManyWithoutJuegoInput>
+  }
+
+  export type ResenaScalarWhereInput = {
+    AND?: ResenaScalarWhereInput | ResenaScalarWhereInput[]
+    OR?: ResenaScalarWhereInput[]
+    NOT?: ResenaScalarWhereInput | ResenaScalarWhereInput[]
+    id?: IntFilter<"Resena"> | number
+    juegoId?: IntFilter<"Resena"> | number
+    nombre?: StringFilter<"Resena"> | string
+    comentario?: StringFilter<"Resena"> | string
+    estrellas?: IntFilter<"Resena"> | number
+    fecha?: DateTimeFilter<"Resena"> | Date | string
+  }
+
   export type JuegoCreateWithoutImagenesInput = {
     nombre: string
     precio: Decimal | DecimalJsLike | number | string
@@ -13435,6 +15007,7 @@ export namespace Prisma {
     categoria: CategoriaCreateNestedOneWithoutJuegosInput
     ventas?: VentaCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaCreateNestedManyWithoutJuegosInput
+    Resena?: ResenaCreateNestedManyWithoutJuegoInput
   }
 
   export type JuegoUncheckedCreateWithoutImagenesInput = {
@@ -13450,6 +15023,7 @@ export namespace Prisma {
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaUncheckedCreateNestedManyWithoutJuegosInput
+    Resena?: ResenaUncheckedCreateNestedManyWithoutJuegoInput
   }
 
   export type JuegoCreateOrConnectWithoutImagenesInput = {
@@ -13480,6 +15054,7 @@ export namespace Prisma {
     categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
     ventas?: VentaUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUpdateManyWithoutJuegosNestedInput
+    Resena?: ResenaUpdateManyWithoutJuegoNestedInput
   }
 
   export type JuegoUncheckedUpdateWithoutImagenesInput = {
@@ -13495,6 +15070,7 @@ export namespace Prisma {
     calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUncheckedUpdateManyWithoutJuegosNestedInput
+    Resena?: ResenaUncheckedUpdateManyWithoutJuegoNestedInput
   }
 
   export type JuegoCreateWithoutVentasInput = {
@@ -13509,6 +15085,7 @@ export namespace Prisma {
     imagenes?: ImagenCreateNestedManyWithoutJuegoInput
     categoria: CategoriaCreateNestedOneWithoutJuegosInput
     plataformas?: PlataformaCreateNestedManyWithoutJuegosInput
+    Resena?: ResenaCreateNestedManyWithoutJuegoInput
   }
 
   export type JuegoUncheckedCreateWithoutVentasInput = {
@@ -13524,6 +15101,7 @@ export namespace Prisma {
     calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
     imagenes?: ImagenUncheckedCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaUncheckedCreateNestedManyWithoutJuegosInput
+    Resena?: ResenaUncheckedCreateNestedManyWithoutJuegoInput
   }
 
   export type JuegoCreateOrConnectWithoutVentasInput = {
@@ -13580,6 +15158,7 @@ export namespace Prisma {
     imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
     categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
     plataformas?: PlataformaUpdateManyWithoutJuegosNestedInput
+    Resena?: ResenaUpdateManyWithoutJuegoNestedInput
   }
 
   export type JuegoUncheckedUpdateWithoutVentasInput = {
@@ -13595,6 +15174,7 @@ export namespace Prisma {
     calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
     imagenes?: ImagenUncheckedUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUncheckedUpdateManyWithoutJuegosNestedInput
+    Resena?: ResenaUncheckedUpdateManyWithoutJuegoNestedInput
   }
 
   export type UsuarioUpsertWithoutVentasInput = {
@@ -13641,6 +15221,7 @@ export namespace Prisma {
     categoria: CategoriaCreateNestedOneWithoutJuegosInput
     ventas?: VentaCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaCreateNestedManyWithoutJuegosInput
+    Resena?: ResenaCreateNestedManyWithoutJuegoInput
   }
 
   export type JuegoUncheckedCreateWithoutCalificacionesInput = {
@@ -13656,6 +15237,7 @@ export namespace Prisma {
     imagenes?: ImagenUncheckedCreateNestedManyWithoutJuegoInput
     ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
     plataformas?: PlataformaUncheckedCreateNestedManyWithoutJuegosInput
+    Resena?: ResenaUncheckedCreateNestedManyWithoutJuegoInput
   }
 
   export type JuegoCreateOrConnectWithoutCalificacionesInput = {
@@ -13712,6 +15294,7 @@ export namespace Prisma {
     categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
     ventas?: VentaUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUpdateManyWithoutJuegosNestedInput
+    Resena?: ResenaUpdateManyWithoutJuegoNestedInput
   }
 
   export type JuegoUncheckedUpdateWithoutCalificacionesInput = {
@@ -13727,6 +15310,7 @@ export namespace Prisma {
     imagenes?: ImagenUncheckedUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUncheckedUpdateManyWithoutJuegosNestedInput
+    Resena?: ResenaUncheckedUpdateManyWithoutJuegoNestedInput
   }
 
   export type UsuarioUpsertWithoutCalificacionesInput = {
@@ -13759,6 +15343,80 @@ export namespace Prisma {
     estado?: BoolFieldUpdateOperationsInput | boolean
     rol?: StringFieldUpdateOperationsInput | string
     ventas?: VentaUncheckedUpdateManyWithoutUsuarioNestedInput
+  }
+
+  export type JuegoCreateWithoutResenaInput = {
+    nombre: string
+    precio: Decimal | DecimalJsLike | number | string
+    estaOferta: boolean
+    estado: boolean
+    videoUrl?: string | null
+    descripcion?: string | null
+    calificaciones?: CalificacionCreateNestedManyWithoutJuegoInput
+    imagenes?: ImagenCreateNestedManyWithoutJuegoInput
+    categoria: CategoriaCreateNestedOneWithoutJuegosInput
+    ventas?: VentaCreateNestedManyWithoutJuegoInput
+    plataformas?: PlataformaCreateNestedManyWithoutJuegosInput
+  }
+
+  export type JuegoUncheckedCreateWithoutResenaInput = {
+    id?: number
+    nombre: string
+    precio: Decimal | DecimalJsLike | number | string
+    estaOferta: boolean
+    estado: boolean
+    categoriaId: number
+    videoUrl?: string | null
+    descripcion?: string | null
+    calificaciones?: CalificacionUncheckedCreateNestedManyWithoutJuegoInput
+    imagenes?: ImagenUncheckedCreateNestedManyWithoutJuegoInput
+    ventas?: VentaUncheckedCreateNestedManyWithoutJuegoInput
+    plataformas?: PlataformaUncheckedCreateNestedManyWithoutJuegosInput
+  }
+
+  export type JuegoCreateOrConnectWithoutResenaInput = {
+    where: JuegoWhereUniqueInput
+    create: XOR<JuegoCreateWithoutResenaInput, JuegoUncheckedCreateWithoutResenaInput>
+  }
+
+  export type JuegoUpsertWithoutResenaInput = {
+    update: XOR<JuegoUpdateWithoutResenaInput, JuegoUncheckedUpdateWithoutResenaInput>
+    create: XOR<JuegoCreateWithoutResenaInput, JuegoUncheckedCreateWithoutResenaInput>
+    where?: JuegoWhereInput
+  }
+
+  export type JuegoUpdateToOneWithWhereWithoutResenaInput = {
+    where?: JuegoWhereInput
+    data: XOR<JuegoUpdateWithoutResenaInput, JuegoUncheckedUpdateWithoutResenaInput>
+  }
+
+  export type JuegoUpdateWithoutResenaInput = {
+    nombre?: StringFieldUpdateOperationsInput | string
+    precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    estaOferta?: BoolFieldUpdateOperationsInput | boolean
+    estado?: BoolFieldUpdateOperationsInput | boolean
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    calificaciones?: CalificacionUpdateManyWithoutJuegoNestedInput
+    imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
+    categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
+    ventas?: VentaUpdateManyWithoutJuegoNestedInput
+    plataformas?: PlataformaUpdateManyWithoutJuegosNestedInput
+  }
+
+  export type JuegoUncheckedUpdateWithoutResenaInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    estaOferta?: BoolFieldUpdateOperationsInput | boolean
+    estado?: BoolFieldUpdateOperationsInput | boolean
+    categoriaId?: IntFieldUpdateOperationsInput | number
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
+    imagenes?: ImagenUncheckedUpdateManyWithoutJuegoNestedInput
+    ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
+    plataformas?: PlataformaUncheckedUpdateManyWithoutJuegosNestedInput
   }
 
   export type CalificacionCreateManyUsuarioInput = {
@@ -13831,6 +15489,7 @@ export namespace Prisma {
     imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
     categoria?: CategoriaUpdateOneRequiredWithoutJuegosNestedInput
     ventas?: VentaUpdateManyWithoutJuegoNestedInput
+    Resena?: ResenaUpdateManyWithoutJuegoNestedInput
   }
 
   export type JuegoUncheckedUpdateWithoutPlataformasInput = {
@@ -13846,6 +15505,7 @@ export namespace Prisma {
     calificaciones?: CalificacionUncheckedUpdateManyWithoutJuegoNestedInput
     imagenes?: ImagenUncheckedUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
+    Resena?: ResenaUncheckedUpdateManyWithoutJuegoNestedInput
   }
 
   export type JuegoUncheckedUpdateManyWithoutPlataformasInput = {
@@ -13883,6 +15543,7 @@ export namespace Prisma {
     imagenes?: ImagenUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUpdateManyWithoutJuegosNestedInput
+    Resena?: ResenaUpdateManyWithoutJuegoNestedInput
   }
 
   export type JuegoUncheckedUpdateWithoutCategoriaInput = {
@@ -13898,6 +15559,7 @@ export namespace Prisma {
     imagenes?: ImagenUncheckedUpdateManyWithoutJuegoNestedInput
     ventas?: VentaUncheckedUpdateManyWithoutJuegoNestedInput
     plataformas?: PlataformaUncheckedUpdateManyWithoutJuegosNestedInput
+    Resena?: ResenaUncheckedUpdateManyWithoutJuegoNestedInput
   }
 
   export type JuegoUncheckedUpdateManyWithoutCategoriaInput = {
@@ -13930,6 +15592,14 @@ export namespace Prisma {
     usuarioId?: number | null
     codigo: string
     montoPagado: Decimal | DecimalJsLike | number | string
+  }
+
+  export type ResenaCreateManyJuegoInput = {
+    id?: number
+    nombre: string
+    comentario: string
+    estrellas: number
+    fecha?: Date | string
   }
 
   export type CalificacionUpdateWithoutJuegoInput = {
@@ -14004,6 +15674,29 @@ export namespace Prisma {
   export type PlataformaUncheckedUpdateManyWithoutJuegosInput = {
     id?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ResenaUpdateWithoutJuegoInput = {
+    nombre?: StringFieldUpdateOperationsInput | string
+    comentario?: StringFieldUpdateOperationsInput | string
+    estrellas?: IntFieldUpdateOperationsInput | number
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ResenaUncheckedUpdateWithoutJuegoInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    comentario?: StringFieldUpdateOperationsInput | string
+    estrellas?: IntFieldUpdateOperationsInput | number
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ResenaUncheckedUpdateManyWithoutJuegoInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    comentario?: StringFieldUpdateOperationsInput | string
+    estrellas?: IntFieldUpdateOperationsInput | number
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

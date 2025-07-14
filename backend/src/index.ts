@@ -9,6 +9,7 @@ import cloudinary from 'cloudinary';
 import multer from 'multer';
 import fs from 'fs';
 
+
 dotenv.config();  // Cargar las variables de entorno desde .env
 
 // Configuración global de Cloudinary (asegúrate de tener las variables en tu .env o usa estas configuraciones directamente)
@@ -361,7 +362,45 @@ app.post('/api/auth/forgot-password', async (req: Request, res: Response) => {
 // Ruta para obtener un juego específico with sus imágenes
 app.get('/api/juegos/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
+app.get('/api/juegos/:id/resenas', async (req: Request, res: Response) => {
+  const juegoId = parseInt(req.params.id);
+  if (isNaN(juegoId)) return res.status(400).json({ error: 'ID inválido' });
 
+  try {
+    const resenas = await prisma.resena.findMany({
+      where: { juegoId },
+      orderBy: { fecha: 'desc' },
+    });
+    res.json(resenas);
+  } catch (error) {
+    console.error('Error al obtener reseñas:', error);
+    res.status(500).json({ error: 'Error interno' });
+  }
+});
+app.post('/api/juegos/:id/resenas', async (req: Request, res: Response) => {
+  const juegoId = parseInt(req.params.id);
+  const { nombre, comentario, estrellas } = req.body;
+
+  if (!nombre || !comentario || isNaN(estrellas)) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios' });
+  }
+
+  try {
+    const nuevaResena = await prisma.resena.create({
+      data: {
+        juegoId,
+        nombre,
+        comentario,
+        estrellas,
+        fecha: new Date(),
+      },
+    });
+    res.status(201).json(nuevaResena);
+  } catch (error) {
+    console.error('Error al crear reseña:', error);
+    res.status(500).json({ error: 'No se pudo registrar la reseña' });
+  }
+});
   try {
     const juego = await prisma.juego.findUnique({
       where: { id: Number(id) },
@@ -902,3 +941,97 @@ app.delete('/api/imagenes/:id', async (req: Request, res: Response) => {
   }
 });
 
+
+// Obtener todas las noticias
+app.get("/api/noticias", async (req, res) => {
+  try {
+    const noticias = await prisma.noticia.findMany({
+      orderBy: { id: "desc" },
+    });
+    res.json(noticias);
+  } catch (err) {
+    res.status(500).json({ message: "Error al obtener noticias" });
+  }
+});
+
+// Obtener una noticia por id
+app.get("/api/noticias/:id", async (req, res) => {
+  try {
+    const noticia = await prisma.noticia.findUnique({
+      where: { id: Number(req.params.id) },
+    });
+    if (!noticia) return res.status(404).json({ message: "Noticia no encontrada" });
+    res.json(noticia);
+  } catch (err) {
+    res.status(500).json({ message: "Error al obtener noticia" });
+  }
+});
+
+// Crear noticia
+app.post("/api/noticias", async (req, res) => {
+  try {
+    const { titulo, texto, imagen, activo } = req.body;
+    const noticia = await prisma.noticia.create({
+      data: { titulo, texto, imagen, activo: !!activo },
+    });
+    res.json(noticia);
+  } catch (err) {
+    res.status(500).json({ message: "Error al crear noticia" });
+  }
+});
+
+// Editar noticia
+app.put("/api/noticias/:id", async (req, res) => {
+  try {
+    const { titulo, texto, imagen, activo } = req.body;
+    const noticia = await prisma.noticia.update({
+      where: { id: Number(req.params.id) },
+      data: { titulo, texto, imagen, activo: !!activo },
+    });
+    res.json(noticia);
+  } catch (err) {
+    res.status(500).json({ message: "Error al editar noticia" });
+  }
+});
+
+// Eliminar noticia
+app.delete("/api/noticias/:id", async (req, res) => {
+  try {
+    await prisma.noticia.delete({
+      where: { id: Number(req.params.id) },
+    });
+    res.json({ message: "Noticia eliminada" });
+  } catch (err) {
+    res.status(500).json({ message: "Error al eliminar noticia" });
+  }
+});
+
+// Juegos más vendidos (los primeros 5 juegos de la lista)
+app.get('/api/juegos-mas-vendidos', async (req: Request, res: Response) => {
+  try {
+    const juegos = await prisma.juego.findMany({
+      include: { imagenes: true },
+      orderBy: { id: 'asc' },  // Primeros juegos
+      take: 5
+    });
+    res.status(200).json(juegos);
+  } catch (error) {
+    console.error('Error al obtener juegos más vendidos:', error);
+    res.status(500).json({ message: 'Error al obtener juegos más vendidos' });
+  }
+});
+
+// Juegos mejor valorados (los últimos 5 juegos, usando el ID de forma inversa)
+app.get('/api/juegos-mejor-valorados', async (req: Request, res: Response) => {
+  try {
+    const juegos = await prisma.juego.findMany({
+      include: { imagenes: true },
+      orderBy: { id: 'desc' },  // Últimos juegos creados
+      take: 5
+    });
+    res.status(200).json(juegos);
+  } catch (error) {
+    console.error('Error al obtener juegos mejor valorados:', error);
+    res.status(500).json({ message: 'Error al obtener juegos mejor valorados' });
+  }
+});

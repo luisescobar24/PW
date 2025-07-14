@@ -249,6 +249,13 @@ const PaginaPrincipal: React.FC = () => {
             </button>
             {menuCategoriasVisible && (
               <div style={{ position: 'absolute', top: '100%', left: 0, background: '#222', border: '1px solid #444', zIndex: 10, minWidth: '180px', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }} >
+                <button onClick={() => navigate('/masvendidos')}>
+                  🔥 Juegos más vendidos
+                </button>
+                <button onClick={() => navigate('/mejorvalorados')}>
+                  ⭐ Juegos mejor valorados
+                </button>
+                <hr style={{ border: '1px solid #444', margin: '4px 0' }} />
                 {categorias.map(cat => (
                   <button
                     key={cat.id}
@@ -354,7 +361,7 @@ const PaginaPrincipal: React.FC = () => {
             <p>No se han encontrado juegos que coincidan con los filtros seleccionados.</p>
           </div>
         ) : (
-          juegosFiltrados.map(juego => (
+          juegosFiltrados.slice(0, 5).map(juego => (
             <div key={juego.id} className="game-card">
               <div className="card-image">
                 <img
@@ -402,7 +409,7 @@ const PaginaPrincipal: React.FC = () => {
                 </div>
                 <div className="item-quantity">
                   <button onClick={() => actualizarCantidadCarrito(item.id, item.cantidad - 1)} disabled={item.cantidad <= 1}>-</button>
-                  <span>{item.cantidad}</span>
+                  <span className="item-cantidad">{item.cantidad}</span>
                   <button onClick={() => actualizarCantidadCarrito(item.id, item.cantidad + 1)} disabled={item.cantidad >= 10}>+</button>
                 </div>
                 <div className="item-total">${(item.precio * item.cantidad).toFixed(2)}</div>

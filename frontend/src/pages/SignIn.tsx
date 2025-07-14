@@ -20,19 +20,18 @@ const SignIn = () => {
       // Send POST request to backend
       const response = await axios.post(`${URL_BACKEND}api/auth/login`, { correo: username, password });
 
-      if (response.data.success && response.data.token) {
-        // Guardar el token en localStorage para mantener la autenticación
-        localStorage.setItem('token', response.data.token);
-        // Navegar a la página principal
-        navigate('/paginaprincipal');
-      } else {
-        alert('No se recibió el token de autenticación.');
+      if (response.data.success) {
+        // Guardar datos de usuario en localStorage
+        if (response.data.user) {
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+        }
+        navigate('/paginaprincipal');  // Redirect to main page after login
       }
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        alert(error.response?.data.message || 'Usuario o contraseña incorrectos');
+        alert(error.response?.data.message || 'Incorrect username or password');
       } else {
-        alert('Ocurrió un error inesperado.');
+        alert('An unexpected error occurred.');
       }
     } finally {
       setLoading(false);  // End loading

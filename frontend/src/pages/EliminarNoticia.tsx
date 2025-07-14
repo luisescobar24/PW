@@ -1,29 +1,26 @@
-import { useState } from 'react';
-
+import React, { FC } from 'react';
 const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
-interface EliminarNoticiaProps {
+interface Props {
   id: number;
   titulo: string;
   onClose: () => void;
   onDeleted: () => void;
 }
 
-const EliminarNoticia = ({ id, titulo, onClose, onDeleted }: EliminarNoticiaProps) => {
-  const [loading, setLoading] = useState(false);
-
+const EliminarNoticia: FC<Props> = ({ id, titulo, onClose, onDeleted }) => {
   const handleDelete = async () => {
-    setLoading(true);
     try {
       const res = await fetch(`${URL_BACKEND}api/noticias/${id}`, {
-        method: 'DELETE',
+        method: 'DELETE'
       });
-      if (res.ok) onDeleted();
-      else alert('Error al eliminar la noticia');
+      if (!res.ok) {
+        alert('Error al eliminar la noticia');
+        return;
+      }
+      onDeleted();
     } catch {
-      alert('Error de conexión');
-    } finally {
-      setLoading(false);
+      alert('Error de red al eliminar la noticia');
     }
   };
 
@@ -31,11 +28,11 @@ const EliminarNoticia = ({ id, titulo, onClose, onDeleted }: EliminarNoticiaProp
     <div className="modal">
       <div className="modal-content">
         <h3>Eliminar Noticia</h3>
-        <p>¿Estás seguro que deseas eliminar "{titulo}"?</p>
+        <p>¿Seguro que deseas eliminar la noticia "{titulo}"?</p>
         <div className="modal-buttons">
-          <button onClick={onClose} disabled={loading}>Cancelar</button>
-          <button onClick={handleDelete} disabled={loading}>
-            {loading ? 'Eliminando...' : 'Confirmar'}
+          <button onClick={onClose}>Cancelar</button>
+          <button onClick={handleDelete} className="danger">
+            Eliminar
           </button>
         </div>
       </div>

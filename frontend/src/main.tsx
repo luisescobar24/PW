@@ -6,19 +6,21 @@ import SignUp from './pages/SignUp';
 import ResetPass from './pages/ResetPass';
 import PaginaPrincipal from './pages/PaginaPrincipal';
 import Detalle from './pages/Detalle';
+import ModalResenaWrapper from './pages/ModalResenaWrapper';
 import ConfirmarOrden from './pages/Confirmarorden';
-
 import AdminJuegos from './pages/AdminJuegos';
 import AgregarJuego from './pages/AgregarJuego';
 import EditarJuegos from './pages/EditarJuego';
 import EliminarJuego from './pages/EliminarJuego';
-
-
 import AdminNoticias from './pages/AdminNoticias';
 import AgregarNoticia from './pages/AgregarNoticia';
 import EditarNoticia from './pages/EditarNoticia';
 import EliminarNoticia from './pages/EliminarNoticia';
 import EditarUsuario from './pages/EditarUsuario';
+
+import MasVendidos from './pages/MasVendidos';
+import MejorValorados from './pages/MejorValorados';
+
 
 
 createRoot(document.getElementById("root")!).render(
@@ -29,8 +31,15 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/signup" element={<SignUp />} />
       <Route path="/resetpass" element={<ResetPass />} />
       <Route path="/paginaprincipal" element={<PaginaPrincipal />} />
+      <Route path="/resena/:id" element={<ModalResenaWrapper />} />
+
+
+
       <Route path="/detalle/:id" element={<Detalle />} />
       <Route path="/confirmarorden" element={<ConfirmarOrden />} />
+      <Route path="/masvendidos" element={<MasVendidos />} />
+      <Route path="/mejorvalorados" element={<MejorValorados />} />
+
 
       {/* Juegos */}
       <Route path="/adminjuegos" element={<AdminJuegos />} />

@@ -25,7 +25,6 @@ interface Game {
   imagenes: Imagen[];
   videoUrl: string;
   plataformas: number[];
-  fechaLanzamiento?: string;
   rating?: number;
   discount?: number;
 }
@@ -36,10 +35,6 @@ const AdminJuegos = () => {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<number | null>(null);
   const [mostrarEliminar, setMostrarEliminar] = useState(false);
   const [juegoAEliminar, setJuegoAEliminar] = useState<Game | null>(null);
-  const [fechaInicio, setFechaInicio] = useState<string>("");
-  const [fechaFin, setFechaFin] = useState<string>("");
-  const [precioMin, setPrecioMin] = useState<string>("");
-  const [precioMax, setPrecioMax] = useState<string>("");
   const navigate = useNavigate();
 
   // Cargar juegos desde el backend
@@ -67,15 +62,9 @@ const AdminJuegos = () => {
   }, []);
 
   // Filtrar juegos por categoría seleccionada
-  const juegosFiltrados = juegos.filter(j => {
-    let ok = true;
-    if (categoriaSeleccionada) ok = ok && j.categoriaId === categoriaSeleccionada;
-    if (fechaInicio) ok = ok && typeof j.fechaLanzamiento === 'string' && j.fechaLanzamiento >= fechaInicio;
-    if (fechaFin) ok = ok && typeof j.fechaLanzamiento === 'string' && j.fechaLanzamiento <= fechaFin;
-    if (precioMin) ok = ok && j.precio >= Number(precioMin);
-    if (precioMax) ok = ok && j.precio <= Number(precioMax);
-    return ok;
-  });
+  const juegosFiltrados = categoriaSeleccionada
+    ? juegos.filter(j => j.categoriaId === categoriaSeleccionada)
+    : juegos;
 
   // Eliminar juego
   const eliminarJuego = async () => {
@@ -117,7 +106,15 @@ const AdminJuegos = () => {
       </aside>
 
       <main className="admin-panel">
-        {/* Filtro por categoría (diseño original) */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 16 }}>
+          <button
+            style={{ background: '#ff6600', color: '#fff', border: 'none', borderRadius: 4, padding: '8px 16px', cursor: 'pointer', fontWeight: 'bold' }}
+            onClick={() => navigate('/paginaprincipal')}
+          >
+            Volver a Principal
+          </button>
+        </div>
+        {/* Categorías filter */}
         <div className="categorias-filter" style={{ marginBottom: 24 }}>
           <button
             className={!categoriaSeleccionada ? "active" : ""}
@@ -136,22 +133,6 @@ const AdminJuegos = () => {
           ))}
         </div>
 
-        {/* Filtros por fecha de lanzamiento y precio, con diseño similar y debajo de categorías */}
-        <div className="extra-filtros-admin" style={{ display: 'flex', gap: 24, marginBottom: 24, flexWrap: 'wrap', alignItems: 'center' }}>
-          <div className="filtro-fecha" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <label style={{ marginRight: 8, fontWeight: 600, color: '#ff6600' }}>Fecha lanzamiento:</label>
-            <input className="filter-select" type="date" value={fechaInicio} onChange={e => setFechaInicio(e.target.value)} style={{ marginRight: 8 }} />
-            <span style={{ marginRight: 8, color: '#fff' }}>a</span>
-            <input className="filter-select" type="date" value={fechaFin} onChange={e => setFechaFin(e.target.value)} />
-          </div>
-          <div className="filtro-precio" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <label style={{ marginRight: 8, fontWeight: 600, color: '#ff6600' }}>Precio:</label>
-            <input className="filter-select" type="number" min="0" placeholder="Mín" value={precioMin} onChange={e => setPrecioMin(e.target.value)} style={{ width: 80, marginRight: 8 }} />
-            <span style={{ marginRight: 8, color: '#fff' }}>a</span>
-            <input className="filter-select" type="number" min="0" placeholder="Máx" value={precioMax} onChange={e => setPrecioMax(e.target.value)} style={{ width: 80 }} />
-          </div>
-        </div>
-
         <h2>Gestión de Juegos</h2>
         <div className="actions">
           <button onClick={() => navigate('/agregarjuego')}>+ Agregar Juego</button>
@@ -168,7 +149,6 @@ const AdminJuegos = () => {
                 <th>Oferta</th>
                 <th>Estado</th>
                 <th>Categoría</th>
-                <th>Fecha Lanzamiento</th>
                 <th>Video</th>
                 <th>Acciones</th>
               </tr>
@@ -184,7 +164,6 @@ const AdminJuegos = () => {
                   <td>
                     {categorias.find(cat => cat.id === juego.categoriaId)?.nombre || juego.categoriaId}
                   </td>
-                  <td>{juego.fechaLanzamiento ? new Date(juego.fechaLanzamiento).toLocaleDateString() : '-'}</td>
                   <td>{juego.videoUrl ? '✅' : '❌'}</td>
                   <td>
                     <button

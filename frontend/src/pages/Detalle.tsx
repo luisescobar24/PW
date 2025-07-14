@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../estilos/Detalle.css';
+import ModalResena from './ModalResena';
 
 const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
 
@@ -21,6 +22,14 @@ interface Juego {
   categoria: string;
   imagenes: ImagenJuego[];
 }
+interface Reseña {
+  id: number;
+  juegoId: number;
+  nombre: string;
+  comentario: string;
+  estrellas: number;
+  fecha: string;
+}
 
 const Detalle: React.FC = () => {
   const { id } = useParams();
@@ -28,6 +37,8 @@ const Detalle: React.FC = () => {
   const [juego, setJuego] = useState<Juego | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [reseñas, setReseñas] = useState<Reseña[]>([]);
+  const [modalAbierto, setModalAbierto] = useState(false);
 
   // Función para convertir enlaces de YouTube a formato embed
   const getEmbedUrl = (url: string): string => {
@@ -46,20 +57,27 @@ const Detalle: React.FC = () => {
     }
   };
 
+
   // Cargar el juego desde el backend usando el ID
   useEffect(() => {
-    const fetchJuego = async () => {
+    const fetchTodo = async () => {
       try {
-        const response = await axios.get(`${URL_BACKEND}api/juegos/${id}`);
-        setJuego(response.data);
+        const [juegoRes, resenasRes] = await Promise.all([
+          axios.get(`${URL_BACKEND}api/juegos/${id}`),
+          axios.get(`${URL_BACKEND}api/juegos/${id}/resenas`)
+        ]);
+        setJuego(juegoRes.data);
+        setReseñas(resenasRes.data);
       } catch (err) {
-        setError('❌ Error al cargar los datos del juego.');
+        setError('❌ Error al cargar datos del juego.');
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
-    fetchJuego();
+    fetchTodo();
   }, [id]);
+
 
   // Mostrar "Cargando..." mientras los datos se cargan
   if (loading) return <p className="cargando">⏳ Cargando juego...</p>;
@@ -85,6 +103,29 @@ const Detalle: React.FC = () => {
         <p>{juego.descripcion}</p>
       </section>
 
+      {/* Botón para añadir reseña */}  
+      <button className="añadir-resena-btn" onClick={() => setModalAbierto(true)}>
+        Añadir reseña
+      </button>
+      {/* Modal para añadir reseña con overlay y blur */}
+      {modalAbierto && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <ModalResena
+              juegoNombre={juego.nombre}
+              videoUrl={getEmbedUrl(juego.videoUrl)}
+              imagenes={juego.imagenes}
+              juegoId={juego.id}
+              onClose={() => setModalAbierto(false)}
+              onResenaEnviada={() => {
+                // Recargar reseñas después de enviar
+                axios.get(`${URL_BACKEND}api/juegos/${juego.id}/resenas`).then(res => setReseñas(res.data));
+              }}
+            />
+          </div>
+        </div>
+      )}
+
       {/* Video */}
       <section className="detalle-video">
         <h3>Trailer</h3>
@@ -102,6 +143,26 @@ const Detalle: React.FC = () => {
           </div>
         ) : (
           <p>No se encontró video del juego.</p>
+        )}
+      </section>
+        
+      {/* Reseñas */}
+      <section className="detalle-reseñas">
+        <h3>🗣 Reseñas</h3>
+        {reseñas.length > 0 ? (
+          <ul className="lista-reseñas">
+            {reseñas.map((r) => (
+              <li key={r.id} className="reseña-card">
+                <div className="reseña-header">
+                  <strong>{r.nombre}</strong> - {r.fecha}
+                  <span className="reseña-estrellas">{'⭐'.repeat(r.estrellas)}</span>
+                </div>
+                <p>{r.comentario}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No hay reseñas disponibles para este juego.</p>
         )}
       </section>
 
@@ -126,5 +187,6 @@ const Detalle: React.FC = () => {
     </div>
   );
 };
+
 
 export default Detalle;

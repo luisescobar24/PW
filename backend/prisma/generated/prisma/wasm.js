@@ -163,7 +163,8 @@ exports.Prisma.NoticiaScalarFieldEnum = {
   id: 'id',
   titulo: 'titulo',
   texto: 'texto',
-  activo: 'activo'
+  activo: 'activo',
+  imagen: 'imagen'
 };
 
 exports.Prisma.VentaScalarFieldEnum = {
@@ -181,6 +182,15 @@ exports.Prisma.CalificacionScalarFieldEnum = {
   comentario: 'comentario',
   juegoId: 'juegoId',
   usuarioId: 'usuarioId'
+};
+
+exports.Prisma.ResenaScalarFieldEnum = {
+  id: 'id',
+  juegoId: 'juegoId',
+  nombre: 'nombre',
+  comentario: 'comentario',
+  estrellas: 'estrellas',
+  fecha: 'fecha'
 };
 
 exports.Prisma.SortOrder = {
@@ -207,7 +217,8 @@ exports.Prisma.ModelName = {
   Imagen: 'Imagen',
   Noticia: 'Noticia',
   Venta: 'Venta',
-  Calificacion: 'Calificacion'
+  Calificacion: 'Calificacion',
+  Resena: 'Resena'
 };
 
 /**
