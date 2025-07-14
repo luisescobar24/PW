@@ -9,7 +9,6 @@ import cloudinary from 'cloudinary';
 import multer from 'multer';
 import fs from 'fs';
 
-
 dotenv.config();  // Cargar las variables de entorno desde .env
 
 // Configuración global de Cloudinary (asegúrate de tener las variables en tu .env o usa estas configuraciones directamente)
@@ -521,7 +520,6 @@ app.post('/api/ventas', async (req: Request, res: Response) => {
     return res.status(500).json({ message: 'Error al registrar ventas' });
   }
 });
-
 
 // Ruta para obtener todos los juegos
 app.get('/api/juegos', async (req, res) => {

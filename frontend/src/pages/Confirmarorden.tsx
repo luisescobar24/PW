@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import "../estilos/ConfirmarOrden.css";
 
-const URL_BACKEND = import.meta.env.VITE_BACKEND_URL;
-
 interface ItemCarrito {
   id: number;
   nombre: string;
@@ -56,7 +54,7 @@ const ventas = carrito.map((item: ItemCarrito) => ({
 
     try {
       // Realizar el POST al backend para registrar las ventas
-      const response = await fetch(`${URL_BACKEND}api/ventas`, {
+      const response = await fetch('http://localhost:3000/api/ventas', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ventas })  // Envío de los datos al backend
