@@ -18,6 +18,10 @@ import AgregarNoticia from './pages/AgregarNoticia';
 import EditarNoticia from './pages/EditarNoticia';
 import EliminarNoticia from './pages/EliminarNoticia';
 
+import MasVendidos from './pages/MasVendidos';
+import MejorValorados from './pages/MejorValorados';
+
+
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -29,6 +33,9 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/paginaprincipal" element={<PaginaPrincipal />} />
       <Route path="/detalle/:id" element={<Detalle />} />
       <Route path="/confirmarorden" element={<ConfirmarOrden />} />
+      <Route path="/masvendidos" element={<MasVendidos />} />
+      <Route path="/mejorvalorados" element={<MejorValorados />} />
+
 
       {/* Juegos */}
       <Route path="/adminjuegos" element={<AdminJuegos />} />
