@@ -522,7 +522,6 @@ app.post('/api/ventas', async (req: Request, res: Response) => {
   }
 });
 
-
 // Ruta para obtener todos los juegos
 app.get('/api/juegos', async (req, res) => {
   const { plataformaId, categoriaId } = req.query;  // Recibe los IDs como parámetros
