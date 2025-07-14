@@ -39,6 +39,7 @@ model Juego {
   estaOferta     Boolean
   estado         Boolean
   categoriaId    Int
+  fechaLanzamiento DateTime?    @default(now())
   videoUrl       String?        @db.VarChar(255)
   descripcion    String?        @db.VarChar(255)
   calificaciones Calificacion[] 
