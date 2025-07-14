@@ -948,3 +948,33 @@ app.delete("/api/noticias/:id", async (req, res) => {
     res.status(500).json({ message: "Error al eliminar noticia" });
   }
 });
+
+// Juegos más vendidos (los primeros 5 juegos de la lista)
+app.get('/api/juegos-mas-vendidos', async (req: Request, res: Response) => {
+  try {
+    const juegos = await prisma.juego.findMany({
+      include: { imagenes: true },
+      orderBy: { id: 'asc' },  // Primeros juegos
+      take: 5
+    });
+    res.status(200).json(juegos);
+  } catch (error) {
+    console.error('Error al obtener juegos más vendidos:', error);
+    res.status(500).json({ message: 'Error al obtener juegos más vendidos' });
+  }
+});
+
+// Juegos mejor valorados (los últimos 5 juegos, usando el ID de forma inversa)
+app.get('/api/juegos-mejor-valorados', async (req: Request, res: Response) => {
+  try {
+    const juegos = await prisma.juego.findMany({
+      include: { imagenes: true },
+      orderBy: { id: 'desc' },  // Últimos juegos creados
+      take: 5
+    });
+    res.status(200).json(juegos);
+  } catch (error) {
+    console.error('Error al obtener juegos mejor valorados:', error);
+    res.status(500).json({ message: 'Error al obtener juegos mejor valorados' });
+  }
+});

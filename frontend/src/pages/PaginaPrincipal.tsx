@@ -233,36 +233,80 @@ const PaginaPrincipal: React.FC = () => {
         </div>
 
         <nav className="navbar">
-          <button>Explorar</button>
-          <div style={{ position: 'relative', display: 'inline-block' }} >
-            <button onClick={() => setMenuCategoriasVisible((v) => !v)} className="dropdown-btn">
-              Categorías
-            </button>
-            {menuCategoriasVisible && (
-              <div style={{ position: 'absolute', top: '100%', left: 0, background: '#222', border: '1px solid #444', zIndex: 10, minWidth: '180px', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }} >
-                {categorias.map(cat => (
-                  <button
-                    key={cat.id}
-                    style={{ width: '100%', color: '#fff', background: 'none', border: 'none', padding: '10px 16px', textAlign: 'left', cursor: 'pointer' }}
-                    onClick={() => {
-                      setCategoriaFiltro(cat.id);  // Filtra por ID de categoría
-                      setMenuCategoriasVisible(false);
-                    }}
-                  >
-                    {cat.nombre === 'todas' ? 'Todas las Categorías' : cat.nombre}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-          <button onClick={() => navigate('/paginaprincipal')} className="active">Inicio</button>
-          <button>Plataformas</button>
-          <button>Ofertas Especiales</button>
+  <button>Explorar</button>
 
-          <div className="nav-icons" onClick={() => navigate('/adminjuegos')} title="Panel de Administración" role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && navigate('/adminjuegos')} >
-            <span role="img" aria-label="usuario">👤</span>
-          </div>
-        </nav>
+  <div style={{ position: 'relative', display: 'inline-block' }}>
+    <button
+      onClick={() => setMenuCategoriasVisible((v) => !v)}
+      className="dropdown-btn"
+    >
+      Categorías
+    </button>
+
+    {menuCategoriasVisible && (
+      <div
+        style={{
+          position: 'absolute',
+          top: '100%',
+          left: 0,
+          background: '#222',
+          border: '1px solid #444',
+          zIndex: 10,
+          minWidth: '180px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+        }}
+      >
+        <button onClick={() => navigate('/masvendidos')}>
+          🔥 Juegos más vendidos
+        </button>
+        <button onClick={() => navigate('/mejorvalorados')}>
+          ⭐ Juegos mejor valorados
+        </button>
+        <hr style={{ border: '1px solid #444', margin: '4px 0' }} />
+
+        {categorias.map((cat) => (
+          <button
+            key={cat.id}
+            style={{
+              width: '100%',
+              color: '#fff',
+              background: 'none',
+              border: 'none',
+              padding: '10px 16px',
+              textAlign: 'left',
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              setCategoriaFiltro(cat.id);
+              setMenuCategoriasVisible(false);
+            }}
+          >
+            {cat.nombre === 'todas' ? 'Todas las Categorías' : cat.nombre}
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+
+  <button onClick={() => navigate('/paginaprincipal')} className="active">
+    Inicio
+  </button>
+  <button>Plataformas</button>
+  <button>Ofertas Especiales</button>
+
+  <div
+    className="nav-icons"
+    onClick={() => navigate('/adminjuegos')}
+    title="Panel de Administración"
+    role="button"
+    tabIndex={0}
+    onKeyDown={(e) => e.key === 'Enter' && navigate('/adminjuegos')}
+  >
+    <span role="img" aria-label="usuario">
+      👤
+    </span>
+  </div>
+</nav>
 
         {/* Barra de búsqueda y filtros mejorada */}
         <div className="search-filters">
@@ -335,7 +379,7 @@ const PaginaPrincipal: React.FC = () => {
             <p>No se han encontrado juegos que coincidan con los filtros seleccionados.</p>
           </div>
         ) : (
-          juegosFiltrados.map(juego => (
+          juegosFiltrados.slice(0, 5).map(juego => (
             <div key={juego.id} className="game-card">
               <div className="card-image">
                 <img
